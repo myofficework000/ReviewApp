@@ -1,4 +1,4 @@
-package com.code4galaxy.reviewnow.ui.theme
+package com.code4galaxy.reviewnow.view.theme
 
 import androidx.compose.ui.graphics.Color
 

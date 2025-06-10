@@ -1,6 +1,5 @@
-package com.code4galaxy.reviewnow.ui.theme
+package com.code4galaxy.reviewnow.view.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
