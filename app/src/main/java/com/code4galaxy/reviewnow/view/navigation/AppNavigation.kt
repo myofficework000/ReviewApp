@@ -21,7 +21,8 @@ fun SetUpAppLaunch(navigationViewModel: NavigationViewModel) {
         navController.navigate(currentScreen.value?.route ?: Screen.Home.route)
     }
 
-    RootNavGraph(navController, navigationViewModel)
+//    RootNavGraph(navController, navigationViewModel)
+    AppNavGraph(navController,navigationViewModel)
 }
 
 @Composable

@@ -1,6 +1,6 @@
 package com.code4galaxy.reviewnow.view.navigation
 
-sealed class Screen(val route: String) {
+sealed class Screenn(val route: String) {
     object Splash : Screen("splash")
     object Home : Screen("home")
     object Login : Screen("login")

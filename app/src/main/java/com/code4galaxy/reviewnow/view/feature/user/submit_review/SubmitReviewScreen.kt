@@ -1,4 +1,4 @@
-package com.code4galaxy.reviewnow.view.composables
+package com.code4galaxy.reviewnow.view.feature.user.submit_review
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,8 +8,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
 @Composable
-fun LoginScreen(modifier: Modifier = Modifier) {
-    Box(modifier=Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Text("Login")
+fun SubmitReviewScreen(brandId:String,modifier: Modifier = Modifier) {
+    Box(modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        Text("Submit Review")
     }
 }
