@@ -47,6 +47,8 @@ import androidx.navigation.compose.rememberNavController
 import com.code4galaxy.reviewnow.R
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 
 @Composable
 fun LoginScreen(onRegisterClick: () -> Unit = {}) {
@@ -121,7 +123,7 @@ fun LoginScreen(onRegisterClick: () -> Unit = {}) {
                 modifier = Modifier.align(Alignment.End)
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.dimen_24_dp)))
 
             Button(
                 onClick = {
@@ -129,10 +131,10 @@ fun LoginScreen(onRegisterClick: () -> Unit = {}) {
                 },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(48.dp),
+                    .height(dimensionResource(R.dimen.dimen_48_dp)),
                 colors = ButtonDefaults.buttonColors(Color.Black)
             ) {
-                Text(text = "Sign in", color = Color.White)
+                Text(text = stringResource(R.string.sign_in), color = Color.White)
             }
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -155,7 +157,6 @@ fun LoginScreen(onRegisterClick: () -> Unit = {}) {
         }
     }
 }
-
 
 @Preview
 @Composable
