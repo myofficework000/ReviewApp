@@ -18,6 +18,8 @@ fun SplashScreen(onTimeout: () -> Unit, modifier: Modifier = Modifier) {
         onTimeout()
     }
 
+
+
     Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         Text(text = "Splash Screen", fontSize = 40.sp)
     }

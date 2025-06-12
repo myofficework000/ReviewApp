@@ -12,6 +12,10 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -20,10 +24,8 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.code4galaxy.reviewnow.R
-
 
 @Composable
 fun UserHomeScreen(modifier: Modifier = Modifier) {
@@ -31,20 +33,21 @@ fun UserHomeScreen(modifier: Modifier = Modifier) {
     Column(modifier = Modifier.fillMaxSize()) {
         // Search bar at the top
         SearchBarUI()
-        Spacer(modifier = Modifier.height(dimensionResource(id=R.dimen.dimen_16_dp)))
+        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.dimen_16_dp)))
         // Title above the list
         Text(
             "Brands",
             style = TextStyle(fontSize = 22.sp, fontWeight = FontWeight.Bold),
-            modifier = Modifier.padding(start = dimensionResource(id=R.dimen.dimen_16_dp))
+            modifier = Modifier.padding(start = dimensionResource(id = R.dimen.dimen_16_dp))
         )
-        Spacer(modifier = Modifier.height(dimensionResource(id=R.dimen.dimen_8_dp)))
+        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.dimen_8_dp)))
 
         // Box with weight to make LazyColumn scrollable
-        Box(modifier = Modifier
-            .weight(1f)
-            .fillMaxWidth()
-            .padding(horizontal = dimensionResource(id=R.dimen.dimen_16_dp))
+        Box(
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxWidth()
+                .padding(horizontal = dimensionResource(id = R.dimen.dimen_16_dp))
         ) {
             // Scrollable list of brand cards
             LazyColumn(modifier = Modifier.fillMaxSize()) {
