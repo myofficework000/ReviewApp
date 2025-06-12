@@ -10,13 +10,12 @@ object Graph {
 
 sealed class Screen(val route: String) {
     object Splash : Screen("splash")
-
-
     // TODO add auth graph
 
     //AUTH
     object Login : Screen("login")
     object Register : Screen("register")
+    object Welcome : Screen("welcome")
 
     // USER
     object Home : Screen("user_home")

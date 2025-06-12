@@ -14,7 +14,6 @@ fun NavGraphBuilder.adminNavGraph(navController: NavHostController) {
         route = Graph.ADMIN,
         startDestination = Screen.AdminDashboard.route
     ) {
-
         composable(Screen.ManageUsers.route) { AdminUsersScreen() }
         composable(Screen.ManageBrands.route) { BrandsScreen() }
 
