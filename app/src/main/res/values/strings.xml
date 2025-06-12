@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">ReviewNow</string>
     <string name="sign_in">Sign in</string>
+    <string name="log_out">Log out</string>
+    <string name="manage_users">Manage Users</string>
+    <string name="moderate_reviews">Moderate Reviews</string>
+    <string name="add_brand">Add Brand</string>
+    <string name="profile">Profile</string>
+    <string name="back">Back</string>
+    <string name="avatar">Avatar</string>
 </resources>

@@ -83,4 +83,8 @@ dependencies {
     
     //SharedPreference enrciption
     implementation ("androidx.security:security-crypto:1.1.0-alpha06")
+
+    //ConstraintLayout
+    implementation ("androidx.constraintlayout:constraintlayout-compose:1.0.1")
+
 }
