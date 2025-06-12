@@ -1,6 +1,20 @@
 <resources>
     <string name="app_name">ReviewNow</string>
     <string name="sign_in">Sign in</string>
+    <string name="welcome_message">Welcome back \\n to ReviewConnect</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="forget_password">Forget Password</string>
+    <string name="register">Register</string>
+    <string name="create_account">Create Account</string>
+    <string name="name">Name</string>
+    <string name="your_name">Your Name</string>
+    <string name="example_email">example@gmail.com</string>
+    <string name="example_password">*****</string>
+    <string name="already_have_account">Already have an account? Sign in</string>
+    <string name="review_connect">ReviewConnect</string>
+    <string name="welcome_to_reviewconnect">"     Welcome to \\n ReviewConnect"</string>
+    <string name="sign_in_with_Google">Sign in with Google</string>
     <string name="log_out">Log out</string>
     <string name="manage_users">Manage Users</string>
     <string name="moderate_reviews">Moderate Reviews</string>

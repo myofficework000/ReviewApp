@@ -21,7 +21,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -39,7 +42,7 @@ fun WelcomeScreen() {
         Column(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .padding(24.dp),
+                .padding(dimensionResource(R.dimen.dimen_24_dp)),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Button(
@@ -47,17 +50,17 @@ fun WelcomeScreen() {
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF0D426C)),
                 modifier = Modifier.fillMaxWidth(0.8f)
             ) {
-                Text("Sign in")
+                Text(stringResource(R.string.sign_in))
             }
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.dimen_12_dp)))
 
             Button(
                 onClick = { /* Handle Google Sign In */ },
                 colors = ButtonDefaults.buttonColors(containerColor = Color.White),
                 modifier = Modifier.fillMaxWidth(0.8f).border(
-                    BorderStroke(1.dp, Color.Gray),
-                    shape = RoundedCornerShape(8.dp)
+                    BorderStroke(dimensionResource(R.dimen.dimen_1_dp), Color.Gray),
+                    shape = RoundedCornerShape(dimensionResource(R.dimen.dimen_8_dp))
                 )
 
             ) {
@@ -65,27 +68,32 @@ fun WelcomeScreen() {
                     painter = painterResource(id = R.drawable.g_logo),
                     contentDescription = "Google Logo",
                     tint = Color.Unspecified, // Keep original image color
-                    modifier = Modifier.size(24.dp)
+                    modifier = Modifier.size(dimensionResource(R.dimen.dimen_24_dp))
                 )
-                Spacer(modifier = Modifier.width(16.dp))
-                Text("Sign in with Google", color = Color.Black)
+                Spacer(modifier = Modifier.width(dimensionResource(R.dimen.dimen_16_dp)))
+                Text(stringResource(R.string.sign_in_with_Google), color = Color.Black)
 
 
 
             }
-            Spacer(modifier = Modifier.height(40.dp))
+            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.dimen_40_dp)))
+        }
+
+        val dimen36sp = with(LocalDensity.current) {
+            dimensionResource(id = R.dimen.dimen_36_sp).toSp()
         }
 
         Text(
-            text = "    Welcome to \n ReviewConnect",
+            text = stringResource(R.string.welcome_to_reviewconnect),
             color = Color.Black,
-            fontSize = 36.sp,
+            fontSize = dimen36sp,
             fontWeight = FontWeight.Bold,
 
             modifier = Modifier.align(Alignment.Center)
         )
     }
 }
+
 @Preview
 @Composable
 fun WelcomeScreenPreview(){
