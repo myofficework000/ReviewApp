@@ -17,6 +17,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.dimensionResource
+import com.code4galaxy.reviewnow.R
+import androidx.compose.ui.res.stringResource
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -31,58 +36,93 @@ fun AdminHomeScreen(
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text("Profile") },
+                title = { Text(text = stringResource(id = R.string.profile)) },
                 navigationIcon = {
                     IconButton(onClick = { /* Handle back */ }) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.Default.ArrowBack, contentDescription = stringResource(id = R.string.back))
                     }
                 }
             )
         }
     ) { padding ->
-        Column(
+        ConstraintLayout(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .padding(horizontal = 24.dp, vertical = 16.dp)
-        ) {
-            Box(
-                modifier = Modifier.fillMaxWidth(),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    imageVector = Icons.Default.AccountCircle,
-                    contentDescription = "Avatar",
-                    modifier = Modifier
-                        .size(96.dp)
-                        .clip(CircleShape),
-                    tint = Color.Blue
+                .padding(
+                    horizontal = dimensionResource(id = R.dimen.dimen_24_dp),
+                    vertical = dimensionResource(id = R.dimen.dimen_16_dp)
                 )
-            }
+        ) {
+            val (avatar, nameEmail, actions, logout) = createRefs()
 
-            Spacer(modifier = Modifier.height(12.dp))
+            // Avatar Icon
+            Icon(
+                imageVector = Icons.Default.AccountCircle,
+                contentDescription = stringResource(id = R.string.avatar),
+                modifier = Modifier
+                    .size(dimensionResource(id = R.dimen.dimen_96_dp))
+                    .clip(CircleShape)
+                    .constrainAs(avatar) {
+                        top.linkTo(parent.top)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                    },
+                tint = Color.Blue
+            )
 
-            Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
+            // Admin Name & Email
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .constrainAs(nameEmail) {
+                        top.linkTo(avatar.bottom, margin = 12.dp)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                    }
+            ) {
                 Text(adminName, fontSize = 20.sp, fontWeight = FontWeight.Bold)
                 Text(adminEmail, fontSize = 14.sp, color = Color.Gray)
             }
 
-            Spacer(modifier = Modifier.height(24.dp))
+            // Action Items
+            Column(
+                modifier = Modifier
+                    .constrainAs(actions) {
+                        top.linkTo(nameEmail.bottom, margin = 24.dp)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                        width = Dimension.fillToConstraints
+                    }
+            ) {
+                Divider()
+                AdminActionItem(stringResource(id = R.string.manage_users), Icons.Default.People, onManageUsersClick)
+                AdminActionItem(stringResource(id = R.string.moderate_reviews), Icons.Default.Flag, onModerateReviewsClick)
+                AdminActionItem(stringResource(id = R.string.add_brand), Icons.Default.Add, onAddBrandClick)
+                Divider(
+                    modifier = Modifier.padding(
+                        top = dimensionResource(id = R.dimen.dimen_12_dp),
+                        bottom = dimensionResource(id = R.dimen.dimen_6_dp)
+                    )
+                )
+            }
 
-            Divider()
-
-            AdminActionItem("Manage Users", Icons.Default.People, onManageUsersClick)
-            AdminActionItem("Moderate Reviews", Icons.Default.Flag, onModerateReviewsClick)
-            AdminActionItem("Add Brand", Icons.Default.Add, onAddBrandClick)
-
-            Divider(modifier = Modifier.padding(top = 12.dp, bottom = 6.dp))
-
-            AdminActionItem(
-                text = "Log out",
-                icon = Icons.Default.Logout,
-                onClick = onLogout,
-                isLogout = true
-            )
+            // Logout — wrapped in Box so we can apply constrainAs
+            Box(
+                modifier = Modifier.constrainAs(logout) {
+                    top.linkTo(actions.bottom)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                }
+            ) {
+                AdminActionItem(
+                    text = stringResource(id = R.string.log_out),
+                    icon = Icons.Default.Logout,
+                    onClick = onLogout,
+                    isLogout = true
+                )
+            }
         }
     }
 }
@@ -101,11 +141,11 @@ fun AdminActionItem(
         modifier = Modifier
             .fillMaxWidth()
             .clickable(onClick = onClick)
-            .padding(vertical = 14.dp),
+            .padding(vertical = dimensionResource(id = R.dimen.dimen_16_dp)),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(icon, contentDescription = null, tint = iconColor)
-        Spacer(modifier = Modifier.width(16.dp))
+        Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.dimen_16_dp)))
         Text(
             text,
             fontSize = 16.sp,
@@ -115,7 +155,6 @@ fun AdminActionItem(
         Icon(Icons.Default.KeyboardArrowRight, contentDescription = null, tint = Color.Gray)
     }
 }
-
 
 @Preview
 @Composable

@@ -15,4 +15,11 @@
     <string name="review_connect">ReviewConnect</string>
     <string name="welcome_to_reviewconnect">"     Welcome to \\n ReviewConnect"</string>
     <string name="sign_in_with_Google">Sign in with Google</string>
+    <string name="log_out">Log out</string>
+    <string name="manage_users">Manage Users</string>
+    <string name="moderate_reviews">Moderate Reviews</string>
+    <string name="add_brand">Add Brand</string>
+    <string name="profile">Profile</string>
+    <string name="back">Back</string>
+    <string name="avatar">Avatar</string>
 </resources>
