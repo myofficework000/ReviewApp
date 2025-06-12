@@ -14,7 +14,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -37,15 +40,18 @@ fun SplashScreen(onTimeout: () -> Unit) {
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Icon(
-                painter = painterResource(id = R.drawable.baseline_reviews_24), // your logo
+                painter = painterResource(id = R.drawable.baseline_reviews_24), //  logo
                 contentDescription = "App Logo",
                 tint = Color.Unspecified,
-                modifier = Modifier.size(100.dp)
+                modifier = Modifier.size(dimensionResource(R.dimen.dimen_100_dp))
             )
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.dimen_16_dp)))
+            val dimen32sp = with(LocalDensity.current) {
+                dimensionResource(id = R.dimen.dimen_32_sp).toSp()
+            }
             Text(
-                text = "ReviewConnect",
-                fontSize = 32.sp,
+                text = stringResource(R.string.review_connect),
+                fontSize = dimen32sp,
                 fontWeight = FontWeight.Bold,
                 color = Color(0xF8FFFFFF)
             )

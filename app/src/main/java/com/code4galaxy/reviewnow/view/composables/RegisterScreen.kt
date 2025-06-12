@@ -25,6 +25,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
+import com.code4galaxy.reviewnow.R
 
 @Composable
 fun RegisterScreen() {
@@ -37,58 +41,61 @@ fun RegisterScreen() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(32.dp),
+                .padding(dimensionResource(R.dimen.dimen_32_dp)),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(modifier = Modifier.height(80.dp))
+            val dimen32sp = with(LocalDensity.current) {
+                dimensionResource(id = R.dimen.dimen_32_sp).toSp()
+            }
+            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.dimen_80_dp)))
 
-            Text("Create Account", fontSize = 30.sp, fontWeight = FontWeight.Bold)
+            Text(stringResource(R.string.create_account), fontSize = dimen32sp, fontWeight = FontWeight.Bold)
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.dimen_24_dp)))
 
             OutlinedTextField(
                 value = name,
                 onValueChange = {name = it},
-                label = { Text("Name") },
-                placeholder = { Text("Your Name") },
+                label = { Text(stringResource(R.string.name)) },
+                placeholder = { Text(stringResource(R.string.your_name)) },
                 modifier = Modifier.fillMaxWidth()
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.dimen_16_dp)))
 
             OutlinedTextField(
                 value = email,
 
                 onValueChange = {email = it},
-                label = { Text("Email") },
-                placeholder = { Text("example@email.com") },
+                label = { Text(stringResource(R.string.email)) },
+                placeholder = { Text(stringResource(R.string.example_email)) },
                 modifier = Modifier.fillMaxWidth()
             )
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.dimen_16_dp)))
 
             OutlinedTextField(
                 value = password,
                 onValueChange = {password = it},
-                label = { Text("Password") },
-                placeholder = { Text("******") },
+                label = { Text(stringResource(R.string.password)) },
+                placeholder = { Text(stringResource(R.string.example_password)) },
                 modifier = Modifier.fillMaxWidth()
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.dimen_24_dp)))
 
             Button(
                 onClick = { /* Handle register */ },
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(containerColor = Color.Black)
             ) {
-                Text("Register", color = Color.White)
+                Text(stringResource(R.string.register), color = Color.White)
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.dimen_16_dp)))
 
             Text(
-                text = "Already have an account? Sign in",
+                text = stringResource(R.string.already_have_account),
                 color = Color.Blue,
                 modifier = Modifier.clickable {
 
@@ -97,6 +104,7 @@ fun RegisterScreen() {
         }
     }
 }
+
 @Preview
 @Composable
 private fun RegisterScreenPreview(){
