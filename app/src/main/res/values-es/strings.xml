@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ReviewNow</string>
+    <string name="sign_in">Iniciar sesión</string>
+    <string name="welcome_message">Bienvenido de nuevo\n a ReviewConnect</string>
+    <string name="email">Correo electrónico</string>
+    <string name="password">Contraseña</string>
+    <string name="forget_password">¿Olvidaste la contraseña?</string>
+    <string name="register">Registrarse</string>
+    <string name="create_account">Crear una cuenta</string>
+    <string name="name">Nombre</string>
+    <string name="your_name">Tu nombre</string>
+    <string name="example_email">ejemplo@gmail.com</string>
+    <string name="example_password">*****</string>
+    <string name="already_have_account">¿Ya tienes una cuenta? Inicia sesión</string>
+    <string name="review_connect">ReviewConnect</string>
+    <string name="welcome_to_reviewconnect">Bienvenido a\n ReviewConnect</string>
+    <string name="sign_in_with_Google">Iniciar sesión con Google</string>
+    <string name="log_out">Cerrar sesión</string>
+    <string name="manage_users">Gestionar usuarios</string>
+    <string name="moderate_reviews">Moderar reseñas</string>
+    <string name="add_brand">Agregar marca</string>
+    <string name="profile">Perfil</string>
+    <string name="back">Atrás</string>
+    <string name="avatar">Avatar</string>
+    <string name="flagged_reviews">Reseñas marcadas</string>
+    <string name="dont_have_account">¿No tienes una cuenta?</string>
+    <string name="sign_up">Regístrate</string>
+    <string name="confirm_password">Confirmar contraseña</string>
+    <string name="select_language">Seleccionar idioma</string>
+    <string name="home">Home</string>
+    <string name="my_reviews">Mis reseñas</string>
+</resources>
