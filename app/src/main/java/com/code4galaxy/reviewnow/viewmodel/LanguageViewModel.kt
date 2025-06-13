@@ -3,12 +3,14 @@ package com.code4galaxy.reviewnow.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.code4galaxy.reviewnow.model.data.repository.settings.LanguageRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.util.Locale
 import javax.inject.Inject
 
+@HiltViewModel
 class LanguageViewModel @Inject constructor(private val languageRepository: LanguageRepository) :
     ViewModel() {
 

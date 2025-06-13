@@ -17,7 +17,6 @@ import com.code4galaxy.reviewnow.viewmodel.ThemeViewModel
 fun SettingsScreen(
     modifier: Modifier = Modifier,
     themeViewModel: ThemeViewModel = viewModel(),
-    languageViewModel: LanguageViewModel = viewModel()
 ) {
     val selectedTheme by themeViewModel.theme.collectAsState()
 
@@ -51,7 +50,7 @@ fun SettingsScreen(
             }
         }
 
-        LanguageSelector(languageViewModel, modifier)
+        LanguageSelector(modifier)
     }
 }
 

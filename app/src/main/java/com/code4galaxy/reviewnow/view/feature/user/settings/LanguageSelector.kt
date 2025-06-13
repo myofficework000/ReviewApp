@@ -1,8 +1,11 @@
 package com.code4galaxy.reviewnow.view.feature.user.settings
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Text
@@ -13,15 +16,19 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.code4galaxy.reviewnow.R
 import com.code4galaxy.reviewnow.view.feature.user.util.updateLocale
 import com.code4galaxy.reviewnow.viewmodel.LanguageViewModel
 
 @Composable
-fun LanguageSelector(languageViewModel: LanguageViewModel, modifier: Modifier = Modifier) {
+fun LanguageSelector(modifier: Modifier = Modifier) {
+    val languageViewModel: LanguageViewModel = hiltViewModel()
     // Observe the selected language from the ViewModel
     val selectedLanguage = languageViewModel.language.collectAsStateWithLifecycle()
 
@@ -49,6 +56,11 @@ fun LanguageDropdown(
         Spacer(modifier = modifier.padding(dimensionResource(R.dimen.dimen_8_dp)))
 
         DropdownMenu(
+            modifier = Modifier
+                .padding(dimensionResource(R.dimen.dimen_8_dp))
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .background(Color.Red),
             expanded = expanded,
             onDismissRequest = { expanded = false }
         ) {
@@ -56,10 +68,16 @@ fun LanguageDropdown(
                 DropdownMenuItem(
                     text = { Text(text = label) },
                     onClick = {
-                        expanded = false
+                        expanded = true
                         onLanguageSelected(code)
                     })
             }
         }
     }
+}
+
+@Preview
+@Composable
+private fun LanguageSelectorPreview() {
+    LanguageSelector()
 }
