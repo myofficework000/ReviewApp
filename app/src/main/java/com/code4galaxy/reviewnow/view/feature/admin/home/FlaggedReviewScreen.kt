@@ -23,10 +23,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import com.code4galaxy.reviewnow.R
+import com.code4galaxy.reviewnow.view.feature.admin.home.FlaggedReviewScreen
 
 @Composable
 fun FlaggedReviewScreen(
@@ -52,7 +54,7 @@ fun FlaggedReviewScreen(
 
         // Screen Title
         Text(
-            text = "Flagged Reviews",
+            text = stringResource(id = R.string.flagged_reviews),
             style = MaterialTheme.typography.headlineSmall,
             modifier = Modifier.padding(bottom = dimen16)
         )

@@ -29,4 +29,10 @@
     <string name="select_language">Choisir la langue</string>
     <string name="home">Home</string>
     <string name="my_reviews">Mes avis</string>
+    <string name="add_brand_org">Ajouter une marque / organisation</string>
+    <string name="logo">Logo</string>
+    <string name="brand_org">Marque / Organisation</string>
+    <string name="brand_org_name">Nom de la marque / organisation</string>
+
+
 </resources>
