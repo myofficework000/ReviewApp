@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.sp
 import com.code4galaxy.reviewnow.R
 
 @Composable
-fun UserHomeScreen(modifier: Modifier = Modifier) {
+fun HomeScreen(modifier: Modifier = Modifier) {
     // Main vertical layout of the screen
     Column(modifier = Modifier.fillMaxSize()) {
         // Search bar at the top
@@ -206,7 +206,7 @@ data class Brand(val name: String, val rating: String, val reviewText: String)
 @Preview(showBackground = true)
 @Composable
 fun PreviewHomeScreenUIOnly() {
-    UserHomeScreen()
+    HomeScreen()
 }
 
 

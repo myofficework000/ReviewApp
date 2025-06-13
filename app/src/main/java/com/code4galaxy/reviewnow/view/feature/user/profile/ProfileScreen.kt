@@ -1,15 +1,86 @@
 package com.code4galaxy.reviewnow.view.feature.user.profile
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.runtime.*
+import androidx.compose.ui.*
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.*
+import com.code4galaxy.reviewnow.R
 
 @Composable
-fun ProfileScreen(modifier: Modifier = Modifier) {
-    Box(modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Text("Profile")
+fun ProfileScreen(
+    modifier: Modifier = Modifier,
+    name: String = "John Doe",
+    email: String = "johndoe@example.com",
+    onMyReviewsClick: () -> Unit = {},
+    onLogoutClick: () -> Unit = {}
+) {
+    Column(
+        modifier = modifier
+            .padding(dimensionResource(id = R.dimen.dimen_16_dp)),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        // Profile icon
+        Icon(
+            imageVector = Icons.Default.AccountCircle,
+            contentDescription = null,
+            modifier = Modifier.size(dimensionResource(id = R.dimen.dimen_80_dp)),
+            tint = Color.Blue
+        )
+
+        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.dimen_8_dp)))
+
+        // Display user name
+        Text(name, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+        // Display user email
+        Text(email, fontSize = 16.sp, color = Color.Gray)
+
+        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.dimen_24_dp)))
+
+        Divider()
+
+        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.dimen_12_dp)))
+        // Row for "My Reviews" section with click listener
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { onMyReviewsClick() }
+                .padding(vertical = dimensionResource(id = R.dimen.dimen_12_dp)),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text("My Reviews", fontSize = 16.sp)
+        }
+
+        Divider()
+        // Row for "Log out" section with click listener
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { onLogoutClick() }
+                .padding(vertical = dimensionResource(id = R.dimen.dimen_12_dp)),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text("Log out", fontSize = 16.sp)
+        }
+
+        Divider()
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewProfileScreen() {
+    ProfileScreen(
+        name = "Jane Smith",
+        email = "jane.smith@example.com",
+        onMyReviewsClick = {},
+        onLogoutClick = {}
+    )
 }
