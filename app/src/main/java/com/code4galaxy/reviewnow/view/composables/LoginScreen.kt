@@ -57,13 +57,13 @@ fun LoginScreen(onRegisterClick: () -> Unit = {}) {
         ) {
             Spacer(modifier = Modifier.height(dimensionResource(R.dimen.dimen_200_dp)))
 
-            val dimen32sp = with(LocalDensity.current) {
-                dimensionResource(id = R.dimen.dimen_32_sp).toSp()
+            val dimen48sp = with(LocalDensity.current) {
+                dimensionResource(id = R.dimen.dimen_48_sp).toSp()
             }
 
             Text(
                 text = stringResource(id = R.string.welcome_message),
-                fontSize = dimen32sp,
+                fontSize = dimen48sp,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center
             )
@@ -73,32 +73,15 @@ fun LoginScreen(onRegisterClick: () -> Unit = {}) {
                 dimensionResource(id = R.dimen.dimen_12_sp).toSp()
             }
 
-            Text(
-                text = stringResource(id = R.string.email),
-                color = Color.Gray,
-                fontSize = dimen12sp,
-                modifier = Modifier.align(Alignment.Start)
-            )
-
             OutlinedTextField(
                 value = email,
                 onValueChange = { email = it },
                 label = { Text("Email") },
                 placeholder = { Text("example@email.com") },
-                trailingIcon = {
-                    Icon(Icons.Default.Email, contentDescription = null)
-                },
                 modifier = Modifier.fillMaxWidth()
             )
 
             Spacer(modifier = Modifier.height(dimensionResource(R.dimen.dimen_24_dp)))
-
-            Text(
-                text = stringResource(id = R.string.password),
-                color = Color.Gray,
-                fontSize = dimen12sp,
-                modifier = Modifier.align(Alignment.Start)
-            )
 
             OutlinedTextField(
                 value = password,
@@ -114,11 +97,11 @@ fun LoginScreen(onRegisterClick: () -> Unit = {}) {
             Text(
                 text = stringResource(R.string.forget_password),
                 fontSize = dimen12sp,
-                color = Color.Gray,
+                color = Color.Blue,
                 modifier = Modifier.align(Alignment.End)
             )
 
-            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.dimen_24_dp)))
+            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.dimen_32_dp)))
 
             Button(
                 onClick = {
@@ -127,28 +110,45 @@ fun LoginScreen(onRegisterClick: () -> Unit = {}) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(dimensionResource(R.dimen.dimen_48_dp)),
-                colors = ButtonDefaults.buttonColors(Color.Black)
+                colors = ButtonDefaults.buttonColors(Color.Blue)
             ) {
                 Text(text = stringResource(R.string.sign_in), color = Color.White)
             }
 
             Spacer(modifier = Modifier.height(dimensionResource(R.dimen.dimen_16_dp)))
 
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
+            Box(
+                modifier = Modifier
+                    .fillMaxSize().padding(bottom = dimensionResource(R.dimen.dimen_32_dp))
+                    .padding(16.dp)
             ) {
-                Text("Don't have an account?")
-                Spacer(modifier = Modifier.width(dimensionResource(R.dimen.dimen_4_dp)))
-                Text(
-                    text = stringResource(R.string.register),
-                    color = Color.Blue,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.clickable {
-                        onRegisterClick()
+                Column (
+                    modifier = Modifier.fillMaxWidth().align(Alignment.BottomCenter)
+                    .align(Alignment.Center),horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    val dimen24sp = with(LocalDensity.current) {
+                        dimensionResource(id = R.dimen.dimen_24_sp).toSp()
                     }
-                )
+                    val dimen20sp = with(LocalDensity.current) {
+                        dimensionResource(id = R.dimen.dimen_20_sp).toSp()
+                    }
+                    Text(text = stringResource(R.string.dont_have_account),
+                        fontSize = dimen24sp,
+                        fontWeight = FontWeight.Bold)
+                    Spacer(modifier = Modifier.height(dimensionResource(R.dimen.dimen_4_dp)))
+                    Text(
+                        text = stringResource(R.string.register),
+                        color = Color.Blue,
+                        fontSize = dimen20sp,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.clickable {
+                            onRegisterClick()
+                        }
+                    )
+                }
             }
+
+
         }
     }
 }
