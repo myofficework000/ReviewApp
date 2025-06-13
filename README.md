@@ -18,3 +18,9 @@
 ## Addmin Screens
 
 <img width="847" alt="Screenshot 2025-06-11 at 6 36 28 PM" src="https://github.com/user-attachments/assets/57c80a1f-fcf2-435b-98ef-6328fda83e6c" />
+
+
+
+## Auth Screens
+<img width="522" alt="Screenshot 2025-06-12 at 5 59 12 PM" src="https://github.com/user-attachments/assets/35e4144c-f735-4128-8cd8-187f569a84e0" />
+ 
