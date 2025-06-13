@@ -10,6 +10,6 @@ import androidx.compose.ui.Modifier
 @Composable
 fun MyReviewsScreen(modifier: Modifier = Modifier) {
     Box(modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Text("My reviews ")
+        Text("My reviews ...")
     }
 }

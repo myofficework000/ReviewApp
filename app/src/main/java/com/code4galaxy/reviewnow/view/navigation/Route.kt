@@ -17,6 +17,9 @@ sealed class Screen(val route: String) {
     object Register : Screen("register")
     object Welcome : Screen("welcome")
 
+
+    object UserDashboard : Screen("user_dashboard")
+
     // USER
     object Home : Screen("user_home")
     object BrandDetail : Screen("user_brand_detail/{brandId}") {
@@ -26,7 +29,7 @@ sealed class Screen(val route: String) {
     object SubmitReview : Screen("submit_review/{brandId}") {
         fun pass(brandId: String) = "submit_review/$brandId"
     }
-
+    object Settings : Screen("settings")
     object MyReviews : Screen("my_reviews")
     object Profile : Screen("profile")
 
