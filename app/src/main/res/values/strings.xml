@@ -27,4 +27,6 @@
     <string name="sign_up">Sign Up</string>
     <string name="confirm_password">Confirm password</string>
     <string name="select_language">Select Language</string>
+    <string name="home">Home</string>
+    <string name="my_reviews">My reviews</string>
 </resources>

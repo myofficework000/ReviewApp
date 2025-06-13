@@ -9,6 +9,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.*
@@ -44,7 +45,7 @@ fun ProfileScreen(
 
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.dimen_24_dp)))
 
-        Divider()
+        HorizontalDivider()
 
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.dimen_12_dp)))
         // Row for "My Reviews" section with click listener
@@ -55,7 +56,7 @@ fun ProfileScreen(
                 .padding(vertical = dimensionResource(id = R.dimen.dimen_12_dp)),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text("My Reviews", fontSize = 16.sp)
+            Text(text = stringResource(R.string.my_reviews), fontSize = 16.sp)
         }
 
         Divider()
