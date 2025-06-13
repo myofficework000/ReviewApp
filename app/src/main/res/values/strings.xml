@@ -23,4 +23,8 @@
     <string name="back">Back</string>
     <string name="avatar">Avatar</string>
     <string name="flagged_reviews">Flagged Reviews</string>
+    <string name="dont_have_account">Don\'t have account?</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="select_language">Select Language</string>
 </resources>

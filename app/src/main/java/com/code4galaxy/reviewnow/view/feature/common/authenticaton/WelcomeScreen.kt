@@ -21,17 +21,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-<<<<<<< HEAD:app/src/main/java/com/code4galaxy/reviewnow/view/feature/common/authenticaton/WelcomeScreen.kt
-=======
 import androidx.compose.ui.platform.LocalDensity
->>>>>>> master:app/src/main/java/com/code4galaxy/reviewnow/view/composables/WelcomeScreen.kt
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.code4galaxy.reviewnow.R
 
 @Composable
@@ -48,7 +43,7 @@ fun WelcomeScreen() {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Button(
-                onClick = {  },
+                onClick = { },
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF0D426C)),
                 modifier = Modifier.fillMaxWidth(0.8f)
             ) {
@@ -60,10 +55,12 @@ fun WelcomeScreen() {
             Button(
                 onClick = { /* Handle Google Sign In */ },
                 colors = ButtonDefaults.buttonColors(containerColor = Color.White),
-                modifier = Modifier.fillMaxWidth(0.8f).border(
-                    BorderStroke(dimensionResource(R.dimen.dimen_1_dp), Color.Gray),
-                    shape = RoundedCornerShape(dimensionResource(R.dimen.dimen_8_dp))
-                )
+                modifier = Modifier
+                    .fillMaxWidth(0.8f)
+                    .border(
+                        BorderStroke(dimensionResource(R.dimen.dimen_1_dp), Color.Gray),
+                        shape = RoundedCornerShape(dimensionResource(R.dimen.dimen_8_dp))
+                    )
 
             ) {
                 Icon(
@@ -74,7 +71,6 @@ fun WelcomeScreen() {
                 )
                 Spacer(modifier = Modifier.width(dimensionResource(R.dimen.dimen_16_dp)))
                 Text(stringResource(R.string.sign_in_with_Google), color = Color.Black)
-
 
 
             }
@@ -98,6 +94,6 @@ fun WelcomeScreen() {
 
 @Preview
 @Composable
-fun WelcomeScreenPreview(){
+fun WelcomeScreenPreview() {
     WelcomeScreen()
 }

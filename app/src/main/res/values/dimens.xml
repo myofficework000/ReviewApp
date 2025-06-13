@@ -37,5 +37,8 @@
     <dimen name="dimen_100_dp">100dp</dimen>
     <dimen name="dimen_120_dp">120dp</dimen>
 
+    <dimen name="dimen_20_sp">20sp</dimen>
+    <dimen name="dimen_24_sp">24sp</dimen>
     <dimen name="dimen_32_sp">32sp</dimen>
+    <dimen name="dimen_48_sp">48sp</dimen>
 </resources>

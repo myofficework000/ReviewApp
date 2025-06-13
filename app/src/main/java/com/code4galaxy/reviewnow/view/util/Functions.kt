@@ -1,4 +1,4 @@
-package com.code4galaxy.reviewnow.util
+package com.code4galaxy.reviewnow.view.util
 
 
 import android.annotation.SuppressLint

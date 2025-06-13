@@ -14,7 +14,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import com.code4galaxy.reviewnow.R
 
-
 @Composable
 fun SubmitReviewScreen(
     brandId: String,
@@ -91,9 +90,6 @@ fun SubmitReviewScreen(
     }
 }
 
-<<<<<<< HEAD
-
-=======
 @Preview(showBackground = true)
 @Composable
 fun PreviewSubmitReviewScreen() {
@@ -104,4 +100,3 @@ fun PreviewSubmitReviewScreen() {
         }
     )
 }
->>>>>>> master

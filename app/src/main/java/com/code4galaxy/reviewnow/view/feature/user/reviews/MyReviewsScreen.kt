@@ -13,87 +13,82 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.*
 import com.code4galaxy.reviewnow.R
+import com.code4galaxy.reviewnow.model.Review
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
 @Composable
-<<<<<<< HEAD
 fun MyReviewsScreen(modifier: Modifier = Modifier) {
     Box(modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Text("My reviews ...")
-=======
-fun MyReviewsScreen(
-    modifier: Modifier = Modifier,
-    reviews: List<Review> = listOf(
-        // Sample hardcoded review list for preview
-        Review(
-            reviewId = "r1",
-            userId = "u1",
-            brandId = "b1",
-            rating = 4.0f,
-            reviewText = "Great coffee and femdly staff!",
-            createdAt = 1717872000000 // Sample timestamp
-        ),
-        Review(
-            reviewId = "r2",
-            userId = "u1",
-            brandId = "b1",
-            rating = 5.0f,
-            reviewText = "Love the atmosphere here. Highly recommend!",
-            createdAt = 1717536000000
-        )
-    )
-) {
-    // Main vertical layout with padding
-    Column(modifier = modifier.padding(dimensionResource(id = R.dimen.dimen_16_dp))) {
-        // Top back icon
-        Icon(
-            imageVector = Icons.Default.ArrowBack,
-            contentDescription = "Back",
-            modifier = Modifier.size(dimensionResource(id = R.dimen.dimen_28_dp))
+        val reviews: List<Review> = listOf(
+            // Sample hardcoded review list for preview
+            Review(
+                id = "r1",
+                userId = "u1",
+                brandId = "b1",
+                rating = 4,
+                comment = "Great experience!",
+                timestamp = 1617536000000
+            ),
+            Review(
+                id = "r2",
+                userId = "u1",
+                brandId = "b1",
+                rating = 5,
+                comment = "Excellent service!",
+                timestamp = 1617536000000
+            )
         )
 
-        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.dimen_16_dp)))
-        // Screen title
-        Text("My Reviews", fontSize = 22.sp, fontWeight = FontWeight.Bold)
+        // Main vertical layout with padding
+        Column(modifier = modifier.padding(dimensionResource(id = R.dimen.dimen_16_dp))) {
+            // Top back icon
+            Icon(
+                imageVector = Icons.Default.ArrowBack,
+                contentDescription = "Back",
+                modifier = Modifier.size(dimensionResource(id = R.dimen.dimen_28_dp))
+            )
 
-        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.dimen_16_dp)))
-        // Loop through each review and shows it
-        reviews.forEach {
-            ReviewItem(review = it)
             Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.dimen_16_dp)))
-        }
->>>>>>> master
-    }
-}
+            // Screen title
+            Text("My Reviews", fontSize = 22.sp, fontWeight = FontWeight.Bold)
 
-@Composable
-fun ReviewItem(review: Review) {
-    Column {
-        // Brand ID (should be replaced with actual brand name using brandId)
-        Text("Brand ID: ${review.brandId}", fontSize = 18.sp, fontWeight = FontWeight.Bold)
-
-        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.dimen_4_dp)))
-        // Row of stars (highlighted up to the rating)
-        Row {
-            repeat(5) { i ->
-                Icon(
-                    imageVector = Icons.Default.Star,
-                    contentDescription = null,
-                    tint = if (review.rating >= i + 1) Color(0xFFFFC107) else Color.LightGray,
-                    modifier = Modifier.size(dimensionResource(id = R.dimen.dimen_20_dp))
-                )
+            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.dimen_16_dp)))
+            // Loop through each review and shows it
+            reviews.forEach {
+                Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.dimen_16_dp)))
             }
         }
+    }
 
-        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.dimen_4_dp)))
-        // Formatted date of the review
-        Text(review.createdAt.toReadableDate(), fontSize = 14.sp, color = Color.Gray)
+    @Composable
+    fun ReviewItem(review: Review) {
+        Column {
+            // Brand ID (should be replaced with actual brand name using brandId)
+            Text("Brand ID: ${review.brandId}", fontSize = 18.sp, fontWeight = FontWeight.Bold)
 
-        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.dimen_4_dp)))
+            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.dimen_4_dp)))
+            // Row of stars (highlighted up to the rating)
+            Row {
+                repeat(5) { i ->
+                    Icon(
+                        imageVector = Icons.Default.Star,
+                        contentDescription = null,
+                        tint = if (review.rating >= i + 1) Color(0xFFFFC107) else Color.LightGray,
+                        modifier = Modifier.size(dimensionResource(id = R.dimen.dimen_20_dp))
+                    )
+                }
+            }
 
-        Text(review.reviewText, fontSize = 16.sp)
+            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.dimen_4_dp)))
+            // Formatted date of the review
+            //Text(review.createdAt.toReadableDate(), fontSize = 14.sp, color = Color.Gray)
+
+            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.dimen_4_dp)))
+
+            //Text(review.reviewText, fontSize = 16.sp)
+        }
     }
 }
 
@@ -112,8 +107,9 @@ data class Review(
     val isFlagged: Boolean = false,
     val createdAt: Long = System.currentTimeMillis()
 )
+
 // Data class representing a Review object
-@Preview(showBackground = true)
+//@Preview(showBackground = true)
 @Composable
 fun PreviewMyReviewsScreen() {
     MyReviewsScreen()

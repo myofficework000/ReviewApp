@@ -19,23 +19,19 @@ fun NavGraphBuilder.userNavGraph(
     navController: NavHostController,
     navigationViewModel: NavigationViewModel
 ) {
-
     navigation(
         route = Graph.USER,
         startDestination = Screen.MyReviews.route
     ) {
-
         composable(Screen.UserDashboard.route) {
             UserDashboard(navController, navigationViewModel)
         }
 
-
         composable(Screen.Home.route) {
             HomeScreen(
-                onBrandClick = { brandId ->
+                /*onBrandClick = { brandId ->
                     navController.navigate(Screen.BrandDetail.pass(brandId))
-                }
-
+                }*/
             )
         }
 
@@ -69,6 +65,4 @@ fun NavGraphBuilder.userNavGraph(
             SettingsScreen()
         }
     }
-
-
 }

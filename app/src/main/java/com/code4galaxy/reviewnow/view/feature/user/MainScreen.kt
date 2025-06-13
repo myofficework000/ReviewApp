@@ -39,7 +39,7 @@ import com.code4galaxy.reviewnow.model.CustomDrawerState
 import com.code4galaxy.reviewnow.model.NavigationItem
 import com.code4galaxy.reviewnow.model.isOpened
 import com.code4galaxy.reviewnow.model.opposite
-import com.code4galaxy.reviewnow.util.coloredShadow
+import com.code4galaxy.reviewnow.view.util.coloredShadow
 import com.code4galaxy.reviewnow.view.component.CustomDrawer
 import com.code4galaxy.reviewnow.view.navigation.AppNavGraph
 import com.code4galaxy.reviewnow.viewmodel.NavigationViewModel

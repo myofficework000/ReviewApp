@@ -5,12 +5,10 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.code4galaxy.reviewnow.constants.ADMIN_TYPE
-import com.code4galaxy.reviewnow.constants.USER_TYPE
+import com.code4galaxy.reviewnow.model.constants.ADMIN_TYPE
+import com.code4galaxy.reviewnow.model.constants.USER_TYPE
 import com.code4galaxy.reviewnow.view.feature.common.splash.SplashScreen
 import com.code4galaxy.reviewnow.viewmodel.NavigationViewModel
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 
 
 @Composable

@@ -1,4 +1,4 @@
-package com.code4galaxy.reviewnow.view.activity
+package com.code4galaxy.reviewnow
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

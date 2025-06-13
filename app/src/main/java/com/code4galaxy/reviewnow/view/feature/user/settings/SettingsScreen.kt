@@ -6,20 +6,18 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.code4galaxy.reviewnow.R
 import com.code4galaxy.reviewnow.view.theme.AppTheme
+import com.code4galaxy.reviewnow.viewmodel.LanguageViewModel
 import com.code4galaxy.reviewnow.viewmodel.ThemeViewModel
 
 @Composable
-<<<<<<< HEAD:app/src/main/java/com/code4galaxy/reviewnow/view/feature/user/settings/SettingsScreen.kt
-fun SettingsScreen(modifier: Modifier = Modifier) {
-    Box(modifier.fillMaxSize()) {
-        Text("Settings ...")
-=======
-fun UserSettingsScreen(
+fun SettingsScreen(
     modifier: Modifier = Modifier,
-    themeViewModel: ThemeViewModel = viewModel()
+    themeViewModel: ThemeViewModel = viewModel(),
+    languageViewModel: LanguageViewModel = viewModel()
 ) {
     val selectedTheme by themeViewModel.theme.collectAsState()
 
@@ -52,6 +50,13 @@ fun UserSettingsScreen(
                 )
             }
         }
->>>>>>> master:app/src/main/java/com/code4galaxy/reviewnow/view/feature/user/settings/UserSettingsScreen.kt
+
+        LanguageSelector(languageViewModel, modifier)
     }
+}
+
+@Preview
+@Composable
+private fun SettingsScreenPrev() {
+    SettingsScreen()
 }
