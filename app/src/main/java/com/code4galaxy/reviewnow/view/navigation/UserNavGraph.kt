@@ -7,6 +7,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.code4galaxy.reviewnow.view.feature.common.UserDashboard
+import com.code4galaxy.reviewnow.view.feature.user.MainScreen
+
 import com.code4galaxy.reviewnow.view.feature.user.brand.BrandDetailScreen
 import com.code4galaxy.reviewnow.view.feature.user.home.HomeScreen
 import com.code4galaxy.reviewnow.view.feature.user.profile.ProfileScreen
@@ -21,18 +23,18 @@ fun NavGraphBuilder.userNavGraph(
 ) {
     navigation(
         route = Graph.USER,
-        startDestination = Screen.MyReviews.route
+        startDestination = Screen.Home.route
     ) {
-        composable(Screen.UserDashboard.route) {
-            UserDashboard(navController, navigationViewModel)
-        }
+
 
         composable(Screen.Home.route) {
-            HomeScreen(
-                /*onBrandClick = { brandId ->
-                    navController.navigate(Screen.BrandDetail.pass(brandId))
-                }*/
-            )
+
+          HomeScreen(){brandId: String ->
+              navController.navigate(Screen.BrandDetail.pass(brandId))
+
+          }
+
+
         }
 
         composable(
@@ -63,6 +65,8 @@ fun NavGraphBuilder.userNavGraph(
 
         composable(Screen.Settings.route) {
             SettingsScreen()
+
         }
+
     }
 }

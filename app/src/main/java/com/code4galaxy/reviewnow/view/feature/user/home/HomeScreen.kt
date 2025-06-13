@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.sp
 import com.code4galaxy.reviewnow.R
 
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier) {
+fun HomeScreen(modifier: Modifier = Modifier,onClick:(brandId:String)->Unit) {
     // Main vertical layout of the screen
     Column(modifier = Modifier.fillMaxSize()) {
         // Search bar at the top
