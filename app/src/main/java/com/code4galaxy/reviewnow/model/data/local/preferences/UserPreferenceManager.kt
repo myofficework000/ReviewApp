@@ -6,9 +6,9 @@ import androidx.security.crypto.MasterKey
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
-//after user log in then
-class UserPreferenceManager @Inject constructor(
-    @ApplicationContext private val context: Context
+
+class UserPreferenceManager (
+      private val context: Context
 ) {
 
     private val prefs by lazy {
@@ -32,7 +32,7 @@ class UserPreferenceManager @Inject constructor(
     }
 
     fun getUserType(): String {
-        return prefs.getString("user_type", "") ?: ""
+        return prefs.getString("user_type", "user") ?: "user"
     }
 
 

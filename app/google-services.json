@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1021500376463",
+    "project_id": "reviewnow-c58bd",
+    "storage_bucket": "reviewnow-c58bd.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1021500376463:android:3a4ba9392fa4137e6a77fa",
+        "android_client_info": {
+          "package_name": "com.code4galaxy.reviewnow"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDPWxzcKRTOePLYFEHCqGZ1oWaxhlnp3Sk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

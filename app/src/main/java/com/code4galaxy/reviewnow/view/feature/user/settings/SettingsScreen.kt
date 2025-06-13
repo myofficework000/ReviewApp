@@ -12,6 +12,11 @@ import com.code4galaxy.reviewnow.view.theme.AppTheme
 import com.code4galaxy.reviewnow.viewmodel.ThemeViewModel
 
 @Composable
+<<<<<<< HEAD:app/src/main/java/com/code4galaxy/reviewnow/view/feature/user/settings/SettingsScreen.kt
+fun SettingsScreen(modifier: Modifier = Modifier) {
+    Box(modifier.fillMaxSize()) {
+        Text("Settings ...")
+=======
 fun UserSettingsScreen(
     modifier: Modifier = Modifier,
     themeViewModel: ThemeViewModel = viewModel()
@@ -47,5 +52,6 @@ fun UserSettingsScreen(
                 )
             }
         }
+>>>>>>> master:app/src/main/java/com/code4galaxy/reviewnow/view/feature/user/settings/UserSettingsScreen.kt
     }
 }

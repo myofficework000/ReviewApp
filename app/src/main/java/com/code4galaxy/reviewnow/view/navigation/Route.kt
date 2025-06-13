@@ -10,13 +10,15 @@ object Graph {
 
 sealed class Screen(val route: String) {
     object Splash : Screen("splash")
-
-
     // TODO add auth graph
 
     //AUTH
     object Login : Screen("login")
     object Register : Screen("register")
+    object Welcome : Screen("welcome")
+
+
+    object UserDashboard : Screen("user_dashboard")
 
     // USER
     object Home : Screen("user_home")
@@ -27,7 +29,7 @@ sealed class Screen(val route: String) {
     object SubmitReview : Screen("submit_review/{brandId}") {
         fun pass(brandId: String) = "submit_review/$brandId"
     }
-
+    object Settings : Screen("settings")
     object MyReviews : Screen("my_reviews")
     object Profile : Screen("profile")
 

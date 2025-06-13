@@ -18,6 +18,11 @@ import java.util.Date
 import java.util.Locale
 
 @Composable
+<<<<<<< HEAD
+fun MyReviewsScreen(modifier: Modifier = Modifier) {
+    Box(modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        Text("My reviews ...")
+=======
 fun MyReviewsScreen(
     modifier: Modifier = Modifier,
     reviews: List<Review> = listOf(
@@ -59,6 +64,7 @@ fun MyReviewsScreen(
             ReviewItem(review = it)
             Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.dimen_16_dp)))
         }
+>>>>>>> master
     }
 }
 
