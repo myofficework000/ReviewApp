@@ -30,4 +30,9 @@
     <string name="select_language">Seleccionar idioma</string>
     <string name="home">Home</string>
     <string name="my_reviews">Mis reseñas</string>
+    <string name="add_brand_org">Agregar marca / organización</string>
+    <string name="logo">Logo</string>
+    <string name="brand_org">Marca / Organización</string>
+    <string name="brand_org_name">Nombre de la marca / organización</string>
+
 </resources>
