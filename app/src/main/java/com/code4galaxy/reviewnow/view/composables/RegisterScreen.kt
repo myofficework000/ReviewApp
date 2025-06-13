@@ -31,10 +31,11 @@ import androidx.compose.ui.res.stringResource
 import com.code4galaxy.reviewnow.R
 
 @Composable
-fun RegisterScreen() {
+fun RegisterScreen(onSignInClick: () -> Unit = {}) {
     var email by remember { mutableStateOf("") }
     var name by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var confirmPassword by remember { mutableStateOf("") }
     Box(
         modifier = Modifier.fillMaxSize().background(Color.White)
     ) {
@@ -44,24 +45,17 @@ fun RegisterScreen() {
                 .padding(dimensionResource(R.dimen.dimen_32_dp)),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            val dimen32sp = with(LocalDensity.current) {
-                dimensionResource(id = R.dimen.dimen_32_sp).toSp()
+            val dimen20sp = with(LocalDensity.current) {
+                dimensionResource(id = R.dimen.dimen_20_sp).toSp()
             }
-            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.dimen_80_dp)))
+            val dimen48sp = with(LocalDensity.current) {
+                dimensionResource(id = R.dimen.dimen_48_sp).toSp()
+            }
+            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.dimen_56_dp)))
 
-            Text(stringResource(R.string.create_account), fontSize = dimen32sp, fontWeight = FontWeight.Bold)
+            Text(stringResource(R.string.sign_up), fontSize = dimen48sp, fontWeight = FontWeight.Bold)
 
-            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.dimen_24_dp)))
-
-            OutlinedTextField(
-                value = name,
-                onValueChange = {name = it},
-                label = { Text(stringResource(R.string.name)) },
-                placeholder = { Text(stringResource(R.string.your_name)) },
-                modifier = Modifier.fillMaxWidth()
-            )
-
-            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.dimen_16_dp)))
+            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.dimen_32_dp)))
 
             OutlinedTextField(
                 value = email,
@@ -84,23 +78,57 @@ fun RegisterScreen() {
 
             Spacer(modifier = Modifier.height(dimensionResource(R.dimen.dimen_24_dp)))
 
+            OutlinedTextField(
+                value = confirmPassword,
+                onValueChange = {confirmPassword = it},
+                label = { Text(stringResource(R.string.confirm_password)) },
+                placeholder = { Text(stringResource(R.string.example_password)) },
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.dimen_32_dp)))
+
+
             Button(
                 onClick = { /* Handle register */ },
                 modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(containerColor = Color.Black)
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Blue)
             ) {
-                Text(stringResource(R.string.register), color = Color.White)
+                Text(stringResource(R.string.register), fontSize = dimen20sp, color = Color.White)
             }
 
             Spacer(modifier = Modifier.height(dimensionResource(R.dimen.dimen_16_dp)))
 
-            Text(
-                text = stringResource(R.string.already_have_account),
-                color = Color.Blue,
-                modifier = Modifier.clickable {
-
+            Box(
+                modifier = Modifier
+                    .fillMaxSize().padding(bottom = dimensionResource(R.dimen.dimen_32_dp))
+                    .padding(16.dp)
+            ) {
+                Column (
+                    modifier = Modifier.fillMaxWidth().align(Alignment.BottomCenter)
+                        .align(Alignment.Center),horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    val dimen24sp = with(LocalDensity.current) {
+                        dimensionResource(id = R.dimen.dimen_24_sp).toSp()
+                    }
+                    val dimen20sp = with(LocalDensity.current) {
+                        dimensionResource(id = R.dimen.dimen_20_sp).toSp()
+                    }
+                    Text(text = stringResource(R.string.already_have_account),
+                        fontSize = dimen24sp,
+                        fontWeight = FontWeight.Bold)
+                    Spacer(modifier = Modifier.height(dimensionResource(R.dimen.dimen_4_dp)))
+                    Text(
+                        text = stringResource(R.string.sign_in),
+                        color = Color.Blue,
+                        fontSize = dimen20sp,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.clickable {
+                            onSignInClick()
+                        }
+                    )
                 }
-            )
+            }
         }
     }
 }
