@@ -22,6 +22,8 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.code4galaxy.reviewnow.R
+import com.code4galaxy.reviewnow.view.feature.user.settings.AdminActionItem
+import com.code4galaxy.reviewnow.view.feature.user.settings.AdminHomeScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -98,10 +100,26 @@ fun AdminHomeScreen(
                     }
             ) {
                 HorizontalDivider()
-                AdminActionItem(stringResource(id = R.string.manage_users), Icons.Default.People, onManageUsersClick)
-                AdminActionItem(stringResource(id = R.string.moderate_reviews), Icons.Default.Flag, onModerateReviewsClick)
-                AdminActionItem(stringResource(id = R.string.add_brand), Icons.Default.Add, onAddBrandClick)
-                AdminActionItem(stringResource(id = R.string.flagged_reviews), Icons.Default.Report, onFlaggedReviewsClick)
+                AdminActionItem(
+                    stringResource(id = R.string.manage_users),
+                    Icons.Default.People,
+                    onManageUsersClick
+                )
+                AdminActionItem(
+                    stringResource(id = R.string.moderate_reviews),
+                    Icons.Default.Flag,
+                    onModerateReviewsClick
+                )
+                AdminActionItem(
+                    stringResource(id = R.string.add_brand),
+                    Icons.Default.Add,
+                    onAddBrandClick
+                )
+                AdminActionItem(
+                    stringResource(id = R.string.flagged_reviews),
+                    Icons.Default.Report,
+                    onFlaggedReviewsClick
+                )
                 HorizontalDivider(
                     modifier = Modifier.padding(
                         top = dimensionResource(id = R.dimen.dimen_12_dp),

@@ -1,83 +1,188 @@
 package com.code4galaxy.reviewnow.view.feature.user.settings
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.Text
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import com.code4galaxy.reviewnow.R
-import com.code4galaxy.reviewnow.view.feature.user.util.updateLocale
-import com.code4galaxy.reviewnow.viewmodel.LanguageViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LanguageSelector(modifier: Modifier = Modifier) {
-    val languageViewModel: LanguageViewModel = hiltViewModel()
-    // Observe the selected language from the ViewModel
-    val selectedLanguage = languageViewModel.language.collectAsStateWithLifecycle()
-
-    val context = LocalContext.current
-
-    SideEffect {
-        updateLocale(context, selectedLanguage.value)
-    }
-
-    LanguageDropdown(selectedLanguage.value, onLanguageSelected = languageViewModel::changeLanguage)
-}
-
-@Composable
-fun LanguageDropdown(
-    selectedLanguage: String,
-    modifier: Modifier = Modifier,
-    onLanguageSelected: (String) -> Unit
+fun AdminHomeScreen(
+    adminName: String = "Admin",
+    adminEmail: String = "admin@example.com",
+    onManageUsersClick: () -> Unit = {},
+    onModerateReviewsClick: () -> Unit = {},
+    onAddBrandClick: () -> Unit = {},
+    onFlaggedReviewsClick: () -> Unit = {},
+    onLogout: () -> Unit = {}
 ) {
-    var expanded by remember { mutableStateOf(false) }
-    val languages = listOf("en" to "English", "es" to "Spanish", "fr" to "French")
-
-    Column(modifier = modifier.padding(dimensionResource(R.dimen.dimen_16_dp))) {
-        Text(text = "Select Language: ${languages.find { it.first == selectedLanguage }?.second ?: selectedLanguage}")
-
-        Spacer(modifier = modifier.padding(dimensionResource(R.dimen.dimen_8_dp)))
-
-        DropdownMenu(
+    Scaffold(
+        topBar = {
+            CenterAlignedTopAppBar(
+                title = { Text(text = stringResource(id = R.string.profile)) },
+                navigationIcon = {
+                    IconButton(onClick = { /* Handle back */ }) {
+                        Icon(
+                            Icons.Default.ArrowBack,
+                            contentDescription = stringResource(id = R.string.back)
+                        )
+                    }
+                }
+            )
+        }
+    ) { padding ->
+        ConstraintLayout(
             modifier = Modifier
-                .padding(dimensionResource(R.dimen.dimen_8_dp))
-                .fillMaxWidth()
-                .wrapContentHeight()
-                .background(Color.Red),
-            expanded = expanded,
-            onDismissRequest = { expanded = false }
+                .fillMaxSize()
+                .padding(padding)
+                .padding(
+                    horizontal = dimensionResource(id = R.dimen.dimen_24_dp),
+                    vertical = dimensionResource(id = R.dimen.dimen_16_dp)
+                )
         ) {
-            languages.forEach { (code, label) ->
-                DropdownMenuItem(
-                    text = { Text(text = label) },
-                    onClick = {
-                        expanded = true
-                        onLanguageSelected(code)
-                    })
+            val (avatar, nameEmail, actions, logout) = createRefs()
+
+            // Avatar
+            Icon(
+                imageVector = Icons.Default.AccountCircle,
+                contentDescription = stringResource(id = R.string.avatar),
+                modifier = Modifier
+                    .size(dimensionResource(id = R.dimen.dimen_96_dp))
+                    .clip(CircleShape)
+                    .constrainAs(avatar) {
+                        top.linkTo(parent.top)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                    },
+                tint = Color.Blue
+            )
+
+            // Name and Email
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .constrainAs(nameEmail) {
+                        top.linkTo(avatar.bottom, margin = 12.dp)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                    }
+            ) {
+                Text(adminName, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                Text(adminEmail, fontSize = 14.sp, color = Color.Gray)
+            }
+
+            // Action Items
+            Column(
+                modifier = Modifier
+                    .constrainAs(actions) {
+                        top.linkTo(nameEmail.bottom, margin = 24.dp)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                        width = Dimension.fillToConstraints
+                    }
+            ) {
+                HorizontalDivider()
+                AdminActionItem(
+                    stringResource(id = R.string.manage_users),
+                    Icons.Default.People,
+                    onManageUsersClick
+                )
+                AdminActionItem(
+                    stringResource(id = R.string.moderate_reviews),
+                    Icons.Default.Flag,
+                    onModerateReviewsClick
+                )
+                AdminActionItem(
+                    stringResource(id = R.string.add_brand),
+                    Icons.Default.Add,
+                    onAddBrandClick
+                )
+                AdminActionItem(
+                    stringResource(id = R.string.flagged_reviews),
+                    Icons.Default.Report,
+                    onFlaggedReviewsClick
+                )
+                HorizontalDivider(
+                    modifier = Modifier.padding(
+                        top = dimensionResource(id = R.dimen.dimen_12_dp),
+                        bottom = dimensionResource(id = R.dimen.dimen_6_dp)
+                    )
+                )
+            }
+
+            // Logout
+            Box(
+                modifier = Modifier.constrainAs(logout) {
+                    top.linkTo(actions.bottom)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                }
+            ) {
+                AdminActionItem(
+                    text = stringResource(id = R.string.log_out),
+                    icon = Icons.Default.Logout,
+                    onClick = onLogout,
+                    isLogout = true
+                )
             }
         }
     }
 }
 
+@Composable
+fun AdminActionItem(
+    text: String,
+    icon: ImageVector,
+    onClick: () -> Unit,
+    isLogout: Boolean = false
+) {
+    val textColor = if (isLogout) Color.Red else Color.Black
+    val iconColor = if (isLogout) Color.Red else Color.DarkGray
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick)
+            .padding(vertical = dimensionResource(id = R.dimen.dimen_16_dp)),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(icon, contentDescription = null, tint = iconColor)
+        Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.dimen_16_dp)))
+        Text(
+            text,
+            fontSize = 16.sp,
+            color = textColor,
+            modifier = Modifier.weight(1f)
+        )
+        Icon(
+            Icons.AutoMirrored.Filled.KeyboardArrowRight,
+            contentDescription = null,
+            tint = Color.Gray
+        )
+    }
+}
+
 @Preview
 @Composable
-private fun LanguageSelectorPreview() {
-    LanguageSelector()
+fun AdminHomeScreenPreview() {
+    AdminHomeScreen()
 }
