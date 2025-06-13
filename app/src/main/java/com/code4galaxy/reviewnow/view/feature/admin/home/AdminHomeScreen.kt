@@ -3,9 +3,9 @@ package com.code4galaxy.reviewnow.view.feature.admin.home
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -13,15 +13,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.res.dimensionResource
-import com.code4galaxy.reviewnow.R
-import androidx.compose.ui.res.stringResource
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import com.code4galaxy.reviewnow.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -31,6 +31,7 @@ fun AdminHomeScreen(
     onManageUsersClick: () -> Unit = {},
     onModerateReviewsClick: () -> Unit = {},
     onAddBrandClick: () -> Unit = {},
+    onFlaggedReviewsClick: () -> Unit = {},
     onLogout: () -> Unit = {}
 ) {
     Scaffold(
@@ -56,7 +57,7 @@ fun AdminHomeScreen(
         ) {
             val (avatar, nameEmail, actions, logout) = createRefs()
 
-            // Avatar Icon
+            // Avatar
             Icon(
                 imageVector = Icons.Default.AccountCircle,
                 contentDescription = stringResource(id = R.string.avatar),
@@ -71,7 +72,7 @@ fun AdminHomeScreen(
                 tint = Color.Blue
             )
 
-            // Admin Name & Email
+            // Name and Email
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
@@ -96,11 +97,12 @@ fun AdminHomeScreen(
                         width = Dimension.fillToConstraints
                     }
             ) {
-                Divider()
+                HorizontalDivider()
                 AdminActionItem(stringResource(id = R.string.manage_users), Icons.Default.People, onManageUsersClick)
                 AdminActionItem(stringResource(id = R.string.moderate_reviews), Icons.Default.Flag, onModerateReviewsClick)
                 AdminActionItem(stringResource(id = R.string.add_brand), Icons.Default.Add, onAddBrandClick)
-                Divider(
+                AdminActionItem(stringResource(id = R.string.flagged_reviews), Icons.Default.Report, onFlaggedReviewsClick)
+                HorizontalDivider(
                     modifier = Modifier.padding(
                         top = dimensionResource(id = R.dimen.dimen_12_dp),
                         bottom = dimensionResource(id = R.dimen.dimen_6_dp)
@@ -108,7 +110,7 @@ fun AdminHomeScreen(
                 )
             }
 
-            // Logout — wrapped in Box so we can apply constrainAs
+            // Logout
             Box(
                 modifier = Modifier.constrainAs(logout) {
                     top.linkTo(actions.bottom)
@@ -152,7 +154,7 @@ fun AdminActionItem(
             color = textColor,
             modifier = Modifier.weight(1f)
         )
-        Icon(Icons.Default.KeyboardArrowRight, contentDescription = null, tint = Color.Gray)
+        Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, contentDescription = null, tint = Color.Gray)
     }
 }
 
