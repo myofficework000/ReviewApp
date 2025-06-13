@@ -27,4 +27,11 @@
     <string name="sign_up">Sign Up</string>
     <string name="confirm_password">Confirm password</string>
     <string name="select_language">Select Language</string>
+    <string name="home">Home</string>
+    <string name="my_reviews">My reviews</string>
+    <string name="add_brand_org">Add a Brand / organisation</string>
+    <string name="logo">Logo</string>
+    <string name="brand_org">Brand/Org</string>
+    <string name="brand_org_name">Brand/Org Name</string>
+
 </resources>

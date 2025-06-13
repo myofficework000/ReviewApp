@@ -1,6 +1,7 @@
 package com.code4galaxy.reviewnow.view.feature.user.settings
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -51,7 +52,13 @@ fun LanguageDropdown(
     val languages = listOf("en" to "English", "es" to "Spanish", "fr" to "French")
 
     Column(modifier = modifier.padding(dimensionResource(R.dimen.dimen_16_dp))) {
-        Text(text = "Select Language: ${languages.find { it.first == selectedLanguage }?.second ?: selectedLanguage}")
+        Text(text = "Select Language: ${languages.find { it.first == selectedLanguage }?.second ?: selectedLanguage}",
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(Color.LightGray)
+                .padding(dimensionResource(R.dimen.dimen_8_dp))
+                .clickable { expanded = true }
+        )
 
         Spacer(modifier = modifier.padding(dimensionResource(R.dimen.dimen_8_dp)))
 
@@ -68,7 +75,7 @@ fun LanguageDropdown(
                 DropdownMenuItem(
                     text = { Text(text = label) },
                     onClick = {
-                        expanded = true
+                        expanded = false
                         onLanguageSelected(code)
                     })
             }
