@@ -5,7 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import com.code4galaxy.reviewnow.view.feature.user.MainScreen
+
 import com.code4galaxy.reviewnow.view.navigation.SetUpAppLaunch
 import com.code4galaxy.reviewnow.view.theme.AppThemeWrapper
 import com.code4galaxy.reviewnow.viewmodel.NavigationViewModel
@@ -20,6 +20,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
            SetUpAppLaunch(navigationViewModel)
+
         }
     }
 }
