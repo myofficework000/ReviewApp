@@ -3,20 +3,25 @@ package com.code4galaxy.reviewnow.view.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.code4galaxy.reviewnow.view.feature.common.authenticaton.LoginScreen
+import com.code4galaxy.reviewnow.model.constants.ADMIN_TYPE
+import com.code4galaxy.reviewnow.model.constants.USER_TYPE
+import com.code4galaxy.reviewnow.view.feature.admin.AdminScreen
+
 import com.code4galaxy.reviewnow.view.feature.common.splash.SplashScreen
 import com.code4galaxy.reviewnow.view.feature.user.MainScreen
+
 import com.code4galaxy.reviewnow.viewmodel.NavigationViewModel
+import com.code4galaxy.reviewnow.viewmodel.ThemeViewModel
 
 @Composable
-fun SetUpAppLaunch(navigationViewModel: NavigationViewModel) {
+fun SetUpAppLaunch(navigationViewModel: NavigationViewModel,themeViewModel: ThemeViewModel) {
     val navController = rememberNavController()
     val currentScreen = navigationViewModel.currentScreen.collectAsState()
-
     // Set up the app's initial launch screen
     LaunchedEffect(currentScreen) {
         navController.navigate(currentScreen.value?.route ?: Screen.Home.route)
@@ -25,7 +30,8 @@ fun SetUpAppLaunch(navigationViewModel: NavigationViewModel) {
 //    RootNavGraph(navController, navigationViewModel)
 //    AppNavGraph(navController,navigationViewModel)
 //    UserDashboard(navController,navigationViewModel)
-    MainScreen(navController,navigationViewModel)
+    MainScreen(navController,navigationViewModel,themeViewModel)
+    RootNavGraph(navController, navigationViewModel)
 }
 
 @Composable
@@ -34,13 +40,43 @@ fun RootNavGraph(navController: NavHostController, navigationViewModel: Navigati
         navController = navController,
         startDestination = Screen.Splash.route
     ) {
-        composable(Screen.Splash.route){
-            SplashScreen(onTimeout = {
-                navigationViewModel.navigateTo(Screen.Login)
+        composable(route = Screen.Splash.route) {
+
+            SplashScreen({
+
+                when ("navigationViewModel.getUserType()") {
+                    USER_TYPE -> {
+                        navController.navigate(Screen.USER.route) {
+                            popUpTo(Screen.Splash.route) { inclusive = true }
+                        }
+                    }
+
+                    ADMIN_TYPE -> {
+                        navController.navigate(Screen.ADMIN.route) {
+                            popUpTo(Screen.Splash.route) { inclusive = true }
+                        }
+                    }
+
+                    else -> {
+                        navController.navigate(Graph.AUTH) {
+                            popUpTo(Screen.Splash.route) { inclusive = true }
+                        }
+                    }
+
+
+                }
             })
+
         }
-        composable(Screen.Login.route) {
-            LoginScreen()
+
+        composable(Screen.USER.route) {
+            MainScreen(navController, navigationViewModel)
         }
+        composable(Screen.ADMIN.route) {
+            AdminScreen(navController, navigationViewModel)
+        }
+
+        authNavGraph(navController)
+
     }
 }

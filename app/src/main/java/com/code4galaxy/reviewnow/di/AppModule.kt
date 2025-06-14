@@ -2,6 +2,8 @@ package com.code4galaxy.reviewnow.di
 
 import android.content.Context
 import com.code4galaxy.reviewnow.model.data.local.preferences.UserPreferenceManager
+import com.code4galaxy.reviewnow.model.data.repository.admin.AdminRepository
+import com.code4galaxy.reviewnow.model.data.repository.admin.IAdminRepository
 import com.code4galaxy.reviewnow.model.data.repository.user.IUserRepository
 import com.code4galaxy.reviewnow.model.data.repository.user.UserRepositoryImpl
 import com.google.firebase.auth.FirebaseAuth
@@ -40,6 +42,15 @@ object AppModule {
         firestore: FirebaseFirestore
     ): IUserRepository {
         return UserRepositoryImpl(auth, firestore)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAdminRepository(
+        auth: FirebaseAuth,
+        firestore: FirebaseFirestore
+    ): IAdminRepository {
+        return AdminRepository(auth, firestore)
     }
 
 }

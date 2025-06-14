@@ -6,7 +6,10 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
+import com.google.firebase.auth.FirebaseAuth
 import com.code4galaxy.reviewnow.view.feature.common.UserDashboard
+import com.code4galaxy.reviewnow.view.feature.user.MainScreen
+
 import com.code4galaxy.reviewnow.view.feature.user.brand.BrandDetailScreen
 import com.code4galaxy.reviewnow.view.feature.user.home.HomeScreen
 import com.code4galaxy.reviewnow.view.feature.user.profile.ProfileScreen
@@ -14,25 +17,25 @@ import com.code4galaxy.reviewnow.view.feature.user.reviews.MyReviewsScreen
 import com.code4galaxy.reviewnow.view.feature.user.settings.SettingsScreen
 import com.code4galaxy.reviewnow.view.feature.user.submit_review.SubmitReviewScreen
 import com.code4galaxy.reviewnow.viewmodel.NavigationViewModel
+import com.code4galaxy.reviewnow.viewmodel.ThemeViewModel
 
 fun NavGraphBuilder.userNavGraph(
     navController: NavHostController,
-    navigationViewModel: NavigationViewModel
+    navigationViewModel: NavigationViewModel,
+    themeViewModel: ThemeViewModel
 ) {
     navigation(
         route = Graph.USER,
-        startDestination = Screen.MyReviews.route
+        startDestination = Screen.Home.route
     ) {
-        composable(Screen.UserDashboard.route) {
-            UserDashboard(navController, navigationViewModel)
-        }
+
 
         composable(Screen.Home.route) {
-            HomeScreen(
-                /*onBrandClick = { brandId ->
-                    navController.navigate(Screen.BrandDetail.pass(brandId))
-                }*/
-            )
+            HomeScreen()
+          HomeScreen(){brandId: String ->
+              navController.navigate(Screen.BrandDetail.pass(brandId))
+
+          }
         }
 
         composable(
@@ -40,9 +43,12 @@ fun NavGraphBuilder.userNavGraph(
             arguments = listOf(navArgument("brandId") { type = NavType.StringType })
         ) {
             val brandId = it.arguments?.getString("brandId") ?: ""
-            BrandDetailScreen(brandId = brandId, onSubmit = {
-                navController.navigate(Screen.SubmitReview.pass(brandId))
-            })
+            BrandDetailScreen(
+                brandId = brandId,
+                onSubmit = {
+                    navController.navigate(Screen.SubmitReview.pass(brandId))
+                }
+            )
         }
 
         composable(
@@ -50,7 +56,8 @@ fun NavGraphBuilder.userNavGraph(
             arguments = listOf(navArgument("brandId") { type = NavType.StringType })
         ) {
             val brandId = it.arguments?.getString("brandId") ?: ""
-            SubmitReviewScreen(brandId)
+            val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
+            SubmitReviewScreen(brandId = brandId, userId = userId)
         }
 
         composable(Screen.MyReviews.route) {
@@ -62,7 +69,8 @@ fun NavGraphBuilder.userNavGraph(
         }
 
         composable(Screen.Settings.route) {
-            SettingsScreen()
+            SettingsScreen(themeViewModel = themeViewModel)
         }
+
     }
 }

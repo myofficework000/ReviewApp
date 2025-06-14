@@ -30,9 +30,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import com.code4galaxy.reviewnow.R
+import com.code4galaxy.reviewnow.view.feature.admin.home.AddBrandScreen
+
 //add brand screen
 @Composable
 fun AddBrandScreen(
@@ -60,7 +63,7 @@ fun AddBrandScreen(
         }
 
         Text(
-            text = "Add Brand/Org",
+            text = stringResource(id = R.string.add_brand_org),
             style = MaterialTheme.typography.headlineSmall,
             modifier = Modifier.padding(bottom = dimen24)
         )
@@ -76,18 +79,18 @@ fun AddBrandScreen(
                     .background(Color.LightGray.copy(alpha = 0.2f)),
                 contentAlignment = Alignment.Center
             ) {
-                Icon(Icons.Default.AccountCircle, contentDescription = "Logo", tint = Color.Gray)
+                Icon(Icons.Default.AccountCircle, contentDescription = stringResource(id = R.string.logo), tint = Color.Gray)
             }
 
             Spacer(modifier = Modifier.width(dimen12))
 
-            Text(text = "Brand/Org", style = MaterialTheme.typography.titleMedium)
+            Text( text = stringResource(id = R.string.brand_org), style = MaterialTheme.typography.titleMedium)
         }
 
         OutlinedTextField(
             value = brandName,
             onValueChange = { brandName = it },
-            label = { Text("Brand/Org Name") },
+            label = { Text(text = stringResource(id = R.string.brand_org_name)) },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(dimen120)

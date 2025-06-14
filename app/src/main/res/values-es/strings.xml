@@ -30,4 +30,36 @@
     <string name="select_language">Seleccionar idioma</string>
     <string name="home">Home</string>
     <string name="my_reviews">Mis reseñas</string>
+    <string name="add_brand_org">Agregar marca / organización</string>
+    <string name="logo">Logo</string>
+    <string name="brand_org">Marca / Organización</string>
+    <string name="brand_org_name">Nombre de la marca / organización</string>
+
+        <!-- Language Names -->
+        <string name="language_english">Inglés</string>
+        <string name="language_french">Francés</string>
+        <string name="language_german">Alemán</string>
+        <string name="language_spanish">Español</string>
+        <string name="language_russian">Ruso</string>
+        <string name="language_ukrainian">Ucraniano</string>
+        <string name="language_hindi">Hindi</string>
+        <string name="current_language">Idioma actual: %1$s</string>
+
+        <!-- Settings -->
+        <string name="settings">Configuración</string>
+        <string name="profile_name">Persona</string>
+        <string name="profile_email">Persona@email.com</string>
+
+        <string name="dark_mode">Modo oscuro</string>
+        <string name="notifications_and_sounds">Notificaciones y sonidos</string>
+        <string name="security_checkup">Revisión de seguridad</string>
+        <string name="two_factor_authentication">Autenticación de dos factores</string>
+        <string name="change_number">Cambiar número</string>
+
+        <string name="help_center">Centro de ayuda</string>
+        <string name="report_a_problem">Reportar un problema</string>
+        <string name="language">Idioma</string>
+        <string name="terms_and_privacy_policy">Términos y política de privacidad</string>
+
+
 </resources>

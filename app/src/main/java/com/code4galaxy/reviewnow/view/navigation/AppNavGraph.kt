@@ -9,20 +9,17 @@ import com.code4galaxy.reviewnow.model.constants.ADMIN_TYPE
 import com.code4galaxy.reviewnow.model.constants.USER_TYPE
 import com.code4galaxy.reviewnow.view.feature.common.splash.SplashScreen
 import com.code4galaxy.reviewnow.viewmodel.NavigationViewModel
+import com.code4galaxy.reviewnow.viewmodel.ThemeViewModel
 
 
 @Composable
-fun AppNavGraph(navController:NavHostController,navigationViewModel: NavigationViewModel,modifier: Modifier=Modifier) {
+fun AppNavGraph(navController:NavHostController,navigationViewModel: NavigationViewModel,themeViewModel: ThemeViewModel,modifier: Modifier=Modifier) {
 
     NavHost(
         navController=navController,
-        startDestination = Screen.Splash.route,
-        route = Graph.ROOT,
+        startDestination = Screen.Home.route,
         modifier = modifier
     ){
-        composable(route = Screen.Splash.route){
-            SplashScreen({
-
                 when(navigationViewModel.getUserType()){
                     USER_TYPE ->{
                         navController.navigate(Graph.USER){
@@ -46,9 +43,13 @@ fun AppNavGraph(navController:NavHostController,navigationViewModel: NavigationV
         }
 
         authNavGraph(navController)
-        userNavGraph(navController,navigationViewModel)
+        userNavGraph(navController,navigationViewModel,themeViewModel)
         adminNavGraph(navController)
-
+        userNavGraph(navController,navigationViewModel)
+//
+//        authNavGraph(navController)
+//        userNavGraph(navController,navigationViewModel)
+//        adminNavGraph(navController)
     }
 
 }
