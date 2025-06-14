@@ -52,7 +52,7 @@ import com.code4galaxy.reviewnow.view.feature.user.profile.ProfileScreen
 import com.code4galaxy.reviewnow.view.feature.user.reviews.MyReviewsScreen
 import com.code4galaxy.reviewnow.view.feature.user.settings.SettingsScreen
 import com.code4galaxy.reviewnow.view.feature.user.submit_review.SubmitReviewScreen
-import com.code4galaxy.reviewnow.view.navigation.AppNavGraph
+
 import com.code4galaxy.reviewnow.view.navigation.Graph
 import com.code4galaxy.reviewnow.view.navigation.Screen
 import com.code4galaxy.reviewnow.viewmodel.NavigationViewModel
@@ -155,7 +155,8 @@ fun MainContent(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            AppNavGraph(navController,navigationViewModel,themeViewModel)
+            // TODO unnecessary
+//            AppNavGraph(navController,navigationViewModel,themeViewModel)
             NavHost(
                 navController = navController,
                 startDestination = Screen.Home.route,

@@ -32,7 +32,7 @@ class UserPreferenceManager (
     }
 
     fun getUserType(): String {
-        return prefs.getString("user_type", "user") ?: "user"
+        return prefs.getString("user_type", "no user") ?: "no user"
     }
 
 
