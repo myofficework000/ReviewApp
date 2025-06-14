@@ -52,10 +52,12 @@ import com.code4galaxy.reviewnow.view.feature.user.profile.ProfileScreen
 import com.code4galaxy.reviewnow.view.feature.user.reviews.MyReviewsScreen
 import com.code4galaxy.reviewnow.view.feature.user.settings.SettingsScreen
 import com.code4galaxy.reviewnow.view.feature.user.submit_review.SubmitReviewScreen
+import com.code4galaxy.reviewnow.view.navigation.AppNavGraph
 import com.code4galaxy.reviewnow.view.navigation.Graph
 import com.code4galaxy.reviewnow.view.navigation.Screen
 import com.code4galaxy.reviewnow.viewmodel.NavigationViewModel
 import com.code4galaxy.reviewnow.viewmodel.ThemeViewModel
+import com.google.firebase.auth.FirebaseAuth
 import kotlin.math.roundToInt
 
 @Composable
@@ -111,10 +113,9 @@ fun MainScreen(navController: NavHostController, navigationViewModel: Navigation
                 ),
             drawerState = drawerState,
             onDrawerClick = { drawerState = it },
-            navController,
-            themeViewModel
-            innerNavController,
-            navigationViewModel
+            navController=innerNavController,
+            themeViewModel=themeViewModel,
+            navigationViewModel=navigationViewModel
         )
     }
 }
@@ -180,8 +181,14 @@ fun MainContent(
                     route = Screen.SubmitReview.route,
                     arguments = listOf(navArgument("brandId") { type = NavType.StringType })
                 ) {
+
                     val brandId = it.arguments?.getString("brandId") ?: ""
-                    SubmitReviewScreen(brandId)
+                    val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
+                    // TODO (Greshma) fix the user id
+                    SubmitReviewScreen(brandId = brandId, userId = userId)
+
+
+
                 }
 
                 composable(Screen.MyReviews.route) {

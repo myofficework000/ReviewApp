@@ -40,7 +40,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 
 @Composable
-fun WelcomeScreen() {
+fun WelcomeScreen(onClick:()->Unit) {
     val context = LocalContext.current
     val firebaseAuth = FirebaseAuth.getInstance()
 
@@ -83,7 +83,7 @@ fun WelcomeScreen() {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Button(
-                onClick = { },
+                onClick = { onClick()},
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF0D426C)),
                 modifier = Modifier.fillMaxWidth(0.8f)
             ) {
@@ -138,5 +138,5 @@ fun WelcomeScreen() {
 @Preview
 @Composable
 fun WelcomeScreenPreview() {
-    WelcomeScreen()
+//    WelcomeScreen()
 }
