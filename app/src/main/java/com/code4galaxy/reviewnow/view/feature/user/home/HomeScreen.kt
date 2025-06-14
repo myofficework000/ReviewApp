@@ -206,7 +206,7 @@ data class Brand(val name: String, val rating: String, val reviewText: String)
 @Preview(showBackground = true)
 @Composable
 fun PreviewHomeScreenUIOnly() {
-    HomeScreen()
+//    HomeScreen()
 }
 
 

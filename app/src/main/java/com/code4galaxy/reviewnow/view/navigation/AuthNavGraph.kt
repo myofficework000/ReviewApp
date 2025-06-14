@@ -12,7 +12,9 @@ import com.code4galaxy.reviewnow.view.feature.common.authenticaton.WelcomeScreen
 fun NavGraphBuilder.authNavGraph(navController:NavHostController){
     navigation(route = Graph.AUTH, startDestination = Screen.Login.route){
         composable(route=Screen.Login.route){
-            LoginScreen()
+            LoginScreen{
+                navController.navigate(Screen.Register.route)
+            }
         }
 
         composable(route=Screen.Register.route){
