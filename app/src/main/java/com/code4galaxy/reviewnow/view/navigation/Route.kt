@@ -13,6 +13,7 @@ sealed class Screen(val route: String) {
     // TODO add auth graph
 
     //AUTH
+    object AUTH : Screen("auth")
     object Login : Screen("login")
     object Register : Screen("register")
     object Welcome : Screen("welcome")
@@ -21,6 +22,7 @@ sealed class Screen(val route: String) {
     object UserDashboard : Screen("user_dashboard")
 
     // USER
+    object USER : Screen("user")
     object Home : Screen("user_home")
     object BrandDetail : Screen("user_brand_detail/{brandId}") {
         fun pass(brandId: String) = "user_brand_detail/$brandId"
@@ -34,8 +36,10 @@ sealed class Screen(val route: String) {
     object Profile : Screen("profile")
 
     // ADMIN
+    object ADMIN : Screen("admin")
     object AdminDashboard : Screen("admin_dashboard")
     object ManageUsers : Screen("manage_users")
     object ManageBrands : Screen("manage_brands")
     object FlaggedReviews : Screen("flagged_reviews")
+
 }

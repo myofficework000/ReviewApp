@@ -39,23 +39,23 @@ fun RootNavGraph(navController: NavHostController, navigationViewModel: Navigati
         startDestination = Screen.Splash.route
     ) {
         composable(route = Screen.Splash.route){
+
             SplashScreen({
 
-                when(navigationViewModel.getUserType()){
+                when(ADMIN_TYPE){
                     USER_TYPE ->{
-                        navController.navigate(Graph.USER){
+                        navController.navigate(Screen.USER.route){
                             popUpTo(Screen.Splash.route){inclusive=true}
                         }
                     }
                     ADMIN_TYPE ->{
-                        navController.navigate(Graph.ADMIN){
+                        navController.navigate(Screen.ADMIN.route){
                             popUpTo(Screen.Splash.route){inclusive=true}
                         }
                     }
                     else->{
                         navController.navigate(Graph.AUTH){
                             popUpTo(Screen.Splash.route){inclusive=true}
-
                         }
                     }
 
@@ -65,17 +65,17 @@ fun RootNavGraph(navController: NavHostController, navigationViewModel: Navigati
 
         }
 
-
-
-
+        composable(Screen.USER.route ){
+            MainScreen(navController,navigationViewModel)
+        }
+        composable(Screen.ADMIN.route ){
+            MainScreen(navController,navigationViewModel)
+        }
+//
 
 
         authNavGraph(navController)
-        userNavGraph(navController,navigationViewModel)
         adminNavGraph(navController)
 
-//        composable(Screen.Login.route) {
-//            LoginScreen()
-//        }
     }
 }

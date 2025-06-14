@@ -1,4 +1,4 @@
-package com.code4galaxy.reviewnow.view.feature.user
+package com.code4galaxy.reviewnow.view.feature.admin
 
 
 import android.annotation.SuppressLint
@@ -53,7 +53,7 @@ import com.code4galaxy.reviewnow.viewmodel.NavigationViewModel
 import kotlin.math.roundToInt
 
 @Composable
-fun MainScreen(navController: NavHostController, navigationViewModel: NavigationViewModel) {
+fun AdminScreen(navController: NavHostController, navigationViewModel: NavigationViewModel) {
     var drawerState by remember { mutableStateOf(CustomDrawerState.Closed) }
     var selectedNavigationItem by remember { mutableStateOf(NavigationItem.Home) }
     val innerNavController = rememberNavController()
@@ -89,12 +89,12 @@ fun MainScreen(navController: NavHostController, navigationViewModel: Navigation
             selectedNavigationItem = selectedNavigationItem,
             onNavigationItemClick = {
                 selectedNavigationItem = it
-               innerNavController.navigate( it.route)
+                innerNavController.navigate( it.route)
                 drawerState = CustomDrawerState.Closed
             },
             onCloseClick = { drawerState = CustomDrawerState.Closed }
         )
-        MainContent(
+        AdminContent(
             modifier = Modifier
                 .offset(x = animatedOffset)
                 .scale(scale = animatedScale)
@@ -114,7 +114,7 @@ fun MainScreen(navController: NavHostController, navigationViewModel: Navigation
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainContent(
+fun AdminContent(
     modifier: Modifier = Modifier,
     drawerState: CustomDrawerState,
     onDrawerClick: (CustomDrawerState) -> Unit,
