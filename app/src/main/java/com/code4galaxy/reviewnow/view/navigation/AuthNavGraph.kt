@@ -17,7 +17,12 @@ fun NavGraphBuilder.authNavGraph(navController:NavHostController){
                 navController.navigate(Screen.Register.route)
             },
                 {
-                    navController.navigate(Graph.USER)
+
+                    // TODO Abeer: fetch data user type from shared preferences accordingly you should go to user or admin side
+                    navController.navigate(Screen.ADMIN.route){
+                        popUpTo(Graph.USER){ inclusive=true}
+
+                    }
                 }
             )
         }
