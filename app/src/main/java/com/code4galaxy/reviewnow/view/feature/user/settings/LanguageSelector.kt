@@ -4,8 +4,11 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.code4galaxy.reviewnow.view.feature.user.settings.LanguageBottomSheet
+import com.code4galaxy.reviewnow.view.feature.user.util.updateLocale
 import com.code4galaxy.reviewnow.viewmodel.LanguageViewModel
 
 @Composable
@@ -20,15 +23,18 @@ fun LanguageSelector(modifier: Modifier = Modifier) {
         updateLocale(context, selectedLanguage.value)
     }
 
-    LanguageDropdown(selectedLanguage.value, onLanguageSelected = languageViewModel::changeLanguage)
+    LanguageDropdown(languageViewModel,selectedLanguage.value, onLanguageSelected = languageViewModel::changeLanguage)
 }
 
 @Composable
 fun LanguageDropdown(
+    languageViewModel:LanguageViewModel,
     selectedLanguage: String,
     modifier: Modifier = Modifier,
     onLanguageSelected: (String) -> Unit
 ) {
+//    val languageViewModel: LanguageViewModel = hiltViewModel()
+
     var expanded by remember { mutableStateOf(false) }
     val languages = listOf("en" to "English", "es" to "Spanish", "fr" to "French","ar" to "Arabic")
     val selectedLanguage = languageViewModel.language.collectAsState()

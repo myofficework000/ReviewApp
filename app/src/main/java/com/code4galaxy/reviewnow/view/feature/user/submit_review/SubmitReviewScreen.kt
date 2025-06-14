@@ -27,6 +27,7 @@ fun SubmitReviewScreen(
     modifier: Modifier = Modifier,
     viewModel: ReviewViewModel = hiltViewModel()
 ) {
+
     var rating by remember { mutableStateOf(0) }
     var comment by remember { mutableStateOf("") }
 

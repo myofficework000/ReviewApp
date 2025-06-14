@@ -31,7 +31,7 @@ fun NavGraphBuilder.userNavGraph(
 
 
         composable(Screen.Home.route) {
-            HomeScreen()
+
           HomeScreen(){brandId: String ->
               navController.navigate(Screen.BrandDetail.pass(brandId))
 
