@@ -9,13 +9,15 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.code4galaxy.reviewnow.viewmodel.ThemeViewModel
 
 @Composable
-fun AppThemeWrapper(content: @Composable () -> Unit) {
-    val themeViewModel: ThemeViewModel = viewModel()
+fun AppThemeWrapper(
+    themeViewModel: ThemeViewModel,
+    content: @Composable () -> Unit
+) {
     val selectedTheme by themeViewModel.theme.collectAsState()
     val isDark = when (selectedTheme) {
         AppTheme.LIGHT -> false
         AppTheme.DARK -> true
-        AppTheme.SYSTEM_DEFAULT -> isSystemInDarkTheme()
+        AppTheme.SYSTEM -> isSystemInDarkTheme()
     }
 
     MaterialTheme(

@@ -9,10 +9,11 @@ import com.code4galaxy.reviewnow.model.constants.ADMIN_TYPE
 import com.code4galaxy.reviewnow.model.constants.USER_TYPE
 import com.code4galaxy.reviewnow.view.feature.common.splash.SplashScreen
 import com.code4galaxy.reviewnow.viewmodel.NavigationViewModel
+import com.code4galaxy.reviewnow.viewmodel.ThemeViewModel
 
 
 @Composable
-fun AppNavGraph(navController:NavHostController,navigationViewModel: NavigationViewModel,modifier: Modifier=Modifier) {
+fun AppNavGraph(navController:NavHostController,navigationViewModel: NavigationViewModel,themeViewModel: ThemeViewModel,modifier: Modifier=Modifier) {
 
     NavHost(
         navController=navController,
@@ -46,7 +47,7 @@ fun AppNavGraph(navController:NavHostController,navigationViewModel: NavigationV
         }
 
         authNavGraph(navController)
-        userNavGraph(navController,navigationViewModel)
+        userNavGraph(navController,navigationViewModel,themeViewModel)
         adminNavGraph(navController)
 
     }

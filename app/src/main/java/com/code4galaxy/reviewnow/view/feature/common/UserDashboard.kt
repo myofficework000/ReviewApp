@@ -17,6 +17,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -27,6 +28,7 @@ import com.code4galaxy.reviewnow.view.feature.user.profile.ProfileScreen
 import com.code4galaxy.reviewnow.view.navigation.AppNavGraph
 import com.code4galaxy.reviewnow.view.navigation.Screen
 import com.code4galaxy.reviewnow.viewmodel.NavigationViewModel
+import com.code4galaxy.reviewnow.viewmodel.ThemeViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -119,7 +121,8 @@ fun UserDashboard(navController: NavHostController, navigationViewModel: Navigat
             }
         ) { innerPadding ->
 
-            AppNavGraph(navController,navigationViewModel, modifier = Modifier.padding(innerPadding))
+            val themeViewModel: ThemeViewModel = hiltViewModel()
+            AppNavGraph(navController,navigationViewModel,themeViewModel, modifier = Modifier.padding(innerPadding))
 
         }
     }

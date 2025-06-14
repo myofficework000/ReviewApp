@@ -43,10 +43,11 @@ import com.code4galaxy.reviewnow.view.util.coloredShadow
 import com.code4galaxy.reviewnow.view.component.CustomDrawer
 import com.code4galaxy.reviewnow.view.navigation.AppNavGraph
 import com.code4galaxy.reviewnow.viewmodel.NavigationViewModel
+import com.code4galaxy.reviewnow.viewmodel.ThemeViewModel
 import kotlin.math.roundToInt
 
 @Composable
-fun MainScreen(navController: NavHostController, navigationViewModel: NavigationViewModel) {
+fun MainScreen(navController: NavHostController, navigationViewModel: NavigationViewModel,themeViewModel: ThemeViewModel) {
     var drawerState by remember { mutableStateOf(CustomDrawerState.Closed) }
     var selectedNavigationItem by remember { mutableStateOf(NavigationItem.Home) }
 
@@ -99,7 +100,8 @@ fun MainScreen(navController: NavHostController, navigationViewModel: Navigation
             drawerState = drawerState,
             onDrawerClick = { drawerState = it },
             navController,
-            navigationViewModel
+            navigationViewModel,
+            themeViewModel
         )
     }
 }
@@ -112,7 +114,8 @@ fun MainContent(
     drawerState: CustomDrawerState,
     onDrawerClick: (CustomDrawerState) -> Unit,
     navController: NavHostController,
-    navigationViewModel: NavigationViewModel
+    navigationViewModel: NavigationViewModel,
+    themeViewModel: ThemeViewModel
 ) {
     Scaffold(
         modifier = modifier
@@ -137,7 +140,7 @@ fun MainContent(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            AppNavGraph(navController,navigationViewModel)
+            AppNavGraph(navController,navigationViewModel,themeViewModel)
 
 
         }
