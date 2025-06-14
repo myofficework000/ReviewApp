@@ -1,6 +1,7 @@
 package com.code4galaxy.reviewnow.view.feature.user.home
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -66,7 +67,8 @@ fun HomeScreen(modifier: Modifier = Modifier,onClick:(brandId:String)->Unit) {
                     BrandCardUI(
                         name = brand.name,
                         rating = brand.rating,
-                        reviewText = brand.reviewText
+                        reviewText = brand.reviewText,
+                        onClick = { onClick(brand.name) }
                     )
                 }
             }
@@ -122,11 +124,17 @@ fun SearchBarUI() {
 }
 
 @Composable
-fun BrandCardUI(name: String, rating: String, reviewText: String) {
+fun BrandCardUI(
+    name: String,
+    rating: String,
+    reviewText: String,
+    onClick: () -> Unit
+) {
     // Each brand displayed as a card with name, rating, and review text
     Card(
         modifier = Modifier
             .fillMaxWidth()
+            .clickable { onClick() }
             .padding(vertical = dimensionResource(id=R.dimen.dimen_6_dp)),
         shape = RoundedCornerShape(dimensionResource(id=R.dimen.dimen_12_dp)),
         colors = CardDefaults.cardColors(containerColor = Color(0xFFF9F9F9)),
@@ -202,12 +210,6 @@ fun BottomTwoButtonBarUI() {
 
 // Data class representing a brand's information
 data class Brand(val name: String, val rating: String, val reviewText: String)
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewHomeScreenUIOnly() {
-//    HomeScreen()
-}
 
 
 
