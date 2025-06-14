@@ -12,7 +12,20 @@
           "package_name": "com.code4galaxy.reviewnow"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "1021500376463-4scigddrtpfemf8sqaoref2bfvkhflep.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.code4galaxy.reviewnow",
+            "certificate_hash": "70ca06130b49a9a4cfb7e8520f232daf235d4665"
+          }
+        },
+        {
+          "client_id": "1021500376463-p1d7756a4plof4lq8aulp21fusqemrpq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDPWxzcKRTOePLYFEHCqGZ1oWaxhlnp3Sk"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1021500376463-p1d7756a4plof4lq8aulp21fusqemrpq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

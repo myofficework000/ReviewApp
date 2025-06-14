@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">ReviewNow</string>
-    <string name="sign_in">Sign in</string>
-    <string name="welcome_message">Welcome back \\n to ReviewConnect</string>
+    <string name="sign_in">Sign In</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="forget_password">Forget Password</string>
@@ -11,7 +10,7 @@
     <string name="your_name">Your Name</string>
     <string name="example_email">example@gmail.com</string>
     <string name="example_password">*****</string>
-    <string name="already_have_account">Already have an account? Sign in</string>
+    <string name="already_have_account">Already have an account?</string>
     <string name="review_connect">ReviewConnect</string>
     <string name="welcome_to_reviewconnect">"     Welcome to \\n ReviewConnect"</string>
     <string name="sign_in_with_Google">Sign in with Google</string>
@@ -28,6 +27,7 @@
     <string name="confirm_password">Confirm password</string>
     <string name="home">Home</string>
     <string name="my_reviews">My reviews</string>
+    <string name="default_web_client_id">1021500376463-4scigddrtpfemf8sqaoref2bfvkhflep.apps.googleusercontent.com</string>
     <string name="add_brand_org">Add a Brand / organisation</string>
     <string name="logo">Logo</string>
     <string name="brand_org">Brand/Org</string>
@@ -58,7 +58,5 @@
     <string name="report_a_problem">Report a Problem</string>
     <string name="language">Language</string>
     <string name="terms_and_privacy_policy">Terms and Privacy Policy</string>
-
-
 
 </resources>

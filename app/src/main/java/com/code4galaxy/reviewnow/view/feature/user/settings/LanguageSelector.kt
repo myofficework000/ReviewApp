@@ -11,6 +11,26 @@ import com.code4galaxy.reviewnow.viewmodel.LanguageViewModel
 @Composable
 fun LanguageSelector(modifier: Modifier = Modifier) {
     val languageViewModel: LanguageViewModel = hiltViewModel()
+    // Observe the selected language from the ViewModel
+    val selectedLanguage = languageViewModel.language.collectAsStateWithLifecycle()
+
+    val context = LocalContext.current
+
+    SideEffect {
+        updateLocale(context, selectedLanguage.value)
+    }
+
+    LanguageDropdown(selectedLanguage.value, onLanguageSelected = languageViewModel::changeLanguage)
+}
+
+@Composable
+fun LanguageDropdown(
+    selectedLanguage: String,
+    modifier: Modifier = Modifier,
+    onLanguageSelected: (String) -> Unit
+) {
+    var expanded by remember { mutableStateOf(false) }
+    val languages = listOf("en" to "English", "es" to "Spanish", "fr" to "French","ar" to "Arabic")
     val selectedLanguage = languageViewModel.language.collectAsState()
     var showSheet by remember { mutableStateOf(false) }
 
