@@ -17,10 +17,12 @@ import com.code4galaxy.reviewnow.view.feature.user.reviews.MyReviewsScreen
 import com.code4galaxy.reviewnow.view.feature.user.settings.SettingsScreen
 import com.code4galaxy.reviewnow.view.feature.user.submit_review.SubmitReviewScreen
 import com.code4galaxy.reviewnow.viewmodel.NavigationViewModel
+import com.code4galaxy.reviewnow.viewmodel.ThemeViewModel
 
 fun NavGraphBuilder.userNavGraph(
     navController: NavHostController,
-    navigationViewModel: NavigationViewModel
+    navigationViewModel: NavigationViewModel,
+    themeViewModel: ThemeViewModel
 ) {
     navigation(
         route = Graph.USER,
@@ -29,6 +31,7 @@ fun NavGraphBuilder.userNavGraph(
 
 
         composable(Screen.Home.route) {
+            HomeScreen()
           HomeScreen(){brandId: String ->
               navController.navigate(Screen.BrandDetail.pass(brandId))
 
@@ -40,9 +43,12 @@ fun NavGraphBuilder.userNavGraph(
             arguments = listOf(navArgument("brandId") { type = NavType.StringType })
         ) {
             val brandId = it.arguments?.getString("brandId") ?: ""
-            BrandDetailScreen(brandId = brandId, onSubmit = {
-                navController.navigate(Screen.SubmitReview.pass(brandId))
-            })
+            BrandDetailScreen(
+                brandId = brandId,
+                onSubmit = {
+                    navController.navigate(Screen.SubmitReview.pass(brandId))
+                }
+            )
         }
 
         composable(
@@ -63,7 +69,7 @@ fun NavGraphBuilder.userNavGraph(
         }
 
         composable(Screen.Settings.route) {
-            SettingsScreen()
+            SettingsScreen(themeViewModel = themeViewModel)
         }
 
     }

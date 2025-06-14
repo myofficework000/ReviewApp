@@ -9,23 +9,47 @@ import com.code4galaxy.reviewnow.model.constants.ADMIN_TYPE
 import com.code4galaxy.reviewnow.model.constants.USER_TYPE
 import com.code4galaxy.reviewnow.view.feature.common.splash.SplashScreen
 import com.code4galaxy.reviewnow.viewmodel.NavigationViewModel
+import com.code4galaxy.reviewnow.viewmodel.ThemeViewModel
 
 
 @Composable
-fun AppNavGraph(navController:NavHostController,navigationViewModel: NavigationViewModel,modifier: Modifier=Modifier) {
+fun AppNavGraph(navController:NavHostController,navigationViewModel: NavigationViewModel,themeViewModel: ThemeViewModel,modifier: Modifier=Modifier) {
 
     NavHost(
         navController=navController,
         startDestination = Screen.Home.route,
         modifier = modifier
     ){
+                when(navigationViewModel.getUserType()){
+                    USER_TYPE ->{
+                        navController.navigate(Graph.USER){
+                            popUpTo(Screen.Splash.route){inclusive=true}
+                        }
+                    }
+                    ADMIN_TYPE ->{
+                        navController.navigate(Graph.ADMIN){
+                            popUpTo(Screen.Splash.route){inclusive=true}
+                        }
+                    }
+                    else->{
+                        navController.navigate(Graph.AUTH){
+                            popUpTo(Screen.Splash.route){inclusive=true}
+                        }
+                    }
 
+
+                }
+            })
+        }
+
+        authNavGraph(navController)
+        userNavGraph(navController,navigationViewModel,themeViewModel)
+        adminNavGraph(navController)
         userNavGraph(navController,navigationViewModel)
 //
 //        authNavGraph(navController)
 //        userNavGraph(navController,navigationViewModel)
 //        adminNavGraph(navController)
-
     }
 
 }

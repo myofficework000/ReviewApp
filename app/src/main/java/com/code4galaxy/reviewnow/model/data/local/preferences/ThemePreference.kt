@@ -23,7 +23,7 @@ class ThemePreference(context: Context) {
 
     fun getTheme(): AppTheme {
         return AppTheme.entries.firstOrNull {
-            it.name == prefs.getString(KEY_THEME, AppTheme.SYSTEM_DEFAULT.name)
-        } ?: AppTheme.SYSTEM_DEFAULT
+            it.name == prefs.getString(KEY_THEME, AppTheme.SYSTEM.name)
+        } ?: AppTheme.SYSTEM
     }
 }

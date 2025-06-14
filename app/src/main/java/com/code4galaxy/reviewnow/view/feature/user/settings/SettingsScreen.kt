@@ -1,31 +1,55 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.code4galaxy.reviewnow.view.feature.user.settings
 
-import LanguageSelector
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material3.*
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.runtime.*
+import androidx.compose.material3.Divider
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.code4galaxy.reviewnow.R
-import com.code4galaxy.reviewnow.view.theme.AppTheme
 import com.code4galaxy.reviewnow.viewmodel.LanguageViewModel
 import com.code4galaxy.reviewnow.viewmodel.ThemeViewModel
 
 @Composable
-fun SettingsScreen() {
+fun SettingsScreen(
+    themeViewModel: ThemeViewModel = hiltViewModel()
+) {
     val languageViewModel: LanguageViewModel = hiltViewModel()
-    val selectedLanguage by languageViewModel.language.collectAsState()
-    var showLanguageSheet by remember { mutableStateOf(false) }
 
+    val selectedLanguage by languageViewModel.language.collectAsState()
+    val selectedTheme by themeViewModel.theme.collectAsState()
+
+    var showLanguageSheet by remember { mutableStateOf(false) }
+    var showThemeSheet by remember { mutableStateOf(false) }
+
+    val themeSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+
+    // TODO: Support more language translations here if needed
     val languageMap = mapOf(
         "en" to "English",
         "fr" to "French",
@@ -42,10 +66,9 @@ fun SettingsScreen() {
             .padding(16.dp)
     ) {
         Text("Settings", style = MaterialTheme.typography.headlineSmall)
-
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Profile section
+        // Profile section (can be replaced with real data)
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -63,44 +86,77 @@ fun SettingsScreen() {
             }
         }
 
-        HorizontalDivider()
+        Divider()
 
-        // Non-clickable and toggle items
-        SettingItem("Dark Mode", trailing = {
-            Switch(checked = true, onCheckedChange = {}) // implement toggle logic
-        })
+        // Theme selection setting
+        SettingItem(
+            title = "App Theme",
+            value = selectedTheme.name.replace("_", " ").lowercase().replaceFirstChar { it.uppercaseChar() },
+            onClick = { showThemeSheet = true }
+        )
 
+        // TODO: Connect with real notification toggle
         SettingItem("Notifications and sounds")
+
+        // TODO: Secure password change functionality
         SettingItem("Password")
+
+        // TODO: Implement security checkup UI
         SettingItem("Security Checkup")
+
+        // TODO: Add two factor toggle functionality
         SettingItem("Two Factor Authentication")
+
+        // TODO: Navigate to change number screen
         SettingItem("Change Number")
 
-        // Clickable items
+        // TODO: Navigate to Help Center screen
         SettingItem("Help Center", onClick = {
-            // TODO: Navigate to Help Center screen
+            // TODO
         })
 
+        // TODO: Navigate to report screen or open a problem dialog
         SettingItem("Report a Problem", onClick = {
-            // TODO: Navigate to Report screen or open dialog
+            // TODO
         })
 
+        // Language selector
         SettingItem(
             title = "Language",
             value = languageMap[selectedLanguage] ?: selectedLanguage,
             onClick = { showLanguageSheet = true }
         )
 
+        // TODO: Open Terms and Privacy page
         SettingItem("Terms and Privacy Policy", onClick = {
-            // TODO: Open Terms and Privacy page
+            // TODO
         })
     }
 
+    // Language bottom sheet
     if (showLanguageSheet) {
         LanguageBottomSheet(
             languageViewModel = languageViewModel,
             onDismiss = { showLanguageSheet = false }
         )
+    }
+
+    // Theme bottom sheet
+    if (showThemeSheet) {
+        ModalBottomSheet(
+            onDismissRequest = { showThemeSheet = false },
+            sheetState = themeSheetState,
+            containerColor = MaterialTheme.colorScheme.background,
+            shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp)
+        ) {
+            ThemeBottomSheetContent(
+                selectedTheme = selectedTheme,
+                onThemeSelected = {
+                    themeViewModel.setTheme(it)
+                    showThemeSheet = false
+                }
+            )
+        }
     }
 }
 

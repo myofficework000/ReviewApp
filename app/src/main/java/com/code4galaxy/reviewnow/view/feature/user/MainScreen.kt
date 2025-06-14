@@ -55,10 +55,11 @@ import com.code4galaxy.reviewnow.view.feature.user.submit_review.SubmitReviewScr
 import com.code4galaxy.reviewnow.view.navigation.Graph
 import com.code4galaxy.reviewnow.view.navigation.Screen
 import com.code4galaxy.reviewnow.viewmodel.NavigationViewModel
+import com.code4galaxy.reviewnow.viewmodel.ThemeViewModel
 import kotlin.math.roundToInt
 
 @Composable
-fun MainScreen(navController: NavHostController, navigationViewModel: NavigationViewModel) {
+fun MainScreen(navController: NavHostController, navigationViewModel: NavigationViewModel,themeViewModel: ThemeViewModel) {
     var drawerState by remember { mutableStateOf(CustomDrawerState.Closed) }
     var selectedNavigationItem by remember { mutableStateOf(NavigationItem.Home) }
     val innerNavController = rememberNavController()
@@ -110,6 +111,8 @@ fun MainScreen(navController: NavHostController, navigationViewModel: Navigation
                 ),
             drawerState = drawerState,
             onDrawerClick = { drawerState = it },
+            navController,
+            themeViewModel
             innerNavController,
             navigationViewModel
         )
@@ -124,7 +127,8 @@ fun MainContent(
     drawerState: CustomDrawerState,
     onDrawerClick: (CustomDrawerState) -> Unit,
     navController: NavHostController,
-    navigationViewModel: NavigationViewModel
+    navigationViewModel: NavigationViewModel,
+    themeViewModel: ThemeViewModel
 ) {
 
     Scaffold(
@@ -150,6 +154,7 @@ fun MainContent(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
+            AppNavGraph(navController,navigationViewModel,themeViewModel)
             NavHost(
                 navController = navController,
                 startDestination = Screen.Home.route,
@@ -171,7 +176,6 @@ fun MainContent(
                         navController.navigate(Screen.SubmitReview.pass(brandId))
                     })
                 }
-
                 composable(
                     route = Screen.SubmitReview.route,
                     arguments = listOf(navArgument("brandId") { type = NavType.StringType })
