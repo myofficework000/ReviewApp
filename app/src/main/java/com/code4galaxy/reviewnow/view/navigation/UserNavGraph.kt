@@ -29,13 +29,10 @@ fun NavGraphBuilder.userNavGraph(
 
 
         composable(Screen.Home.route) {
-
           HomeScreen(){brandId: String ->
               navController.navigate(Screen.BrandDetail.pass(brandId))
 
           }
-
-
         }
 
         composable(
@@ -67,7 +64,6 @@ fun NavGraphBuilder.userNavGraph(
 
         composable(Screen.Settings.route) {
             SettingsScreen()
-
         }
 
     }

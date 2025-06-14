@@ -213,5 +213,3 @@ data class Brand(val name: String, val rating: String, val reviewText: String)
 
 
 
-
-

@@ -31,4 +31,6 @@ object DataStoreModule {
     fun provideLanguageRepository(dataStore: DataStore<Preferences>):LanguageRepository{
         return LanguageRepositoryImpl(dataStore)
     }
+
+
 }
