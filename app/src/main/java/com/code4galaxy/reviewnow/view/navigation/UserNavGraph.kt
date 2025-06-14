@@ -6,6 +6,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
+import com.google.firebase.auth.FirebaseAuth
 import com.code4galaxy.reviewnow.view.feature.common.UserDashboard
 import com.code4galaxy.reviewnow.view.feature.user.MainScreen
 
@@ -52,7 +53,8 @@ fun NavGraphBuilder.userNavGraph(
             arguments = listOf(navArgument("brandId") { type = NavType.StringType })
         ) {
             val brandId = it.arguments?.getString("brandId") ?: ""
-            SubmitReviewScreen(brandId)
+            val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
+            SubmitReviewScreen(brandId = brandId, userId = userId)
         }
 
         composable(Screen.MyReviews.route) {

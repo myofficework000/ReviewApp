@@ -26,15 +26,30 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.code4galaxy.reviewnow.R
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.code4galaxy.reviewnow.viewmodel.ReviewViewModel
+import com.code4galaxy.reviewnow.model.UiState
+import com.code4galaxy.reviewnow.model.Review
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 
 @Composable
 fun BrandDetailScreen(
-    modifier: Modifier = Modifier,
     brandId: String,
-    onSubmit: () -> Unit
+    modifier: Modifier = Modifier,
+    onSubmit: () -> Unit,
+    viewModel: ReviewViewModel = hiltViewModel() // ✅ Injected ViewModel
 ) {
+    // 🔹 Load and observe reviews
+    LaunchedEffect(brandId) {
+        viewModel.getReviewsForBrand(brandId)
+    }
+    val reviewState by viewModel.brandReviews.collectAsState()
+
     Column(modifier = modifier.padding(dimensionResource(id = R.dimen.dimen_16_dp))) {
-        // Back arrow icon
         Icon(
             imageVector = Icons.Default.ArrowBack,
             contentDescription = "Back",
@@ -42,15 +57,15 @@ fun BrandDetailScreen(
         )
 
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.dimen_16_dp)))
-        // Brand title
+
         Text(
-            text = "Brand ID: $brandId", // Replace with actual brand name from ViewModel if needed
+            text = "Brand ID: $brandId", // You can replace with actual brand name from another ViewModel
             fontSize = 30.sp,
             fontWeight = FontWeight.Bold
         )
 
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.dimen_10_dp)))
-        // Static 5-star rating row
+
         Row(verticalAlignment = Alignment.CenterVertically) {
             repeat(5) {
                 Icon(
@@ -61,38 +76,28 @@ fun BrandDetailScreen(
                 )
             }
             Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.dimen_6_dp)))
-            Text(
-                text = "4.5",
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold
-            )
+            Text("4.5", fontSize = 18.sp, fontWeight = FontWeight.Bold) // You can average this later
         }
 
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.dimen_6_dp)))
-        // Total reviews count
+
+        Text("Based on above reviews", fontSize = 16.sp)
+
+        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.dimen_16_dp)))
+
         Text(
-            text = "Based on 120 reviews",
+            text = "Coffeehouse chain known for its signature toasties, light bites, and call culture.",
             fontSize = 16.sp
         )
 
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.dimen_16_dp)))
 
-        // Brand description
-        Text(
-            text = "Coffeehouse chain known for its signature toasis, light bites, and calls culture",
-            fontSize = 16.sp
-        )
-
-        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.dimen_16_dp)))
-
-        // review button – triggers onSubmit callback
         OutlinedButton(onClick = onSubmit) {
-            Text(text = "Write a review", fontSize = 16.sp)
+            Text("Write a review", fontSize = 16.sp)
         }
 
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.dimen_28_dp)))
 
-        // Section title for reviews
         Text(
             text = "Reviews",
             fontSize = 22.sp,
@@ -101,10 +106,29 @@ fun BrandDetailScreen(
 
         Spacer(modifier = Modifier.height(14.dp))
 
-        // Sample hardcoded reviews(should replace with real values)
-        UserReview("Jane Doe", 4.0f, "Great coffee and femdly staff!")
-        Spacer(modifier = Modifier.height(12.dp))
-        UserReview("John Smith", 5.0f, "Love the atmosphore here.\nHighly recommend!")
+        // 🔹 Render reviews using UiState
+        when (reviewState) {
+            is UiState.Loading -> CircularProgressIndicator()
+
+            is UiState.Error -> Text(
+                text = (reviewState as UiState.Error).message,
+                color = Color.Red,
+                fontSize = 16.sp
+            )
+
+            is UiState.Success -> {
+                val reviews = (reviewState as UiState.Success<List<Review>>).data
+
+                if (reviews.isEmpty()) {
+                    Text("No reviews yet. Be the first to write one!")
+                } else {
+                    reviews.forEach {
+                        Spacer(modifier = Modifier.height(12.dp))
+                        UserReview(name = it.userId, rating = it.rating.toFloat(), review = it.comment)
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -115,7 +139,6 @@ fun UserReview(name: String, rating: Float, review: String) {
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            // User icon and name + stars
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(
                     imageVector = Icons.Default.AccountCircle,
@@ -124,40 +147,25 @@ fun UserReview(name: String, rating: Float, review: String) {
                 )
                 Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.dimen_10_dp)))
                 Column {
-                    Text(
-                        text = name,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 16.sp
-                    )
-                    // Static 5 stars
+                    Text(text = name, fontWeight = FontWeight.Bold, fontSize = 16.sp)
                     Row {
-                        repeat(5) {
+                        repeat(5) { i ->
                             Icon(
                                 imageVector = Icons.Default.Star,
                                 contentDescription = null,
-                                tint = Color(0xFFFFC107),
+                                tint = if (rating >= i + 1) Color(0xFFFFC107) else Color.LightGray,
                                 modifier = Modifier.size(dimensionResource(id = R.dimen.dimen_16_dp))
                             )
                         }
                     }
                 }
             }
-
-            // Show rating value
-            Text(
-                text = rating.toString(),
-                fontWeight = FontWeight.Bold,
-                fontSize = 16.sp
-            )
+            Text(rating.toString(), fontWeight = FontWeight.Bold, fontSize = 16.sp)
         }
 
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.dimen_6_dp)))
 
-        // User's review text
-        Text(
-            text = review,
-            fontSize = 15.sp
-        )
+        Text(text = review, fontSize = 15.sp)
     }
 }
 
