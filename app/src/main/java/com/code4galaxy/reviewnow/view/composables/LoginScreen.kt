@@ -55,7 +55,7 @@ fun LoginScreen(onRegisterClick: () -> Unit = {}) {
             }
 
             Text(
-                text = stringResource(id = R.string.welcome_message),
+                text = stringResource(id = R.string.sign_in),
                 fontSize = dimen48sp,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center

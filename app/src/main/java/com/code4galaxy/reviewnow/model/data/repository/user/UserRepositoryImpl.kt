@@ -141,7 +141,9 @@ class UserRepositoryImpl(
 
     override suspend fun submitReview(review: Review): UiState<String> {
         return try {
-            firestore.collection("reviews").document(review.id).set(review).await()
+            val newDocRef = firestore.collection("reviews").document()
+            val newReview = review.copy(id = newDocRef.id)
+            newDocRef.set(newReview).await()
             UiState.Success("Review submitted successfully")
         } catch (e: Exception) {
             UiState.Error(e.localizedMessage ?: "Failed to submit review")

@@ -8,12 +8,17 @@ import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.*
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.code4galaxy.reviewnow.R
+import com.code4galaxy.reviewnow.viewmodel.AuthViewModel
+
 
 @Composable
 fun ProfileScreen(
@@ -75,6 +80,25 @@ fun ProfileScreen(
     }
 }
 
+@Composable
+fun ProfileRoute(navController: NavController) {
+    val context = LocalContext.current
+    val authViewModel: AuthViewModel = hiltViewModel()
+
+    ProfileScreen(
+        name = "John Doe",
+        email = "johndoe@example.com",
+        onMyReviewsClick = { navController.navigate("my_reviews") },
+        onLogoutClick = {
+            authViewModel.logout(context) {
+                navController.navigate("login") {
+                    popUpTo("profile") { inclusive = true }
+                }
+            }
+        }
+    )
+}
+
 @Preview(showBackground = true)
 @Composable
 fun PreviewProfileScreen() {
@@ -85,3 +109,4 @@ fun PreviewProfileScreen() {
         onLogoutClick = {}
     )
 }
+
