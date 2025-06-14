@@ -26,12 +26,39 @@
     <string name="dont_have_account">Don\'t have account?</string>
     <string name="sign_up">Sign Up</string>
     <string name="confirm_password">Confirm password</string>
-    <string name="select_language">Select Language</string>
     <string name="home">Home</string>
     <string name="my_reviews">My reviews</string>
     <string name="add_brand_org">Add a Brand / organisation</string>
     <string name="logo">Logo</string>
     <string name="brand_org">Brand/Org</string>
     <string name="brand_org_name">Brand/Org Name</string>
+    <string name="select_language">Select language</string>
+
+    <!-- Language Names -->
+    <string name="language_english">English</string>
+    <string name="language_french">French</string>
+    <string name="language_german">German</string>
+    <string name="language_spanish">Spanish</string>
+    <string name="language_russian">Russian</string>
+    <string name="language_ukrainian">Ukrainian</string>
+    <string name="language_hindi">Hindi</string>
+    <string name="current_language">Current Language: %1$s</string>
+
+    <string name="settings">Settings</string>
+    <string name="profile_name">Person</string>
+    <string name="profile_email">Person@email.com</string>
+
+    <string name="dark_mode">Dark Mode</string>
+    <string name="notifications_and_sounds">Notifications and sounds</string>
+    <string name="security_checkup">Security Checkup</string>
+    <string name="two_factor_authentication">Two Factor Authentication</string>
+    <string name="change_number">Change Number</string>
+
+    <string name="help_center">Help Center</string>
+    <string name="report_a_problem">Report a Problem</string>
+    <string name="language">Language</string>
+    <string name="terms_and_privacy_policy">Terms and Privacy Policy</string>
+
+
 
 </resources>

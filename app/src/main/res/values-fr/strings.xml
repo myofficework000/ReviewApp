@@ -34,5 +34,31 @@
     <string name="brand_org">Marque / Organisation</string>
     <string name="brand_org_name">Nom de la marque / organisation</string>
 
+        <!-- Language Names -->
+        <string name="language_english">Anglais</string>
+        <string name="language_french">Français</string>
+        <string name="language_german">Allemand</string>
+        <string name="language_spanish">Espagnol</string>
+        <string name="language_russian">Russe</string>
+        <string name="language_ukrainian">Ukrainien</string>
+        <string name="language_hindi">Hindi</string>
+        <string name="current_language">Langue actuelle : %1$s</string>
+
+        <!-- Settings -->
+        <string name="settings">Paramètres</string>
+        <string name="profile_name">Personne</string>
+        <string name="profile_email">Person@email.com</string>
+
+        <string name="dark_mode">Mode sombre</string>
+        <string name="notifications_and_sounds">Notifications et sons</string>
+        <string name="security_checkup">Vérification de sécurité</string>
+        <string name="two_factor_authentication">Authentification à deux facteurs</string>
+        <string name="change_number">Changer de numéro</string>
+
+        <string name="help_center">Centre d aide</string>
+        <string name="report_a_problem">Signaler un problème</string>
+        <string name="language">Langue</string>
+        <string name="terms_and_privacy_policy">Conditions et politique de confidentialité</string>
+
 
 </resources>
