@@ -17,13 +17,9 @@ fun AppNavGraph(navController:NavHostController,navigationViewModel: NavigationV
 
     NavHost(
         navController=navController,
-        startDestination = Screen.Splash.route,
-        route = Graph.ROOT,
+        startDestination = Screen.Home.route,
         modifier = modifier
     ){
-        composable(route = Screen.Splash.route){
-            SplashScreen({
-
                 when(navigationViewModel.getUserType()){
                     USER_TYPE ->{
                         navController.navigate(Graph.USER){
@@ -49,7 +45,11 @@ fun AppNavGraph(navController:NavHostController,navigationViewModel: NavigationV
         authNavGraph(navController)
         userNavGraph(navController,navigationViewModel,themeViewModel)
         adminNavGraph(navController)
-
+        userNavGraph(navController,navigationViewModel)
+//
+//        authNavGraph(navController)
+//        userNavGraph(navController,navigationViewModel)
+//        adminNavGraph(navController)
     }
 
 }

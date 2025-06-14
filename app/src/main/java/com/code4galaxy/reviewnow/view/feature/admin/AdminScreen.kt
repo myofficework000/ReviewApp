@@ -1,4 +1,4 @@
-package com.code4galaxy.reviewnow.view.feature.user
+package com.code4galaxy.reviewnow.view.feature.admin
 
 
 import android.annotation.SuppressLint
@@ -35,33 +35,36 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
+import com.code4galaxy.reviewnow.model.AdminNavigationItem
 import com.code4galaxy.reviewnow.model.CustomDrawerState
 import com.code4galaxy.reviewnow.model.NavigationItem
 import com.code4galaxy.reviewnow.model.isOpened
 import com.code4galaxy.reviewnow.model.opposite
+import com.code4galaxy.reviewnow.view.component.AdminCustomDrawer
 import com.code4galaxy.reviewnow.view.util.coloredShadow
 import com.code4galaxy.reviewnow.view.component.CustomDrawer
-import com.code4galaxy.reviewnow.view.feature.user.brand.BrandDetailScreen
+import com.code4galaxy.reviewnow.view.feature.admin.brands.BrandsScreen
+import com.code4galaxy.reviewnow.view.feature.admin.home.AddBrandScreen
+import com.code4galaxy.reviewnow.view.feature.admin.home.AdminHomeScreen
+import com.code4galaxy.reviewnow.view.feature.admin.home.FlaggedReviewScreen
+import com.code4galaxy.reviewnow.view.feature.admin.home.ManageUsersScreen
+import com.code4galaxy.reviewnow.view.feature.admin.home.UserReviewsScreen
+import com.code4galaxy.reviewnow.view.feature.admin.users.AdminUsersScreen
 import com.code4galaxy.reviewnow.view.feature.user.home.HomeScreen
 import com.code4galaxy.reviewnow.view.feature.user.profile.ProfileScreen
 import com.code4galaxy.reviewnow.view.feature.user.reviews.MyReviewsScreen
-import com.code4galaxy.reviewnow.view.feature.user.settings.SettingsScreen
-import com.code4galaxy.reviewnow.view.feature.user.submit_review.SubmitReviewScreen
 import com.code4galaxy.reviewnow.view.navigation.Graph
 import com.code4galaxy.reviewnow.view.navigation.Screen
 import com.code4galaxy.reviewnow.viewmodel.NavigationViewModel
-import com.code4galaxy.reviewnow.viewmodel.ThemeViewModel
 import kotlin.math.roundToInt
 
 @Composable
-fun MainScreen(navController: NavHostController, navigationViewModel: NavigationViewModel,themeViewModel: ThemeViewModel) {
+fun AdminScreen(navController: NavHostController, navigationViewModel: NavigationViewModel) {
     var drawerState by remember { mutableStateOf(CustomDrawerState.Closed) }
-    var selectedNavigationItem by remember { mutableStateOf(NavigationItem.Home) }
+    var selectedNavigationItem by remember { mutableStateOf(AdminNavigationItem.AdminHome) }
     val innerNavController = rememberNavController()
     val configuration = LocalConfiguration.current
     val density = LocalDensity.current.density
@@ -91,16 +94,16 @@ fun MainScreen(navController: NavHostController, navigationViewModel: Navigation
             .navigationBarsPadding()
             .fillMaxSize()
     ) {
-        CustomDrawer(
+        AdminCustomDrawer(
             selectedNavigationItem = selectedNavigationItem,
             onNavigationItemClick = {
                 selectedNavigationItem = it
-               innerNavController.navigate( it.route)
+                innerNavController.navigate( it.route)
                 drawerState = CustomDrawerState.Closed
             },
             onCloseClick = { drawerState = CustomDrawerState.Closed }
         )
-        MainContent(
+        AdminContent(
             modifier = Modifier
                 .offset(x = animatedOffset)
                 .scale(scale = animatedScale)
@@ -111,8 +114,6 @@ fun MainScreen(navController: NavHostController, navigationViewModel: Navigation
                 ),
             drawerState = drawerState,
             onDrawerClick = { drawerState = it },
-            navController,
-            themeViewModel
             innerNavController,
             navigationViewModel
         )
@@ -122,13 +123,12 @@ fun MainScreen(navController: NavHostController, navigationViewModel: Navigation
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainContent(
+fun AdminContent(
     modifier: Modifier = Modifier,
     drawerState: CustomDrawerState,
     onDrawerClick: (CustomDrawerState) -> Unit,
     navController: NavHostController,
-    navigationViewModel: NavigationViewModel,
-    themeViewModel: ThemeViewModel
+    navigationViewModel: NavigationViewModel
 ) {
 
     Scaffold(
@@ -154,47 +154,18 @@ fun MainContent(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            AppNavGraph(navController,navigationViewModel,themeViewModel)
             NavHost(
                 navController = navController,
-                startDestination = Screen.Home.route,
+                startDestination = Screen.ADMIN.route,
                 route = Graph.USER
             ) {
-                composable(Screen.Home.route) {
-                    HomeScreen(){brandId: String ->
-                        navController.navigate(Screen.BrandDetail.pass(brandId))
 
-                    }
-                }
+                composable(Screen.ManageBrands.route) { AddBrandScreen() }
+                composable(Screen.ADMIN.route) { AdminHomeScreen() }
+                composable(Screen.FlaggedReviews.route) { FlaggedReviewScreen() }
+                composable(Screen.UserReviews.route) { UserReviewsScreen() }
+                composable(Screen.ManageUsers.route) { ManageUsersScreen() }
 
-                composable(
-                    route = Screen.BrandDetail.route,
-                    arguments = listOf(navArgument("brandId") { type = NavType.StringType })
-                ) {
-                    val brandId = it.arguments?.getString("brandId") ?: ""
-                    BrandDetailScreen(brandId = brandId, onSubmit = {
-                        navController.navigate(Screen.SubmitReview.pass(brandId))
-                    })
-                }
-                composable(
-                    route = Screen.SubmitReview.route,
-                    arguments = listOf(navArgument("brandId") { type = NavType.StringType })
-                ) {
-                    val brandId = it.arguments?.getString("brandId") ?: ""
-                    SubmitReviewScreen(brandId)
-                }
-
-                composable(Screen.MyReviews.route) {
-                    MyReviewsScreen()
-                }
-
-                composable(Screen.Profile.route) {
-                    ProfileScreen()
-                }
-
-                composable(Screen.Settings.route) {
-                    SettingsScreen()
-                }
 
             }
         }
