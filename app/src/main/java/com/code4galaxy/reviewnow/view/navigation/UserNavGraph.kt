@@ -6,7 +6,10 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
+import com.google.firebase.auth.FirebaseAuth
 import com.code4galaxy.reviewnow.view.feature.common.UserDashboard
+import com.code4galaxy.reviewnow.view.feature.user.MainScreen
+
 import com.code4galaxy.reviewnow.view.feature.user.brand.BrandDetailScreen
 import com.code4galaxy.reviewnow.view.feature.user.home.HomeScreen
 import com.code4galaxy.reviewnow.view.feature.user.profile.ProfileScreen
@@ -23,14 +26,16 @@ fun NavGraphBuilder.userNavGraph(
 ) {
     navigation(
         route = Graph.USER,
-        startDestination = Screen.MyReviews.route
+        startDestination = Screen.Home.route
     ) {
-        composable(Screen.UserDashboard.route) {
-            UserDashboard(navController, navigationViewModel)
-        }
+
 
         composable(Screen.Home.route) {
             HomeScreen()
+          HomeScreen(){brandId: String ->
+              navController.navigate(Screen.BrandDetail.pass(brandId))
+
+          }
         }
 
         composable(
@@ -51,7 +56,8 @@ fun NavGraphBuilder.userNavGraph(
             arguments = listOf(navArgument("brandId") { type = NavType.StringType })
         ) {
             val brandId = it.arguments?.getString("brandId") ?: ""
-            SubmitReviewScreen(brandId)
+            val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
+            SubmitReviewScreen(brandId = brandId, userId = userId)
         }
 
         composable(Screen.MyReviews.route) {
@@ -65,5 +71,6 @@ fun NavGraphBuilder.userNavGraph(
         composable(Screen.Settings.route) {
             SettingsScreen(themeViewModel = themeViewModel)
         }
+
     }
 }
