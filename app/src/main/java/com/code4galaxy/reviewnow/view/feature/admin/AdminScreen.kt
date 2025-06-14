@@ -38,12 +38,21 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.code4galaxy.reviewnow.model.AdminNavigationItem
 import com.code4galaxy.reviewnow.model.CustomDrawerState
 import com.code4galaxy.reviewnow.model.NavigationItem
 import com.code4galaxy.reviewnow.model.isOpened
 import com.code4galaxy.reviewnow.model.opposite
+import com.code4galaxy.reviewnow.view.component.AdminCustomDrawer
 import com.code4galaxy.reviewnow.view.util.coloredShadow
 import com.code4galaxy.reviewnow.view.component.CustomDrawer
+import com.code4galaxy.reviewnow.view.feature.admin.brands.BrandsScreen
+import com.code4galaxy.reviewnow.view.feature.admin.home.AddBrandScreen
+import com.code4galaxy.reviewnow.view.feature.admin.home.AdminHomeScreen
+import com.code4galaxy.reviewnow.view.feature.admin.home.FlaggedReviewScreen
+import com.code4galaxy.reviewnow.view.feature.admin.home.ManageUsersScreen
+import com.code4galaxy.reviewnow.view.feature.admin.home.UserReviewsScreen
+import com.code4galaxy.reviewnow.view.feature.admin.users.AdminUsersScreen
 import com.code4galaxy.reviewnow.view.feature.user.home.HomeScreen
 import com.code4galaxy.reviewnow.view.feature.user.profile.ProfileScreen
 import com.code4galaxy.reviewnow.view.feature.user.reviews.MyReviewsScreen
@@ -55,7 +64,7 @@ import kotlin.math.roundToInt
 @Composable
 fun AdminScreen(navController: NavHostController, navigationViewModel: NavigationViewModel) {
     var drawerState by remember { mutableStateOf(CustomDrawerState.Closed) }
-    var selectedNavigationItem by remember { mutableStateOf(NavigationItem.Home) }
+    var selectedNavigationItem by remember { mutableStateOf(AdminNavigationItem.AdminHome) }
     val innerNavController = rememberNavController()
     val configuration = LocalConfiguration.current
     val density = LocalDensity.current.density
@@ -85,7 +94,7 @@ fun AdminScreen(navController: NavHostController, navigationViewModel: Navigatio
             .navigationBarsPadding()
             .fillMaxSize()
     ) {
-        CustomDrawer(
+        AdminCustomDrawer(
             selectedNavigationItem = selectedNavigationItem,
             onNavigationItemClick = {
                 selectedNavigationItem = it
@@ -147,12 +156,17 @@ fun AdminContent(
         ) {
             NavHost(
                 navController = navController,
-                startDestination = Screen.Home.route,
+                startDestination = Screen.ADMIN.route,
                 route = Graph.USER
             ) {
-                composable(Screen.Home.route) { HomeScreen(onClick = {}) }
-                composable(Screen.Profile.route) { ProfileScreen() }
-                composable(Screen.MyReviews.route) { MyReviewsScreen() }
+
+                composable(Screen.ManageBrands.route) { AddBrandScreen() }
+                composable(Screen.ADMIN.route) { AdminHomeScreen() }
+                composable(Screen.FlaggedReviews.route) { FlaggedReviewScreen() }
+                composable(Screen.UserReviews.route) { UserReviewsScreen() }
+                composable(Screen.ManageUsers.route) { ManageUsersScreen() }
+
+
             }
         }
     }

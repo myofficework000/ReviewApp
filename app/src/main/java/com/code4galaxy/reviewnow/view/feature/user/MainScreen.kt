@@ -35,18 +35,23 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.code4galaxy.reviewnow.model.CustomDrawerState
 import com.code4galaxy.reviewnow.model.NavigationItem
 import com.code4galaxy.reviewnow.model.isOpened
 import com.code4galaxy.reviewnow.model.opposite
 import com.code4galaxy.reviewnow.view.util.coloredShadow
 import com.code4galaxy.reviewnow.view.component.CustomDrawer
+import com.code4galaxy.reviewnow.view.feature.user.brand.BrandDetailScreen
 import com.code4galaxy.reviewnow.view.feature.user.home.HomeScreen
 import com.code4galaxy.reviewnow.view.feature.user.profile.ProfileScreen
 import com.code4galaxy.reviewnow.view.feature.user.reviews.MyReviewsScreen
+import com.code4galaxy.reviewnow.view.feature.user.settings.SettingsScreen
+import com.code4galaxy.reviewnow.view.feature.user.submit_review.SubmitReviewScreen
 import com.code4galaxy.reviewnow.view.navigation.Graph
 import com.code4galaxy.reviewnow.view.navigation.Screen
 import com.code4galaxy.reviewnow.viewmodel.NavigationViewModel
@@ -150,9 +155,43 @@ fun MainContent(
                 startDestination = Screen.Home.route,
                 route = Graph.USER
             ) {
-                composable(Screen.Home.route) { HomeScreen(onClick = {}) }
-                composable(Screen.Profile.route) { ProfileScreen() }
-                composable(Screen.MyReviews.route) { MyReviewsScreen() }
+                composable(Screen.Home.route) {
+                    HomeScreen(){brandId: String ->
+                        navController.navigate(Screen.BrandDetail.pass(brandId))
+
+                    }
+                }
+
+                composable(
+                    route = Screen.BrandDetail.route,
+                    arguments = listOf(navArgument("brandId") { type = NavType.StringType })
+                ) {
+                    val brandId = it.arguments?.getString("brandId") ?: ""
+                    BrandDetailScreen(brandId = brandId, onSubmit = {
+                        navController.navigate(Screen.SubmitReview.pass(brandId))
+                    })
+                }
+
+                composable(
+                    route = Screen.SubmitReview.route,
+                    arguments = listOf(navArgument("brandId") { type = NavType.StringType })
+                ) {
+                    val brandId = it.arguments?.getString("brandId") ?: ""
+                    SubmitReviewScreen(brandId)
+                }
+
+                composable(Screen.MyReviews.route) {
+                    MyReviewsScreen()
+                }
+
+                composable(Screen.Profile.route) {
+                    ProfileScreen()
+                }
+
+                composable(Screen.Settings.route) {
+                    SettingsScreen()
+                }
+
             }
         }
     }

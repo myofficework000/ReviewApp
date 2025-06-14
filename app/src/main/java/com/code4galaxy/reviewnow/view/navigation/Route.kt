@@ -1,5 +1,11 @@
 package com.code4galaxy.reviewnow.view.navigation
 
+import com.code4galaxy.reviewnow.view.feature.admin.home.AddBrandScreen
+import com.code4galaxy.reviewnow.view.feature.admin.home.AdminHomeScreen
+import com.code4galaxy.reviewnow.view.feature.admin.home.FlaggedReviewScreen
+import com.code4galaxy.reviewnow.view.feature.admin.home.ManageUsersScreen
+import com.code4galaxy.reviewnow.view.feature.admin.home.UserReviewsScreen
+
 
 object Graph {
     const val ROOT = "root_graph"
@@ -41,5 +47,10 @@ sealed class Screen(val route: String) {
     object ManageUsers : Screen("manage_users")
     object ManageBrands : Screen("manage_brands")
     object FlaggedReviews : Screen("flagged_reviews")
+    object UserReviews : Screen("user_reviews")
+
+
+
+
 
 }

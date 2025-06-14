@@ -62,7 +62,6 @@ fun NavGraphBuilder.userNavGraph(
 
         composable(Screen.Settings.route) {
             SettingsScreen()
-
         }
 
     }
