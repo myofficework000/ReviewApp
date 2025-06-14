@@ -1,5 +1,6 @@
 package com.code4galaxy.reviewnow.view.composables
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -14,6 +15,8 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -25,17 +28,47 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.code4galaxy.reviewnow.R
+import com.code4galaxy.reviewnow.model.User
+import com.code4galaxy.reviewnow.view.RegisterState
+import com.code4galaxy.reviewnow.viewmodel.AuthViewModel
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 @Composable
-fun RegisterScreen(onSignInClick: () -> Unit = {}) {
+fun RegisterScreen(onSignInClick: () -> Unit = {},
+                   authViewModel: AuthViewModel = hiltViewModel()
+) {
+    val context = LocalContext.current
+    val registerState by authViewModel.registerState.collectAsState()
+
     var email by remember { mutableStateOf("") }
-    var name by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
+
+    // Handle side effects (toasts & navigation)
+    LaunchedEffect(registerState) {
+        when (registerState) {
+            is RegisterState.Success -> {
+                Toast.makeText(context, "Registration successful!", Toast.LENGTH_SHORT).show()
+                authViewModel.resetRegisterState()
+                onSignInClick()
+            }
+            is RegisterState.Error -> {
+                Toast.makeText(context, (registerState as RegisterState.Error).message, Toast.LENGTH_LONG).show()
+                authViewModel.resetRegisterState()
+            }
+            else -> {}
+        }
+    }
+
+
+
     Box(
         modifier = Modifier.fillMaxSize().background(Color.White)
     ) {
@@ -90,7 +123,8 @@ fun RegisterScreen(onSignInClick: () -> Unit = {}) {
 
 
             Button(
-                onClick = { /* Handle register */ },
+                onClick = { authViewModel.registerUser(email, password, confirmPassword)
+                },
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(containerColor = Color.Blue)
             ) {
@@ -133,8 +167,11 @@ fun RegisterScreen(onSignInClick: () -> Unit = {}) {
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
-private fun RegisterScreenPreview(){
-    RegisterScreen()
+fun RegisterScreenPreview() {
+    RegisterScreen(
+        // Provide fake callbacks or sample state here
+        onSignInClick = {}
+    )
 }

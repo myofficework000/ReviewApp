@@ -49,7 +49,7 @@ fun LanguageDropdown(
     onLanguageSelected: (String) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
-    val languages = listOf("en" to "English", "es" to "Spanish", "fr" to "French")
+    val languages = listOf("en" to "English", "es" to "Spanish", "fr" to "French","ar" to "Arabic")
 
     Column(modifier = modifier.padding(dimensionResource(R.dimen.dimen_16_dp))) {
         Text(text = "Select Language: ${languages.find { it.first == selectedLanguage }?.second ?: selectedLanguage}",

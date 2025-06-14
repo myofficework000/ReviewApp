@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">مراجعة الآن</string>
+    <string name="sign_in">تسجيل الدخول</string>
+    <string name="email">البريد الإلكتروني</string>
+    <string name="password">كلمة المرور</string>
+    <string name="forget_password">نسيت كلمة المرور</string>
+    <string name="register">إنشاء حساب</string>
+    <string name="create_account">إنشاء حساب</string>
+    <string name="name">الاسم</string>
+    <string name="your_name">اسمك</string>
+    <string name="example_email">example@gmail.com</string>
+    <string name="example_password">*****</string>
+    <string name="already_have_account">هل لديك حساب؟ تسجيل الدخول</string>
+    <string name="review_connect">مراجعة كونكت</string>
+    <string name="welcome_to_reviewconnect">مرحبًا بك في \n مراجعة كونكت</string>
+    <string name="sign_in_with_Google">تسجيل الدخول باستخدام Google</string>
+    <string name="log_out">تسجيل الخروج</string>
+    <string name="manage_users">إدارة المستخدمين</string>
+    <string name="moderate_reviews">مراجعة التقييمات</string>
+    <string name="add_brand">إضافة علامة تجارية</string>
+    <string name="profile">الملف الشخصي</string>
+    <string name="back">رجوع</string>
+    <string name="avatar">الصورة الرمزية</string>
+    <string name="flagged_reviews">التقييمات التي تم الإبلاغ عنها</string>
+    <string name="dont_have_account">ليس لديك حساب؟</string>
+    <string name="sign_up">إنشاء حساب</string>
+    <string name="confirm_password">تأكيد كلمة المرور</string>
+    <string name="select_language">اختر اللغة</string>
+    <string name="home">الرئيسية</string>
+    <string name="my_reviews">تقييماتي</string>
+</resources>
