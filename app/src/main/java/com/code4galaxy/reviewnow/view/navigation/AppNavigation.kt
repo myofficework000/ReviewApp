@@ -22,20 +22,14 @@ import com.code4galaxy.reviewnow.viewmodel.ThemeViewModel
 fun SetUpAppLaunch(navigationViewModel: NavigationViewModel,themeViewModel: ThemeViewModel) {
     val navController = rememberNavController()
     val currentScreen = navigationViewModel.currentScreen.collectAsState()
-    // Set up the app's initial launch screen
-    LaunchedEffect(currentScreen) {
-        navController.navigate(currentScreen.value?.route ?: Screen.Home.route)
-    }
 
-//    RootNavGraph(navController, navigationViewModel)
-//    AppNavGraph(navController,navigationViewModel)
-//    UserDashboard(navController,navigationViewModel)
     MainScreen(navController,navigationViewModel,themeViewModel)
-    RootNavGraph(navController, navigationViewModel)
+    RootNavGraph(navController, navigationViewModel,themeViewModel)
 }
 
 @Composable
-fun RootNavGraph(navController: NavHostController, navigationViewModel: NavigationViewModel) {
+fun RootNavGraph(navController: NavHostController, navigationViewModel: NavigationViewModel,themeViewModel: ThemeViewModel) {
+
     NavHost(
         navController = navController,
         startDestination = Screen.Splash.route
@@ -44,7 +38,7 @@ fun RootNavGraph(navController: NavHostController, navigationViewModel: Navigati
 
             SplashScreen({
 
-                when ("navigationViewModel.getUserType()") {
+                when (navigationViewModel.getUserType()) {
                     USER_TYPE -> {
                         navController.navigate(Screen.USER.route) {
                             popUpTo(Screen.Splash.route) { inclusive = true }
@@ -70,7 +64,7 @@ fun RootNavGraph(navController: NavHostController, navigationViewModel: Navigati
         }
 
         composable(Screen.USER.route) {
-            MainScreen(navController, navigationViewModel)
+            MainScreen(navController, navigationViewModel, themeViewModel  )
         }
         composable(Screen.ADMIN.route) {
             AdminScreen(navController, navigationViewModel)

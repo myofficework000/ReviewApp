@@ -32,7 +32,7 @@ import androidx.compose.ui.unit.dp
 import com.code4galaxy.reviewnow.R
 
 @Composable
-fun LoginScreen(onRegisterClick: () -> Unit = {}) {
+fun LoginScreen(onRegisterClick: () -> Unit,onSignInClick:()->Unit) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
@@ -98,7 +98,7 @@ fun LoginScreen(onRegisterClick: () -> Unit = {}) {
 
             Button(
                 onClick = {
-                    // Handle login
+                   onSignInClick()
                 },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -152,5 +152,5 @@ fun LoginScreen(onRegisterClick: () -> Unit = {}) {
 @Preview
 @Composable
 private fun LoginScreenPreview() {
-    LoginScreen()
+//    LoginScreen()
 }

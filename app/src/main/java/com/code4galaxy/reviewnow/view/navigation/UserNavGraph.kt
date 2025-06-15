@@ -7,8 +7,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navigation
 import com.google.firebase.auth.FirebaseAuth
-import com.code4galaxy.reviewnow.view.feature.common.UserDashboard
-import com.code4galaxy.reviewnow.view.feature.user.MainScreen
 
 import com.code4galaxy.reviewnow.view.feature.user.brand.BrandDetailScreen
 import com.code4galaxy.reviewnow.view.feature.user.home.HomeScreen
@@ -31,7 +29,7 @@ fun NavGraphBuilder.userNavGraph(
 
 
         composable(Screen.Home.route) {
-            HomeScreen()
+
           HomeScreen(){brandId: String ->
               navController.navigate(Screen.BrandDetail.pass(brandId))
 

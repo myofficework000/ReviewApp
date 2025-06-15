@@ -9,10 +9,12 @@ import com.code4galaxy.reviewnow.R
 import com.code4galaxy.reviewnow.model.User
 import com.code4galaxy.reviewnow.view.RegisterState
 import com.google.firebase.firestore.FirebaseFirestore
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
+@HiltViewModel
 class AuthViewModel @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
     private val firestore: FirebaseFirestore

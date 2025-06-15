@@ -41,7 +41,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
 @Composable
-fun RegisterScreen(onSignInClick: () -> Unit = {},
+fun RegisterScreen(onSignInClick: () -> Unit,
                    authViewModel: AuthViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
