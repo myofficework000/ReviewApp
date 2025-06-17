@@ -1,5 +1,6 @@
 package com.code4galaxy.reviewnow.view.feature.user.profile
 
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -17,6 +18,7 @@ import androidx.compose.ui.unit.*
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.code4galaxy.reviewnow.R
+import com.code4galaxy.reviewnow.view.navigation.Screen
 import com.code4galaxy.reviewnow.viewmodel.AuthViewModel
 
 
@@ -90,13 +92,17 @@ fun ProfileRoute(navController: NavController) {
         email = "johndoe@example.com",
         onMyReviewsClick = { navController.navigate("my_reviews") },
         onLogoutClick = {
+            Toast.makeText(context, "Logging out...", Toast.LENGTH_SHORT).show()
             authViewModel.logout(context) {
-                navController.navigate("login") {
+                navController.navigate(route=Screen.Login.route) {
                     popUpTo("profile") { inclusive = true }
                 }
             }
         }
-    )
+
+            )
+
+
 }
 
 @Preview(showBackground = true)

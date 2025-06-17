@@ -33,10 +33,14 @@ fun NavGraphBuilder.authNavGraph(navController:NavHostController){
             })
         }
 
-        composable(route=Screen.Welcome.route){
-            WelcomeScreen{
-                navController.navigate(Screen.Login.route)
-            }
+        composable(route = Screen.Welcome.route) {
+            WelcomeScreen(
+                onClick = { navController.navigate(Screen.Login.route) },
+                onGoogleSignInSuccess = { navController.navigate(Screen.USER.route){
+                    popUpTo(Graph.USER){ inclusive=true}
+
+                } }
+            )
         }
 
     }

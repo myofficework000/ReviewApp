@@ -33,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -41,7 +42,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.code4galaxy.reviewnow.R
+import com.code4galaxy.reviewnow.viewmodel.AuthViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -52,7 +55,9 @@ fun AdminHomeScreen(
     onModerateReviewsClick: () -> Unit = {},
     onAddBrandClick: () -> Unit = {},
     onFlaggedReviewsClick: () -> Unit = {},
-    onLogout: () -> Unit = {}
+    onLogoutNavigate: () -> Unit = {}, // Navigate to Welcome/Login
+    authViewModel: AuthViewModel = hiltViewModel()
+
 ) {
     Scaffold(
         topBar = {
@@ -146,6 +151,8 @@ fun AdminHomeScreen(
                 )
             }
 
+            val context = LocalContext.current
+
             // Logout
             Box(
                 modifier = Modifier.constrainAs(logout) {
@@ -157,7 +164,11 @@ fun AdminHomeScreen(
                 AdminActionItem(
                     text = stringResource(id = R.string.log_out),
                     icon = Icons.Default.Logout,
-                    onClick = onLogout,
+                    onClick = {
+                        authViewModel.logout(context) {
+                            onLogoutNavigate() // Navigate back after logout
+                        }
+                    },
                     isLogout = true
                 )
             }
