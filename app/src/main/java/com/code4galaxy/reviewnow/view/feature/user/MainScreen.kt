@@ -1,6 +1,8 @@
 package com.code4galaxy.reviewnow.view.feature.user
 
 
+import android.R.attr.navigationIcon
+import android.R.attr.title
 import android.annotation.SuppressLint
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.animateDpAsState
@@ -38,6 +40,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.code4galaxy.reviewnow.model.CustomDrawerState
@@ -132,24 +135,30 @@ fun MainContent(
     themeViewModel: ThemeViewModel
 ) {
 
+    val currentBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = currentBackStackEntry?.destination?.route
+
     Scaffold(
         modifier = modifier
             .clickable(enabled = drawerState == CustomDrawerState.Opened) {
                 onDrawerClick(CustomDrawerState.Closed)
             },
         topBar = {
-            TopAppBar(
-                title = { Text(text = "") },
-                navigationIcon = {
-                    IconButton(onClick = { onDrawerClick(drawerState.opposite()) }) {
-                        Icon(
-                            imageVector = Icons.Default.Menu,
-                            contentDescription = "Menu Icon"
-                        )
+            if (currentRoute != Screen.SubmitReview.route) {
+                TopAppBar(
+                    title = { Text(text = "") },
+                    navigationIcon = {
+                        IconButton(onClick = { onDrawerClick(drawerState.opposite()) }) {
+                            Icon(
+                                imageVector = Icons.Default.Menu,
+                                contentDescription = "Menu Icon"
+                            )
+                        }
                     }
-                }
-            )
+                )
+            }
         }
+
     ) {
         Box(
             modifier = Modifier.fillMaxSize(),
@@ -185,8 +194,12 @@ fun MainContent(
 
                     val brandId = it.arguments?.getString("brandId") ?: ""
                     val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
-                    // TODO (Greshma) fix the user id
-                    SubmitReviewScreen(brandId = brandId, userId = userId)
+
+                    SubmitReviewScreen(
+                        brandId = brandId,
+                        userId = userId,
+                        navController = navController
+                    )
 
 
 
@@ -201,7 +214,7 @@ fun MainContent(
                 }
 
                 composable(Screen.Settings.route) {
-                    SettingsScreen()
+                    SettingsScreen(themeViewModel = themeViewModel)
                 }
 
             }

@@ -1,20 +1,18 @@
 package com.code4galaxy.reviewnow.viewmodel
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import com.code4galaxy.reviewnow.model.data.local.preferences.ThemePreference
-import com.code4galaxy.reviewnow.view.theme.AppTheme
+import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import com.code4galaxy.reviewnow.view.theme.AppTheme
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class ThemeViewModel(application: Application) : AndroidViewModel(application) {
-    private val prefs = ThemePreference(application)
-
-    private val _theme = MutableStateFlow(prefs.getTheme())
-    val theme: StateFlow<AppTheme> get() = _theme
+@HiltViewModel
+class ThemeViewModel @Inject constructor() : ViewModel() {
+    private val _theme = MutableStateFlow(AppTheme.SYSTEM)
+    val theme: StateFlow<AppTheme> = _theme
 
     fun setTheme(theme: AppTheme) {
         _theme.value = theme
-        prefs.saveTheme(theme)
     }
 }

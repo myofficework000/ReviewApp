@@ -29,12 +29,18 @@ import androidx.compose.ui.unit.sp
 import com.code4galaxy.reviewnow.R
 
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier,onClick:(brandId:String)->Unit) {
+fun HomeScreen(modifier: Modifier = Modifier,
+               onClick:(brandId:String)->Unit={}) {
+
+    var searchText by remember { mutableStateOf("") }
+
     // Main vertical layout of the screen
     Column(modifier = Modifier.fillMaxSize()) {
         // Search bar at the top
-        SearchBarUI()
+        SearchBarUI(text = searchText,
+            onValueChange = { searchText = it } )
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.dimen_16_dp)))
+
         // Title above the list
         Text(
             "Brands",
@@ -73,21 +79,18 @@ fun HomeScreen(modifier: Modifier = Modifier,onClick:(brandId:String)->Unit) {
                 }
             }
         }
-
-        // Bottom navigation Bar
-        BottomTwoButtonBarUI()
     }
 }
 
 
 @Composable
-fun SearchBarUI() {
-    var searchText by remember { mutableStateOf("") }
+fun SearchBarUI(text: String,
+                onValueChange: (String) -> Unit,
+                modifier: Modifier = Modifier) {
 
     // Custom search bar row
     Row(
         modifier = Modifier
-            .fillMaxWidth()
             .height(dimensionResource(id=R.dimen.dimen_50_dp))
             .clip(RoundedCornerShape(dimensionResource(id=R.dimen.dimen_12_dp)))
             .background(Color.LightGray)
@@ -105,8 +108,8 @@ fun SearchBarUI() {
 
         // Text input for search query
         TextField(
-            value = searchText,
-            onValueChange = { searchText = it },
+            value = text,
+            onValueChange = onValueChange,
             placeholder = { Text("Search brands", color = Color.DarkGray) },
             singleLine = true,
             textStyle = TextStyle(color = Color.Black),
@@ -173,43 +176,14 @@ fun BrandCardUI(
     }
 }
 
-@Composable
-fun BottomTwoButtonBarUI() {
-    // Bottom bar with Home and Profile buttons
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = dimensionResource(id=R.dimen.dimen_12_dp))
-            .background(Color.White),
-        horizontalArrangement = Arrangement.SpaceEvenly,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        // Home section
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Icon(
-                imageVector = Icons.Default.Home,
-                contentDescription = "Home",
-                modifier = Modifier.size(dimensionResource(id=R.dimen.dimen_24_dp))
-            )
-            Spacer(modifier = Modifier.height(dimensionResource(id=R.dimen.dimen_4_dp)))
-            Text(text = "Home", fontSize = 12.sp, )
-        }
-        // Profile section
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Icon(
-                imageVector = Icons.Default.Person,
-                contentDescription = "Profile",
-                tint = Color.Gray,
-                modifier = Modifier.size(dimensionResource(id=R.dimen.dimen_24_dp))
-            )
-            Spacer(modifier = Modifier.height(dimensionResource(id=R.dimen.dimen_4_dp)))
-            Text(text = "Profile", fontSize = 12.sp, color = Color.Gray)
-        }
-    }
-}
 
 // Data class representing a brand's information
 data class Brand(val name: String, val rating: String, val reviewText: String)
 
 
 
+@Preview(showBackground = true)
+@Composable
+fun HomeScreenPreview() {
+    HomeScreen()
+}

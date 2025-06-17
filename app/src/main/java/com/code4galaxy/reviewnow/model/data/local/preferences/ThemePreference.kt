@@ -11,15 +11,13 @@ class ThemePreference(context: Context) {
         private const val KEY_THEME = "selected_theme"
     }
 
-    private val prefs: SharedPreferences =
-        context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+    private val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 
     fun saveTheme(theme: AppTheme) {
         prefs.edit {
             putString(KEY_THEME, theme.name)
         }
     }
-
 
     fun getTheme(): AppTheme {
         return AppTheme.entries.firstOrNull {
