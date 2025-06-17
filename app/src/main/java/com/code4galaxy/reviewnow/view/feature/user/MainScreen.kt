@@ -201,7 +201,7 @@ fun MainContent(
                 }
 
                 composable(Screen.Settings.route) {
-                    SettingsScreen()
+                    SettingsScreen(themeViewModel = themeViewModel)
                 }
 
             }
