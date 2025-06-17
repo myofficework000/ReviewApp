@@ -12,7 +12,7 @@
     <string name="example_password">*****</string>
     <string name="already_have_account">Already have an account?</string>
     <string name="review_connect">ReviewConnect</string>
-    <string name="welcome_to_reviewconnect">"     Welcome to \\n ReviewConnect"</string>
+    <string name="welcome_to_reviewconnect">"ReviewConnect"</string>
     <string name="sign_in_with_Google">Sign in with Google</string>
     <string name="log_out">Log out</string>
     <string name="manage_users">Manage Users</string>
@@ -58,5 +58,6 @@
     <string name="report_a_problem">Report a Problem</string>
     <string name="language">Language</string>
     <string name="terms_and_privacy_policy">Terms and Privacy Policy</string>
+    <string name="welcome_to">Welcome to</string>
 
 </resources>

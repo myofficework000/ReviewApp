@@ -40,27 +40,32 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 
 @Composable
-fun WelcomeScreen(onClick:()->Unit) {
+fun WelcomeScreen(onClick:()->Unit,
+                  onGoogleSignInSuccess: () -> Unit) {
     val context = LocalContext.current
     val firebaseAuth = FirebaseAuth.getInstance()
 
-    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
-        try {
-            val account = task.getResult(ApiException::class.java)
-            val credential = GoogleAuthProvider.getCredential(account.idToken, null)
-            firebaseAuth.signInWithCredential(credential)
-                .addOnCompleteListener { authResult ->
-                    if (authResult.isSuccessful) {
-                        Toast.makeText(context, "Google Sign-In Success", Toast.LENGTH_SHORT).show()
-                    } else {
-                        Toast.makeText(context, "Sign-In Failed", Toast.LENGTH_SHORT).show()
+    val launcher =
+        rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+            try {
+                val account = task.getResult(ApiException::class.java)
+                val credential = GoogleAuthProvider.getCredential(account.idToken, null)
+                firebaseAuth.signInWithCredential(credential)
+                    .addOnCompleteListener { authResult ->
+                        if (authResult.isSuccessful) {
+                            Toast.makeText(context, "Google Sign-In Success", Toast.LENGTH_SHORT)
+                                .show()
+                            onGoogleSignInSuccess()
+                        } else {
+                            Toast.makeText(context, "Sign-In Failed", Toast.LENGTH_SHORT).show()
+                        }
                     }
-                }
-        } catch (e: ApiException) {
-            Toast.makeText(context, "Google sign in failed: ${e.message}", Toast.LENGTH_SHORT).show()
+            } catch (e: ApiException) {
+                Toast.makeText(context, "Google sign in failed: ${e.message}", Toast.LENGTH_SHORT)
+                    .show()
+            }
         }
-    }
 
     val googleSignInClient = remember {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -83,7 +88,7 @@ fun WelcomeScreen(onClick:()->Unit) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Button(
-                onClick = { onClick()},
+                onClick = { onClick() },
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF0D426C)),
                 modifier = Modifier.fillMaxWidth(0.8f)
             ) {
@@ -124,19 +129,40 @@ fun WelcomeScreen(onClick:()->Unit) {
             dimensionResource(id = R.dimen.dimen_36_sp).toSp()
         }
 
-        Text(
-            text = stringResource(R.string.welcome_to_reviewconnect),
-            color = Color.Black,
-            fontSize = dimen36sp,
-            fontWeight = FontWeight.Bold,
+        Box(
+            modifier = Modifier
+                .fillMaxSize(),
+            contentAlignment = Alignment.Center // This centers the Column both vertically and horizontally
+        ) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                val dimen36sp = with(LocalDensity.current) {
+                    dimensionResource(id = R.dimen.dimen_36_sp).toSp()
+                }
 
-            modifier = Modifier.align(Alignment.Center)
-        )
+                Text(
+                    text = stringResource(R.string.welcome_to),
+                    color = Color.Black,
+                    fontSize = dimen36sp,
+                    fontWeight = FontWeight.Bold
+                )
+
+                Spacer(modifier = Modifier.height(dimensionResource(R.dimen.dimen_16_dp)))
+
+                Text(
+                    text = stringResource(R.string.welcome_to_reviewconnect),
+                    color = Color.Black,
+                    fontSize = dimen36sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+        }
     }
 }
 
 @Preview
 @Composable
 fun WelcomeScreenPreview() {
-//    WelcomeScreen()
+  //WelcomeScreen()
 }
