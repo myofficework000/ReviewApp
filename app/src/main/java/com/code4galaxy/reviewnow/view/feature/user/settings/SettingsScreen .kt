@@ -37,7 +37,7 @@ import com.code4galaxy.reviewnow.viewmodel.ThemeViewModel
 
 @Composable
 fun SettingsScreen(
-    themeViewModel: ThemeViewModel = hiltViewModel()
+    themeViewModel: ThemeViewModel
 ) {
     val languageViewModel: LanguageViewModel = hiltViewModel()
 
