@@ -55,7 +55,11 @@ fun NavGraphBuilder.userNavGraph(
         ) {
             val brandId = it.arguments?.getString("brandId") ?: ""
             val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
-            SubmitReviewScreen(brandId = brandId, userId = userId)
+            SubmitReviewScreen(
+                brandId = brandId,
+                userId = userId,
+                navController = navController
+            )
         }
 
         composable(Screen.MyReviews.route) {

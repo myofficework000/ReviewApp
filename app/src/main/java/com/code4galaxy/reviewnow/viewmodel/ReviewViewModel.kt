@@ -22,6 +22,9 @@ class ReviewViewModel @Inject constructor(
     private val _brandReviews = MutableStateFlow<UiState<List<Review>>>(UiState.Loading)
     val brandReviews: StateFlow<UiState<List<Review>>> = _brandReviews
 
+    private val _userReviews = MutableStateFlow<UiState<List<Review>>>(UiState.Loading)
+    val userReviews: StateFlow<UiState<List<Review>>> = _userReviews
+
     fun submitReview(review: Review) {
         viewModelScope.launch {
             _submitReviewState.value = UiState.Loading
@@ -33,6 +36,13 @@ class ReviewViewModel @Inject constructor(
         viewModelScope.launch {
             userRepository.getReviewsForBrand(brandId)
                 .collect { _brandReviews.value = it }
+        }
+    }
+
+    fun getReviewsForUser(userId: String) {
+        viewModelScope.launch {
+            userRepository.getMyReviews(userId)
+                .collect { _userReviews.value = it }
         }
     }
 }

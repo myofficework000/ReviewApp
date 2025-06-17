@@ -35,15 +35,19 @@ import com.code4galaxy.reviewnow.viewmodel.ReviewViewModel
 import com.code4galaxy.reviewnow.model.UiState
 import com.code4galaxy.reviewnow.model.Review
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import com.google.firebase.firestore.FirebaseFirestore
 
 @Composable
 fun BrandDetailScreen(
     brandId: String,
     modifier: Modifier = Modifier,
     onSubmit: () -> Unit,
-    viewModel: ReviewViewModel = hiltViewModel() // ✅ Injected ViewModel
+    viewModel: ReviewViewModel = hiltViewModel() // Injected ViewModel
 ) {
-    // 🔹 Load and observe reviews
+    //  Load and observe reviews
     LaunchedEffect(brandId) {
         viewModel.getReviewsForBrand(brandId)
     }
@@ -59,7 +63,7 @@ fun BrandDetailScreen(
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.dimen_16_dp)))
 
         Text(
-            text = "Brand ID: $brandId", // You can replace with actual brand name from another ViewModel
+            text = brandId, // You can replace with actual brand name from another ViewModel
             fontSize = 30.sp,
             fontWeight = FontWeight.Bold
         )
@@ -106,7 +110,7 @@ fun BrandDetailScreen(
 
         Spacer(modifier = Modifier.height(14.dp))
 
-        // 🔹 Render reviews using UiState
+        // Render reviews using UiState
         when (reviewState) {
             is UiState.Loading -> CircularProgressIndicator()
 
@@ -122,9 +126,13 @@ fun BrandDetailScreen(
                 if (reviews.isEmpty()) {
                     Text("No reviews yet. Be the first to write one!")
                 } else {
-                    reviews.forEach {
+                    reviews.forEach {review ->
                         Spacer(modifier = Modifier.height(12.dp))
-                        UserReview(name = it.userId, rating = it.rating.toFloat(), review = it.comment)
+                        UserReview(
+                            userId = review.userId,
+                            rating = review.rating.toFloat(),
+                            review = review.comment
+                        )
                     }
                 }
             }
@@ -133,7 +141,28 @@ fun BrandDetailScreen(
 }
 
 @Composable
-fun UserReview(name: String, rating: Float, review: String) {
+fun UserReview(userId: String, rating: Float, review: String) {
+
+    var userName by remember { mutableStateOf("Loading...") }
+    LaunchedEffect(userId) {
+        if (userId.isNotEmpty()) {
+            FirebaseFirestore.getInstance()
+                .collection("users")
+                .document(userId)
+                .get()
+                .addOnSuccessListener { document ->
+                    userName = document.getString("name") ?: "Unknown"
+                }
+                .addOnFailureListener {
+                    userName = "Unknown"
+                }
+        } else {
+            userName = "Unknown"
+        }
+    }
+
+
+
     Column {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -147,7 +176,7 @@ fun UserReview(name: String, rating: Float, review: String) {
                 )
                 Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.dimen_10_dp)))
                 Column {
-                    Text(text = name, fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                    Text(text = userId, fontWeight = FontWeight.Bold, fontSize = 16.sp)
                     Row {
                         repeat(5) { i ->
                             Icon(
@@ -168,6 +197,8 @@ fun UserReview(name: String, rating: Float, review: String) {
         Text(text = review, fontSize = 15.sp)
     }
 }
+
+
 
 @Preview(showBackground = true)
 @Composable
