@@ -11,6 +11,7 @@ import androidx.compose.material.icons.filled.Star
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import com.code4galaxy.reviewnow.R
 import com.code4galaxy.reviewnow.model.Review
 import com.code4galaxy.reviewnow.model.UiState
@@ -151,6 +152,5 @@ fun SubmitReviewScreen(
         }
     }
 }
-
 
 
