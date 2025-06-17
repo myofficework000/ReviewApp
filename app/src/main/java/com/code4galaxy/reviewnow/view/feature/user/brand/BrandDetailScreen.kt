@@ -3,12 +3,14 @@ package com.code4galaxy.reviewnow.view.feature.user.brand
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.ArrowBack
@@ -80,7 +82,11 @@ fun BrandDetailScreen(
                 )
             }
             Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.dimen_6_dp)))
-            Text("4.5", fontSize = 18.sp, fontWeight = FontWeight.Bold) // You can average this later
+            Text(
+                "4.5",
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold
+            ) // You can average this later
         }
 
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.dimen_6_dp)))
@@ -126,18 +132,23 @@ fun BrandDetailScreen(
                 if (reviews.isEmpty()) {
                     Text("No reviews yet. Be the first to write one!")
                 } else {
-                    reviews.forEach {review ->
-                        Spacer(modifier = Modifier.height(12.dp))
-                        UserReview(
-                            userId = review.userId,
-                            rating = review.rating.toFloat(),
-                            review = review.comment
-                        )
+                    LazyColumn(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        items(reviews) { review ->
+                            UserReview(
+                                userId = review.userId,
+                                rating = review.rating.toFloat(),
+                                review = review.comment
+                            )
+                        }
                     }
                 }
             }
         }
     }
+
 }
 
 @Composable
@@ -162,7 +173,6 @@ fun UserReview(userId: String, rating: Float, review: String) {
     }
 
 
-
     Column {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -176,7 +186,7 @@ fun UserReview(userId: String, rating: Float, review: String) {
                 )
                 Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.dimen_10_dp)))
                 Column {
-                    Text(text = userId, fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                    Text(text = userName, fontWeight = FontWeight.Bold, fontSize = 16.sp)
                     Row {
                         repeat(5) { i ->
                             Icon(
@@ -200,11 +210,3 @@ fun UserReview(userId: String, rating: Float, review: String) {
 
 
 
-@Preview(showBackground = true)
-@Composable
-fun PreviewBrandDetailScreen() {
-    BrandDetailScreen(
-        brandId = "b1",
-        onSubmit = {}
-    )
-}
