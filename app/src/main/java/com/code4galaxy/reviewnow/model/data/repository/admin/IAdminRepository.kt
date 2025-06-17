@@ -1,13 +1,9 @@
 package com.code4galaxy.reviewnow.model.data.repository.admin
 
-
-
-
 import com.code4galaxy.reviewnow.model.Brand
 import com.code4galaxy.reviewnow.model.Review
 import com.code4galaxy.reviewnow.model.UiState
 import com.code4galaxy.reviewnow.model.User
-
 import kotlinx.coroutines.flow.Flow
 
 interface IAdminRepository {
@@ -29,4 +25,8 @@ interface IAdminRepository {
     fun getBrandDetails(brandId: String): Flow<UiState<Brand>>
 
     fun getReviewsForBrand(brandId: String): Flow<UiState<List<Review>>>
+
+    fun getAllUsers(): Flow<UiState<List<User>>>
+
+    fun suspendUser(userId: String): Flow<UiState<String>>
 }
