@@ -1,23 +1,42 @@
 package com.code4galaxy.reviewnow.view.feature.user.submit_review
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.*
-import androidx.compose.ui.unit.sp
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.code4galaxy.reviewnow.R
 import com.code4galaxy.reviewnow.model.Review
 import com.code4galaxy.reviewnow.model.UiState
-import com.code4galaxy.reviewnow.viewmodel.ReviewViewModel
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.code4galaxy.reviewnow.view.navigation.Screen
+import com.code4galaxy.reviewnow.viewmodel.ReviewViewModel
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.delay
 
@@ -38,7 +57,7 @@ fun SubmitReviewScreen(
     var userName by remember { mutableStateOf("Loading...") }
 
     LaunchedEffect(userId) {
-        FirebaseFirestore.getInstance()
+       /* FirebaseFirestore.getInstance()
             .collection("users")
             .document(userId)
             .get()
@@ -47,12 +66,12 @@ fun SubmitReviewScreen(
             }
             .addOnFailureListener {
                 userName = "Unknown"
-            }
+            }*/
     }
 
-    Column(modifier = modifier.padding(dimensionResource(id = R.dimen.dimen_16_dp))) {
+    Column(modifier = modifier.fillMaxSize().padding(dimensionResource(id = R.dimen.dimen_16_dp))) {
         Icon(
-            imageVector = Icons.Default.ArrowBack,
+            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
             contentDescription = "Back",
             modifier = Modifier.size(dimensionResource(id = R.dimen.dimen_28_dp))
         )
@@ -131,12 +150,14 @@ fun SubmitReviewScreen(
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Medium
             )
+
             is UiState.Error -> Text(
                 text = "Error: ${(submitState as UiState.Error).message}",
                 color = Color.Red,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Medium
             )
+
             else -> {}
         }
 
@@ -150,6 +171,16 @@ fun SubmitReviewScreen(
             }
         }
     }
+}
+
+@Preview
+@Composable
+private fun SubmitReviewScreenPreview() {
+    SubmitReviewScreen(
+        brandId = "brandId",
+        userId = "userId",
+        navController = NavController(LocalContext.current)
+    )
 }
 
 
