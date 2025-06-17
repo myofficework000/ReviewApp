@@ -21,16 +21,36 @@ fun NavGraphBuilder.adminNavGraph(navController: NavHostController) {
     ) {
 
         composable(Screen.ManageBrands.route) { AddBrandScreen() }
-        composable(Screen.ADMIN.route) { AdminHomeScreen(
-            onLogoutNavigate = {
-                navController.navigate(Screen.Welcome.route) {
-                    popUpTo(0) // clear backstack to avoid returning on back press
+        composable(Screen.ADMIN.route) {
+            AdminHomeScreen(
+                onManageUsersClick = {
+                    navController.navigate(Screen.ManageUsers.route)
+                },
+                onAddBrandClick = {
+                    navController.navigate(Screen.ManageBrands.route)
+                },
+                onFlaggedReviewsClick = {
+                    navController.navigate(Screen.FlaggedReviews.route)
+                },
+                onModerateReviewsClick = {
+                    navController.navigate(Screen.UserReviews.route)
+                },
+                onLogoutNavigate = {
+                    navController.navigate(Screen.Welcome.route) {
+                        popUpTo(0)
+                    }
                 }
-            }
-        ) }
+            )
+        }
+
         composable(Screen.FlaggedReviews.route) { FlaggedReviewScreen() }
         composable(Screen.UserReviews.route) { UserReviewsScreen() }
-        composable(Screen.ManageUsers.route) { ManageUsersScreen() }
+        composable(Screen.ManageUsers.route) {
+            ManageUsersScreen(
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
 
 
     }

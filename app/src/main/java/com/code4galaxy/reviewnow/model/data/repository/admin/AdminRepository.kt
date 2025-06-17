@@ -20,11 +20,7 @@ class AdminRepository(
         return try {
             val result = auth.createUserWithEmailAndPassword(user.email, password).await()
             val adminId = result.user?.uid ?: return UiState.Error("Admin ID not found")
-
-            // userType's default value is user here we need to change to admin
-
             val newAdmin = user.copy(id = adminId, userType = "admin")
-
             firestore.collection("users").document(adminId).set(newAdmin).await()
             UiState.Success("Admin registered successfully")
         } catch (e: Exception) {
@@ -34,18 +30,13 @@ class AdminRepository(
 
     override suspend fun login(email: String, password: String): UiState<User> {
         return try {
-
             val result = auth.signInWithEmailAndPassword(email, password).await()
             val adminId = result.user?.uid ?: return UiState.Error("Admin ID not found")
-
             val snapshot = firestore.collection("users").document(adminId).get().await()
             if (!snapshot.exists()) return UiState.Error("Admin profile not found")
-
             val admin = snapshot.toObject(User::class.java)
                 ?: return UiState.Error("Failed to parse admin data")
-
             if (admin.userType != "admin") return UiState.Error("Not an admin account")
-
             UiState.Success(admin)
         } catch (e: Exception) {
             UiState.Error(e.localizedMessage ?: "Login failed")
@@ -53,7 +44,6 @@ class AdminRepository(
     }
 
     override suspend fun logout(): UiState<String> {
-
         return try {
             auth.signOut()
             UiState.Success("Admin logged out")
@@ -69,7 +59,6 @@ class AdminRepository(
                     trySend(UiState.Error(error.localizedMessage ?: "Unknown error"))
                     return@addSnapshotListener
                 }
-
                 val admin = snapshot?.toObject(User::class.java)
                 if (admin != null && admin.userType == "admin") {
                     trySend(UiState.Success(admin))
@@ -77,7 +66,6 @@ class AdminRepository(
                     trySend(UiState.Error("Admin data not found"))
                 }
             }
-
         awaitClose { listener.remove() }
     }
 
@@ -109,11 +97,9 @@ class AdminRepository(
                     trySend(UiState.Error(error.localizedMessage ?: "Unknown error"))
                     return@addSnapshotListener
                 }
-
                 val brands = snapshot?.toObjects(Brand::class.java).orEmpty()
                 trySend(UiState.Success(brands))
             }
-
         awaitClose { listener.remove() }
     }
 
@@ -124,7 +110,6 @@ class AdminRepository(
                     trySend(UiState.Error(error.localizedMessage ?: "Unknown error"))
                     return@addSnapshotListener
                 }
-
                 val brand = snapshot?.toObject(Brand::class.java)
                 if (brand != null) {
                     trySend(UiState.Success(brand))
@@ -132,7 +117,6 @@ class AdminRepository(
                     trySend(UiState.Error("Brand not found"))
                 }
             }
-
         awaitClose { listener.remove() }
     }
 
@@ -144,11 +128,38 @@ class AdminRepository(
                     trySend(UiState.Error(error.localizedMessage ?: "Unknown error"))
                     return@addSnapshotListener
                 }
-
                 val reviews = snapshot?.toObjects(Review::class.java).orEmpty()
                 trySend(UiState.Success(reviews))
             }
-
         awaitClose { listener.remove() }
     }
+
+    override fun getAllUsers(): Flow<UiState<List<User>>> = callbackFlow {
+        val listener = firestore.collection("users")
+            //.whereEqualTo("userType", "user") // Uncomment to exclude admins
+            .addSnapshotListener { snapshot, error ->
+                if (error != null) {
+                    trySend(UiState.Error(error.localizedMessage ?: "Error fetching users"))
+                    return@addSnapshotListener
+                }
+                val users = snapshot?.toObjects(User::class.java).orEmpty()
+                trySend(UiState.Success(users))
+            }
+        awaitClose { listener.remove() }
+    }
+
+    override fun suspendUser(userId: String): Flow<UiState<String>> = callbackFlow {
+        firestore.collection("users").document(userId)
+            .update("isSuspended", true)
+            .addOnSuccessListener {
+                trySend(UiState.Success("User suspended successfully"))
+                close()
+            }
+            .addOnFailureListener { e ->
+                trySend(UiState.Error(e.localizedMessage ?: "Failed to suspend user"))
+                close()
+            }
+        awaitClose { /* no-op */ }
+    }
+
 }
