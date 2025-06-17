@@ -11,19 +11,21 @@ import androidx.compose.material.icons.filled.Star
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import com.code4galaxy.reviewnow.R
 import com.code4galaxy.reviewnow.model.Review
 import com.code4galaxy.reviewnow.model.UiState
 import com.code4galaxy.reviewnow.viewmodel.ReviewViewModel
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.navigation.NavController
+import com.code4galaxy.reviewnow.view.navigation.Screen
+import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.delay
 
 @Composable
 fun SubmitReviewScreen(
     brandId: String,
     userId: String,
+    navController: NavController,
     modifier: Modifier = Modifier,
     viewModel: ReviewViewModel = hiltViewModel()
 ) {
@@ -33,6 +35,21 @@ fun SubmitReviewScreen(
 
     val submitState by viewModel.submitReviewState.collectAsState()
 
+    var userName by remember { mutableStateOf("Loading...") }
+
+    LaunchedEffect(userId) {
+        FirebaseFirestore.getInstance()
+            .collection("users")
+            .document(userId)
+            .get()
+            .addOnSuccessListener { document ->
+                userName = document.getString("name") ?: "Unknown"
+            }
+            .addOnFailureListener {
+                userName = "Unknown"
+            }
+    }
+
     Column(modifier = modifier.padding(dimensionResource(id = R.dimen.dimen_16_dp))) {
         Icon(
             imageVector = Icons.Default.ArrowBack,
@@ -41,6 +58,10 @@ fun SubmitReviewScreen(
         )
 
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.dimen_16_dp)))
+
+        Text("Hello, $userName", fontSize = 18.sp, fontWeight = FontWeight.Medium)
+
+        Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.dimen_12_dp)))
 
         Text(
             text = "Write a Review",
@@ -101,10 +122,35 @@ fun SubmitReviewScreen(
 
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.dimen_16_dp)))
 
+        val submitState by viewModel.submitReviewState.collectAsState()
+
         when (submitState) {
-            is UiState.Loading -> CircularProgressIndicator()
-            is UiState.Success -> Text("Review submitted!", color = Color.Green)
-            is UiState.Error -> Text("Error: ${(submitState as UiState.Error).message}", color = Color.Red)
+            is UiState.Success -> Text(
+                text = "Review submitted!",
+                color = Color.Green,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Medium
+            )
+            is UiState.Error -> Text(
+                text = "Error: ${(submitState as UiState.Error).message}",
+                color = Color.Red,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Medium
+            )
+            else -> {}
+        }
+
+        LaunchedEffect(submitState) {
+            if (submitState is UiState.Success) {
+                // Delay optional: gives time for UI to show success message
+                delay(4000)
+                navController.navigate(Screen.MyReviews.route) {
+                    popUpTo(Screen.SubmitReview.route) { inclusive = true }
+                }
+            }
         }
     }
 }
+
+
+

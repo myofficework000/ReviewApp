@@ -38,7 +38,7 @@ fun RootNavGraph(navController: NavHostController, navigationViewModel: Navigati
 
             SplashScreen({
 
-                when (navigationViewModel.getUserType()) {
+                when (USER_TYPE) {
                     USER_TYPE -> {
                         navController.navigate(Screen.USER.route) {
                             popUpTo(Screen.Splash.route) { inclusive = true }

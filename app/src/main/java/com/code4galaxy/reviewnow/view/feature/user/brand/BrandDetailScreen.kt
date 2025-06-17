@@ -3,12 +3,14 @@ package com.code4galaxy.reviewnow.view.feature.user.brand
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.ArrowBack
@@ -35,15 +37,19 @@ import com.code4galaxy.reviewnow.viewmodel.ReviewViewModel
 import com.code4galaxy.reviewnow.model.UiState
 import com.code4galaxy.reviewnow.model.Review
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import com.google.firebase.firestore.FirebaseFirestore
 
 @Composable
 fun BrandDetailScreen(
     brandId: String,
     modifier: Modifier = Modifier,
     onSubmit: () -> Unit,
-    viewModel: ReviewViewModel = hiltViewModel() // ✅ Injected ViewModel
+    viewModel: ReviewViewModel = hiltViewModel() // Injected ViewModel
 ) {
-    // 🔹 Load and observe reviews
+    //  Load and observe reviews
     LaunchedEffect(brandId) {
         viewModel.getReviewsForBrand(brandId)
     }
@@ -59,7 +65,7 @@ fun BrandDetailScreen(
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.dimen_16_dp)))
 
         Text(
-            text = "Brand ID: $brandId", // You can replace with actual brand name from another ViewModel
+            text = brandId, // You can replace with actual brand name from another ViewModel
             fontSize = 30.sp,
             fontWeight = FontWeight.Bold
         )
@@ -76,7 +82,11 @@ fun BrandDetailScreen(
                 )
             }
             Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.dimen_6_dp)))
-            Text("4.5", fontSize = 18.sp, fontWeight = FontWeight.Bold) // You can average this later
+            Text(
+                "4.5",
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold
+            ) // You can average this later
         }
 
         Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.dimen_6_dp)))
@@ -106,7 +116,7 @@ fun BrandDetailScreen(
 
         Spacer(modifier = Modifier.height(14.dp))
 
-        // 🔹 Render reviews using UiState
+        // Render reviews using UiState
         when (reviewState) {
             is UiState.Loading -> CircularProgressIndicator()
 
@@ -122,18 +132,47 @@ fun BrandDetailScreen(
                 if (reviews.isEmpty()) {
                     Text("No reviews yet. Be the first to write one!")
                 } else {
-                    reviews.forEach {
-                        Spacer(modifier = Modifier.height(12.dp))
-                        UserReview(name = it.userId, rating = it.rating.toFloat(), review = it.comment)
+                    LazyColumn(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        items(reviews) { review ->
+                            UserReview(
+                                userId = review.userId,
+                                rating = review.rating.toFloat(),
+                                review = review.comment
+                            )
+                        }
                     }
                 }
             }
         }
     }
+
 }
 
 @Composable
-fun UserReview(name: String, rating: Float, review: String) {
+fun UserReview(userId: String, rating: Float, review: String) {
+
+    var userName by remember { mutableStateOf("Loading...") }
+    LaunchedEffect(userId) {
+        if (userId.isNotEmpty()) {
+            FirebaseFirestore.getInstance()
+                .collection("users")
+                .document(userId)
+                .get()
+                .addOnSuccessListener { document ->
+                    userName = document.getString("name") ?: "Unknown"
+                }
+                .addOnFailureListener {
+                    userName = "Unknown"
+                }
+        } else {
+            userName = "Unknown"
+        }
+    }
+
+
     Column {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -147,7 +186,7 @@ fun UserReview(name: String, rating: Float, review: String) {
                 )
                 Spacer(modifier = Modifier.width(dimensionResource(id = R.dimen.dimen_10_dp)))
                 Column {
-                    Text(text = name, fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                    Text(text = userName, fontWeight = FontWeight.Bold, fontSize = 16.sp)
                     Row {
                         repeat(5) { i ->
                             Icon(
@@ -169,11 +208,5 @@ fun UserReview(name: String, rating: Float, review: String) {
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun PreviewBrandDetailScreen() {
-    BrandDetailScreen(
-        brandId = "b1",
-        onSubmit = {}
-    )
-}
+
+
