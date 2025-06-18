@@ -5,9 +5,6 @@
       <SelectionState runConfigName="PreviewBrandDetailScreen (1)">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="HomeScreenPreview">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
       <SelectionState runConfigName="ReviewNow.app">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
