@@ -26,13 +26,23 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.code4galaxy.reviewnow.R
+import com.code4galaxy.reviewnow.model.UiState
+import com.code4galaxy.reviewnow.viewmodel.UserViewModel
 
 @Composable
 fun HomeScreen(modifier: Modifier = Modifier,
+               viewModel: UserViewModel = hiltViewModel(),
                onClick:(brandId:String)->Unit={}) {
 
+    val brandState by viewModel.brandsState.collectAsState()
     var searchText by remember { mutableStateOf("") }
+
+    LaunchedEffect(Unit) {
+        viewModel.getAllBrands()
+    }
+
 
     // Main vertical layout of the screen
     Column(modifier = Modifier.fillMaxSize()) {
@@ -56,28 +66,36 @@ fun HomeScreen(modifier: Modifier = Modifier,
                 .fillMaxWidth()
                 .padding(horizontal = dimensionResource(id = R.dimen.dimen_16_dp))
         ) {
-            // Scrollable list of brand cards
-            LazyColumn(modifier = Modifier.fillMaxSize()) {
-                items(
-                    listOf(
-                        Brand("Starbucks", "4.5", "Based on 120 reviews"),
-                        Brand("Target", "4.0", "Average rating as far"),
-                        Brand("Walmart", "4.8", "Average rating for lar"),
-                        Brand("Costco", "4.7", "Rated by regular members"),
-                        Brand("Amazon", "4.3", "Review count: 200"),
-                        Brand("Apple", "4.8", "Trusted brand by millions"),
-                        Brand("Nike", "4.2", "Reviews from active users"),
-                        Brand("IKEA", "4.6", "Great value and design")
-                    )
-                ) { brand ->
-                    BrandCardUI(
-                        name = brand.name,
-                        rating = brand.rating,
-                        reviewText = brand.reviewText,
-                        onClick = { onClick(brand.name) }
-                    )
+            when (val state = brandState) {
+                is UiState.Loading -> {
+                    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        CircularProgressIndicator()
+                    }
+                }
+                is UiState.Success -> {
+                    val filteredList = state.data.filter {
+                        it.name.contains(searchText, ignoreCase = true)
+                    }
+
+                    LazyColumn(modifier = Modifier.fillMaxSize()) {
+                        items(state.data) { brand ->
+                            BrandCardUI(
+                                name = brand.name,
+                                rating = brand.rating,
+                                reviewText = brand.description,
+                                // THIS triggers the navigation
+                                onClick = { onClick(brand.id) }
+                            )
+                        }
+                    }
+                }
+                is UiState.Error -> {
+                    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        Text("Error: ${state.message}")
+                    }
                 }
             }
+
         }
     }
 }
@@ -176,14 +194,3 @@ fun BrandCardUI(
     }
 }
 
-
-// Data class representing a brand's information
-data class Brand(val name: String, val rating: String, val reviewText: String)
-
-
-
-@Preview(showBackground = true)
-@Composable
-fun HomeScreenPreview() {
-    HomeScreen()
-}

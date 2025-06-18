@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -55,7 +56,7 @@ fun BrandDetailScreen(
     }
     val reviewState by viewModel.brandReviews.collectAsState()
 
-    Column(modifier = modifier.padding(dimensionResource(id = R.dimen.dimen_16_dp))) {
+    Column(modifier = modifier.fillMaxSize().padding(dimensionResource(id = R.dimen.dimen_16_dp))) {
         Icon(
             imageVector = Icons.Default.ArrowBack,
             contentDescription = "Back",
