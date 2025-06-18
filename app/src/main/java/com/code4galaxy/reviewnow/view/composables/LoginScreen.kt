@@ -29,10 +29,12 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.code4galaxy.reviewnow.R
+import com.code4galaxy.reviewnow.viewmodel.NavigationViewModel
 
 @Composable
-fun LoginScreen(onRegisterClick: () -> Unit,onSignInClick:()->Unit) {
+fun LoginScreen(onRegisterClick: () -> Unit,onSignInClick:()->Unit,navigationViewModel: NavigationViewModel= hiltViewModel()) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
@@ -99,6 +101,7 @@ fun LoginScreen(onRegisterClick: () -> Unit,onSignInClick:()->Unit) {
             Button(
                 onClick = {
                    onSignInClick()
+
                 },
                 modifier = Modifier
                     .fillMaxWidth()

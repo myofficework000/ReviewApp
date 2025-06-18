@@ -25,7 +25,7 @@ enum class AdminNavigationItem(
         route=Screen.ManageUsers.route
     ),
     UserReviews(
-        icon = R.drawable.profile,
+        icon = R.drawable.review,
         title = "Reviews",
         route=Screen.UserReviews.route
     ),

@@ -15,7 +15,7 @@ enum class NavigationItem(
         route=Screen.Home.route
     ),
     Profile(
-        icon = R.drawable.profile,
+        icon = R.drawable.person,
         title = "Profile",
         route=Screen.Profile.route
     ),

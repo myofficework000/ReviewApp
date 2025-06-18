@@ -20,6 +20,9 @@ class NavigationViewModel @Inject constructor(
     fun getUserType():String{
         return userPrefs.getUserType()
     }
+    fun saveUserType(userType:String){
+          userPrefs.saveUserType(userType)
+    }
 
     fun navigateTo(screen: Screen) {
         _currentScreen.value = screen
