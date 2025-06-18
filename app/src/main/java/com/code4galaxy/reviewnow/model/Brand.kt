@@ -5,6 +5,6 @@ data class Brand(
     val adminId: String = "",
     val name: String = "",
     val description: String = "",
-    val rating : String = ""
+    val rating: String = ""
 )
 

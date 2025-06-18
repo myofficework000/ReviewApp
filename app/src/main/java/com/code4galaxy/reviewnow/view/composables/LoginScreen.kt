@@ -179,7 +179,7 @@ fun LoginScreen(onRegisterClick: () -> Unit,onSignInClick:()->Unit,navigationVie
 @Composable
 private fun LoginScreenPreview() {
     LoginScreen(
-        onRegisterClick = {},  // Dummy lambdas for preview
+        onRegisterClick = {},
         onSignInClick = {}
     )
 }
