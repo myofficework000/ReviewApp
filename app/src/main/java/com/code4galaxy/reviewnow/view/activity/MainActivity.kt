@@ -5,6 +5,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.collectAsState
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.code4galaxy.reviewnow.view.navigation.SetUpAppLaunch
 import com.code4galaxy.reviewnow.view.theme.AppThemeWrapper
 import com.code4galaxy.reviewnow.viewmodel.NavigationViewModel
@@ -13,17 +16,21 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
     private val navigationViewModel: NavigationViewModel by viewModels()
-    private val themeViewModel: ThemeViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
         setContent {
-            AppThemeWrapper(themeViewModel = themeViewModel) {
+            val themeViewModel: ThemeViewModel = hiltViewModel()
+            val selectedTheme by themeViewModel.theme.collectAsState()
+
+            AppThemeWrapper(selectedTheme = selectedTheme) {
                 SetUpAppLaunch(
                     navigationViewModel = navigationViewModel,
-                    themeViewModel = themeViewModel // ✅ Pass it here
+                    themeViewModel = themeViewModel
                 )
             }
         }

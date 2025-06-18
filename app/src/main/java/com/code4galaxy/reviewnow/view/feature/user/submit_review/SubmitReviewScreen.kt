@@ -61,16 +61,7 @@ fun SubmitReviewScreen(
 
     LaunchedEffect(userId) {
         userViewModel.getUserData(userId)
-        /* FirebaseFirestore.getInstance()
-             .collection("users")
-             .document(userId)
-             .get()
-             .addOnSuccessListener { document ->
-                 userName = document.getString("name") ?: "Unknown"
-             }
-             .addOnFailureListener {
-                 userName = "Unknown"
-             }*/
+      
     }
 
     LaunchedEffect(userState) {
@@ -79,6 +70,7 @@ fun SubmitReviewScreen(
         } else if (userState is UiState.Error) {
             userName = "Unknown"
         }
+
     }
 
     Column(modifier = modifier.fillMaxSize().padding(dimensionResource(id = R.dimen.dimen_16_dp))) {
@@ -184,4 +176,5 @@ fun SubmitReviewScreen(
         }
     }
 }
+
 

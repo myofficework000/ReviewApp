@@ -19,6 +19,31 @@ class AdminViewModel @Inject constructor(
 
     // TODO (Ishak): seperate the viewmodel for clean code ...
 
+    private val _allUsersState = MutableStateFlow<UiState<List<User>>>(UiState.Loading)
+    val allUsersState: StateFlow<UiState<List<User>>> = _allUsersState
+
+    fun fetchAllUsers() = viewModelScope.launch {
+        repository.getAllUsers().collect {
+            _allUsersState.value = it
+        }
+    }
+
+    private val _suspendUserState = MutableStateFlow<UiState<String>>(UiState.Loading)
+    val suspendUserState: StateFlow<UiState<String>> = _suspendUserState
+
+    fun suspendUser(userId: String) {
+        viewModelScope.launch {
+            repository.suspendUser(userId).collect {
+                _suspendUserState.value = it
+                fetchAllUsers()
+            }
+        }
+    }
+
+
+
+
+
 
     private val _registerState = MutableStateFlow<UiState<String>>(UiState.Loading)
     val registerState: StateFlow<UiState<String>> = _registerState

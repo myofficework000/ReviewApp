@@ -2,47 +2,43 @@ package com.code4galaxy.reviewnow.view.feature.admin.home
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.code4galaxy.reviewnow.R
+import com.code4galaxy.reviewnow.model.User
+import com.code4galaxy.reviewnow.model.UiState
+import com.code4galaxy.reviewnow.viewmodel.AdminViewModel
 
 @Composable
 fun ManageUsersScreen(
-    //we can change accordingly to our firebase
-    userList: List<String> = listOf("John Doe", "Jane Smith", "Alex Ray"),
     onBackClick: () -> Unit = {},
-    onSuspendClick: (String) -> Unit = {}
+    viewModel: AdminViewModel = hiltViewModel()
 ) {
-
     val dimen8 = dimensionResource(id = R.dimen.dimen_8_dp)
     val dimen10 = dimensionResource(id = R.dimen.dimen_10_dp)
     val dimen16 = dimensionResource(id = R.dimen.dimen_16_dp)
 
+    val usersState by viewModel.allUsersState.collectAsState()
+
+
+    // Fetch users when screen loads
+    LaunchedEffect(Unit) {
+        viewModel.fetchAllUsers()
+    }
 
     Column(
         modifier = Modifier
@@ -51,29 +47,53 @@ fun ManageUsersScreen(
     ) {
         IconButton(onClick = { onBackClick() }) {
             Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
-
         }
 
         Text(
-            //will replace with the users list
             text = "Users",
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(vertical = dimen8)
         )
 
-        LazyColumn {
-            items(userList) { userName ->
-                UserItem(name = userName, onSuspendClick = { onSuspendClick(userName) })
-                Spacer(modifier = Modifier.height(dimen10))
+        when (usersState) {
+            is UiState.Loading -> {
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    CircularProgressIndicator()
+                }
+            }
+
+            is UiState.Error -> {
+                val error = (usersState as UiState.Error).message
+                Text(
+                    text = "Error: $error",
+                    color = Color.Red,
+                    modifier = Modifier.padding(top = dimen10)
+                )
+            }
+
+            is UiState.Success -> {
+                val users = (usersState as UiState.Success).data
+                LazyColumn {
+                    items(users) { user ->
+                        UserItem(
+                            user = user,
+                            onSuspendClick = { viewModel.suspendUser(user.id) }
+                        )
+                        Spacer(modifier = Modifier.height(dimen10))
+                    }
+                }
+
             }
         }
     }
 }
 
 @Composable
-fun UserItem(name: String, onSuspendClick: () -> Unit) {
-    // dimen values
+fun UserItem(
+    user: User,
+    onSuspendClick: () -> Unit
+) {
     val dimen8 = dimensionResource(id = R.dimen.dimen_8_dp)
     val dimen12 = dimensionResource(id = R.dimen.dimen_12_dp)
     val dimen40 = dimensionResource(id = R.dimen.dimen_40_dp)
@@ -99,21 +119,28 @@ fun UserItem(name: String, onSuspendClick: () -> Unit) {
                 modifier = Modifier.size(dimen40)
             )
             Spacer(modifier = Modifier.width(dimen12))
-            Text(text = name, style = MaterialTheme.typography.bodyLarge)
+            Text(
+                text = if (user.name.isNotBlank()) user.name else user.email,
+                style = MaterialTheme.typography.bodyLarge
+            )
         }
 
-        Text(
-            text = "Suspend",
-            color = MaterialTheme.colorScheme.primary,
-            modifier = Modifier
-                .clickable { onSuspendClick() }
-                .padding(horizontal = dimen8, vertical = dimen8 / 2)
-        )
+        if (user.isSuspended) {
+            Text(
+                text = "Suspended",
+                color = Color.Red,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(horizontal = dimen8, vertical = dimen8 / 2)
+            )
+        } else {
+            Text(
+                text = "Suspend",
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier
+                    .clickable { onSuspendClick() }
+                    .padding(horizontal = dimen8, vertical = dimen8 / 2)
+            )
+        }
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun ManageUsersScreenPreview() {
-    ManageUsersScreen()
-}
