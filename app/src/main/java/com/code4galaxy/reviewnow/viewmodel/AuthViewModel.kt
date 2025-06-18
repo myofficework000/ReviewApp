@@ -7,6 +7,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.code4galaxy.reviewnow.R
 import com.code4galaxy.reviewnow.model.User
+import com.code4galaxy.reviewnow.model.data.local.preferences.UserPreferenceManager
 import com.code4galaxy.reviewnow.view.RegisterState
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -27,15 +28,37 @@ class AuthViewModel @Inject constructor(
             .requestEmail()
             .build()
         val googleClient = GoogleSignIn.getClient(context, gso)
-        googleClient.signOut().addOnCompleteListener {
-            onLoggedOut()
-        }
+        googleClient.signOut()
+            .addOnCompleteListener {
+                onLoggedOut()
+            }
+            .addOnFailureListener {
+                // Still log out if failure
+                onLoggedOut()
+            }
+
     }
+
 
     private val _registerState = MutableStateFlow<RegisterState>(RegisterState.Idle)
     val registerState: StateFlow<RegisterState> = _registerState
 
-    fun registerUser(email: String, password: String, confirmPassword: String) {
+    var userPreferenceManager: UserPreferenceManager? = null
+
+    fun init(context: Context) {
+        userPreferenceManager = UserPreferenceManager(context)
+    }
+
+
+    fun registerUser(
+        email: String,
+        password: String,
+        confirmPassword: String,
+        selectedUserType: String
+    ) {
+        val prefs = userPreferenceManager
+
+
         if (email.isBlank() || password.isBlank() || confirmPassword.isBlank()) {
             _registerState.value = RegisterState.Error("Please fill all fields")
             return
@@ -58,6 +81,7 @@ class AuthViewModel @Inject constructor(
                         .document(uid)
                         .set(user)
                         .addOnSuccessListener {
+                            prefs?.saveUserType(selectedUserType)
                             _registerState.value = RegisterState.Success
                         }
                         .addOnFailureListener {

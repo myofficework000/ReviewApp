@@ -1,3 +1,4 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
 package com.code4galaxy.reviewnow.view.composables
 
 import android.widget.Toast
@@ -12,6 +13,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,7 +30,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
@@ -34,11 +38,9 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.code4galaxy.reviewnow.R
-import com.code4galaxy.reviewnow.model.User
 import com.code4galaxy.reviewnow.view.RegisterState
 import com.code4galaxy.reviewnow.viewmodel.AuthViewModel
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
+
 
 @Composable
 fun RegisterScreen(onSignInClick: () -> Unit,
@@ -50,6 +52,11 @@ fun RegisterScreen(onSignInClick: () -> Unit,
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
+
+    val userTypes = listOf("user", "admin")
+    var expanded by remember { mutableStateOf(false) }
+    var selectedUserType by remember { mutableStateOf(userTypes[0]) }
+
 
     // Handle side effects (toasts & navigation)
     LaunchedEffect(registerState) {
@@ -122,9 +129,47 @@ fun RegisterScreen(onSignInClick: () -> Unit,
             Spacer(modifier = Modifier.height(dimensionResource(R.dimen.dimen_32_dp)))
 
 
+
+            ExposedDropdownMenuBox(
+                expanded = expanded,
+                onExpandedChange = { expanded = !expanded }
+            ) {
+                OutlinedTextField(
+                    readOnly = true,
+                    value = selectedUserType,
+                    onValueChange = {},
+                    label = { Text("Select Role") },
+                    trailingIcon = {
+                        ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                        .menuAnchor()
+                )
+                ExposedDropdownMenu(
+                    expanded = expanded,
+                    onDismissRequest = { expanded = false }
+                ) {
+                    userTypes.forEach { role ->
+                        DropdownMenuItem(
+                            text = { Text(role.capitalize()) },
+                            onClick = {
+                                selectedUserType = role
+                                expanded = false
+                            }
+                        )
+                    }
+                }
+            }
+            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.dimen_100_dp)))
+
+
+
             Button(
-                onClick = { authViewModel.registerUser(email, password, confirmPassword)
-                },
+                onClick = { if (selectedUserType != null) {
+                    authViewModel.registerUser(email, password, confirmPassword, selectedUserType!!)
+                } else {
+                    Toast.makeText(context, "Please select user type", Toast.LENGTH_SHORT).show()
+                }},
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(containerColor = Color.Blue)
             ) {
@@ -163,6 +208,7 @@ fun RegisterScreen(onSignInClick: () -> Unit,
                     )
                 }
             }
+
         }
     }
 }

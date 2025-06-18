@@ -21,10 +21,17 @@ fun NavGraphBuilder.adminNavGraph(navController: NavHostController) {
     ) {
 
         composable(Screen.ManageBrands.route) { AddBrandScreen() }
-        composable(Screen.ADMIN.route) { AdminHomeScreen() }
+        composable(Screen.ADMIN.route) { AdminHomeScreen(
+            onLogoutNavigate = {
+                navController.navigate(Screen.Welcome.route) {
+                    popUpTo(0) // clear backstack to avoid returning on back press
+                }
+            }
+        ) }
         composable(Screen.FlaggedReviews.route) { FlaggedReviewScreen() }
         composable(Screen.UserReviews.route) { UserReviewsScreen() }
         composable(Screen.ManageUsers.route) { ManageUsersScreen() }
+
 
     }
 }
