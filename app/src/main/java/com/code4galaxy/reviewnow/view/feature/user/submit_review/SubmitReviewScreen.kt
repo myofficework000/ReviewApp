@@ -37,6 +37,7 @@ import com.code4galaxy.reviewnow.model.Review
 import com.code4galaxy.reviewnow.model.UiState
 import com.code4galaxy.reviewnow.view.navigation.Screen
 import com.code4galaxy.reviewnow.viewmodel.ReviewViewModel
+import com.code4galaxy.reviewnow.viewmodel.UserViewModel
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.delay
 
@@ -46,27 +47,30 @@ fun SubmitReviewScreen(
     userId: String,
     navController: NavController,
     modifier: Modifier = Modifier,
-    viewModel: ReviewViewModel = hiltViewModel()
+    viewModel: ReviewViewModel = hiltViewModel(),
+    userViewModel: UserViewModel = hiltViewModel()
 ) {
 
     var rating by remember { mutableStateOf(0) }
     var comment by remember { mutableStateOf("") }
 
+    val userState by userViewModel.userDataState.collectAsState()
     val submitState by viewModel.submitReviewState.collectAsState()
 
-    var userName by remember { mutableStateOf("Loading...") }
+    var userName by remember { mutableStateOf("") }
 
     LaunchedEffect(userId) {
-       /* FirebaseFirestore.getInstance()
-            .collection("users")
-            .document(userId)
-            .get()
-            .addOnSuccessListener { document ->
-                userName = document.getString("name") ?: "Unknown"
-            }
-            .addOnFailureListener {
-                userName = "Unknown"
-            }*/
+        userViewModel.getUserData(userId)
+      
+    }
+
+    LaunchedEffect(userState) {
+        if (userState is UiState.Success) {
+            userName = (userState as UiState.Success).data.name
+        } else if (userState is UiState.Error) {
+            userName = "Unknown"
+        }
+
     }
 
     Column(modifier = modifier.fillMaxSize().padding(dimensionResource(id = R.dimen.dimen_16_dp))) {
@@ -172,16 +176,5 @@ fun SubmitReviewScreen(
         }
     }
 }
-
-@Preview
-@Composable
-private fun SubmitReviewScreenPreview() {
-    SubmitReviewScreen(
-        brandId = "brandId",
-        userId = "userId",
-        navController = NavController(LocalContext.current)
-    )
-}
-
 
 
