@@ -25,14 +25,14 @@ enum class AdminNavigationItem(
         route=Screen.ManageUsers.route
     ),
     UserReviews(
-        icon = R.drawable.profile,
+        icon = R.drawable.review,
         title = "Reviews",
         route=Screen.UserReviews.route
     ),
     AdminHome(
         icon = R.drawable.settings,
         title = "Settings",
-        route=Screen.ADMIN.route
+        route=Screen.Settings.route
     ),
 
 }

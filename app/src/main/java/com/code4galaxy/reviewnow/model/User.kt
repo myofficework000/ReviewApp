@@ -1,7 +1,5 @@
 package com.code4galaxy.reviewnow.model
 
-
-
 data class User(
     val id: String = "",
     val name: String = "",

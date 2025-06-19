@@ -1,5 +1,6 @@
 package com.code4galaxy.reviewnow.view.navigation
 
+import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
@@ -30,7 +31,9 @@ fun NavGraphBuilder.authNavGraph(navController:NavHostController){
         composable(route=Screen.Register.route){
             RegisterScreen({
                 navController.navigate(Screen.Login.route)
-            })
+            },
+                navController = navController
+            )
         }
 
         composable(route = Screen.Welcome.route) {

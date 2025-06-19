@@ -1,4 +1,5 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.code4galaxy.reviewnow.view.composables
 
 import android.widget.Toast
@@ -37,14 +38,20 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.code4galaxy.reviewnow.R
 import com.code4galaxy.reviewnow.view.RegisterState
+import com.code4galaxy.reviewnow.view.navigation.Screen
 import com.code4galaxy.reviewnow.viewmodel.AuthViewModel
+import com.code4galaxy.reviewnow.viewmodel.NavigationViewModel
 
 
 @Composable
-fun RegisterScreen(onSignInClick: () -> Unit,
-                   authViewModel: AuthViewModel = hiltViewModel()
+fun RegisterScreen(
+    onSignInClick: () -> Unit,
+    authViewModel: AuthViewModel = hiltViewModel(),
+    navigationViewModel: NavigationViewModel = hiltViewModel(),
+    navController: NavController
 ) {
     val context = LocalContext.current
     val registerState by authViewModel.registerState.collectAsState()
@@ -66,10 +73,16 @@ fun RegisterScreen(onSignInClick: () -> Unit,
                 authViewModel.resetRegisterState()
                 onSignInClick()
             }
+
             is RegisterState.Error -> {
-                Toast.makeText(context, (registerState as RegisterState.Error).message, Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    context,
+                    (registerState as RegisterState.Error).message,
+                    Toast.LENGTH_LONG
+                ).show()
                 authViewModel.resetRegisterState()
             }
+
             else -> {}
         }
     }
@@ -77,7 +90,9 @@ fun RegisterScreen(onSignInClick: () -> Unit,
 
 
     Box(
-        modifier = Modifier.fillMaxSize().background(Color.White)
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White)
     ) {
         Column(
             modifier = Modifier
@@ -93,14 +108,18 @@ fun RegisterScreen(onSignInClick: () -> Unit,
             }
             Spacer(modifier = Modifier.height(dimensionResource(R.dimen.dimen_56_dp)))
 
-            Text(stringResource(R.string.sign_up), fontSize = dimen48sp, fontWeight = FontWeight.Bold)
+            Text(
+                stringResource(R.string.sign_up),
+                fontSize = dimen48sp,
+                fontWeight = FontWeight.Bold
+            )
 
             Spacer(modifier = Modifier.height(dimensionResource(R.dimen.dimen_32_dp)))
 
             OutlinedTextField(
                 value = email,
 
-                onValueChange = {email = it},
+                onValueChange = { email = it },
                 label = { Text(stringResource(R.string.email)) },
                 placeholder = { Text(stringResource(R.string.example_email)) },
                 modifier = Modifier.fillMaxWidth()
@@ -110,7 +129,7 @@ fun RegisterScreen(onSignInClick: () -> Unit,
 
             OutlinedTextField(
                 value = password,
-                onValueChange = {password = it},
+                onValueChange = { password = it },
                 label = { Text(stringResource(R.string.password)) },
                 placeholder = { Text(stringResource(R.string.example_password)) },
                 modifier = Modifier.fillMaxWidth()
@@ -120,7 +139,7 @@ fun RegisterScreen(onSignInClick: () -> Unit,
 
             OutlinedTextField(
                 value = confirmPassword,
-                onValueChange = {confirmPassword = it},
+                onValueChange = { confirmPassword = it },
                 label = { Text(stringResource(R.string.confirm_password)) },
                 placeholder = { Text(stringResource(R.string.example_password)) },
                 modifier = Modifier.fillMaxWidth()
@@ -142,7 +161,8 @@ fun RegisterScreen(onSignInClick: () -> Unit,
                     trailingIcon = {
                         ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
                     },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
                         .menuAnchor()
                 )
                 ExposedDropdownMenu(
@@ -165,11 +185,27 @@ fun RegisterScreen(onSignInClick: () -> Unit,
 
 
             Button(
-                onClick = { if (selectedUserType != null) {
-                    authViewModel.registerUser(email, password, confirmPassword, selectedUserType!!)
-                } else {
-                    Toast.makeText(context, "Please select user type", Toast.LENGTH_SHORT).show()
-                }},
+                onClick = {
+                    if (selectedUserType != null) {
+                        authViewModel.registerUser(
+                            email,
+                            password,
+                            confirmPassword,
+                            selectedUserType!!
+                        )
+
+
+                        if (selectedUserType=="user")
+                            navController.navigate(Screen.USER.route)
+                        else
+                            navController.navigate(Screen.ADMIN.route)
+
+
+                    } else {
+                        Toast.makeText(context, "Please select user type", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                },
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(containerColor = Color.Blue)
             ) {
@@ -180,12 +216,15 @@ fun RegisterScreen(onSignInClick: () -> Unit,
 
             Box(
                 modifier = Modifier
-                    .fillMaxSize().padding(bottom = dimensionResource(R.dimen.dimen_32_dp))
+                    .fillMaxSize()
+                    .padding(bottom = dimensionResource(R.dimen.dimen_32_dp))
                     .padding(16.dp)
             ) {
-                Column (
-                    modifier = Modifier.fillMaxWidth().align(Alignment.BottomCenter)
-                        .align(Alignment.Center),horizontalAlignment = Alignment.CenterHorizontally
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .align(Alignment.BottomCenter)
+                        .align(Alignment.Center), horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     val dimen24sp = with(LocalDensity.current) {
                         dimensionResource(id = R.dimen.dimen_24_sp).toSp()
@@ -193,9 +232,11 @@ fun RegisterScreen(onSignInClick: () -> Unit,
                     val dimen20sp = with(LocalDensity.current) {
                         dimensionResource(id = R.dimen.dimen_20_sp).toSp()
                     }
-                    Text(text = stringResource(R.string.already_have_account),
+                    Text(
+                        text = stringResource(R.string.already_have_account),
                         fontSize = dimen24sp,
-                        fontWeight = FontWeight.Bold)
+                        fontWeight = FontWeight.Bold
+                    )
                     Spacer(modifier = Modifier.height(dimensionResource(R.dimen.dimen_4_dp)))
                     Text(
                         text = stringResource(R.string.sign_in),
@@ -213,11 +254,11 @@ fun RegisterScreen(onSignInClick: () -> Unit,
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun RegisterScreenPreview() {
-    RegisterScreen(
-        // Provide fake callbacks or sample state here
-        onSignInClick = {}
-    )
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun RegisterScreenPreview() {
+//    RegisterScreen(
+//        // Provide fake callbacks or sample state here
+//        onSignInClick = {}
+//    )
+//}

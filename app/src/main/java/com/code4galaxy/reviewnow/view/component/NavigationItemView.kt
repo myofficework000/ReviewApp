@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
@@ -45,6 +46,7 @@ fun NavigationItemView(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
+            modifier = Modifier.size(30.dp),
             painter = painterResource(id = navigationItem.icon),
             contentDescription = "Navigation Item Icon",
             tint = if (selected) MaterialTheme.colorScheme.primary

@@ -23,7 +23,7 @@ object AppModule {
     @Singleton
     fun provideUserPreferenceManager(
         @ApplicationContext context: Context
-    ):UserPreferenceManager{
+    ): UserPreferenceManager {
         return UserPreferenceManager(context)
     }
 
@@ -52,5 +52,4 @@ object AppModule {
     ): IAdminRepository {
         return AdminRepository(auth, firestore)
     }
-
 }
