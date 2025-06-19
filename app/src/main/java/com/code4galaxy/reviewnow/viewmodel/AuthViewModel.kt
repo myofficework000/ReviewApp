@@ -102,8 +102,10 @@ class AuthViewModel @Inject constructor(
         _registerState.value = RegisterState.Idle
     }
 
-    fun logout(context: Context, onLoggedOut: () -> Unit) {
+    fun logout(context: Context, onLoggedOut: () -> Unit={}) {
         firebaseAuth.signOut()
+
+        userPreferenceManager.removeKey("user_type")
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(context.getString(R.string.default_web_client_id))

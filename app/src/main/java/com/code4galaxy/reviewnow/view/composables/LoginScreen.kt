@@ -39,6 +39,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.code4galaxy.reviewnow.R
 import com.code4galaxy.reviewnow.viewmodel.NavigationViewModel
 
+// TODO(abeer) after logging it does not go to right screen.user type should be detected and accordingly should be navigated.
 @Composable
 fun LoginScreen(onRegisterClick: () -> Unit,onSignInClick:()->Unit,navigationViewModel: NavigationViewModel= hiltViewModel()) {
     var email by remember { mutableStateOf("") }

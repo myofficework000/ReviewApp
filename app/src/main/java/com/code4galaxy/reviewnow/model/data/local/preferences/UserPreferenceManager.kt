@@ -7,8 +7,8 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 
-class UserPreferenceManager (
-      private val context: Context
+class UserPreferenceManager(
+    private val context: Context
 ) {
 
     private val prefs by lazy {
@@ -34,7 +34,10 @@ class UserPreferenceManager (
 
     fun saveId(id: String) {
         prefs.edit().putString("id", id).apply()
+    }
 
+    fun removeKey(key: String) {
+        prefs.edit().remove(key).apply()
     }
 
 
