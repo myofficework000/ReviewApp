@@ -73,5 +73,6 @@ fun RootNavGraph(navController: NavHostController, navigationViewModel: Navigati
 
         authNavGraph(navController)
 
+
     }
 }

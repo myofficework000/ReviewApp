@@ -25,11 +25,13 @@ import com.code4galaxy.reviewnow.viewmodel.AuthViewModel
 @Composable
 fun ProfileScreen(
     modifier: Modifier = Modifier,
+    authViewModel: AuthViewModel= hiltViewModel(),
     name: String = "John Doe",
     email: String = "johndoe@example.com",
     onMyReviewsClick: () -> Unit = {},
     onLogoutClick: () -> Unit = {}
 ) {
+    val context = LocalContext.current
     Column(
         modifier = modifier
             .padding(dimensionResource(id = R.dimen.dimen_16_dp)),
@@ -71,7 +73,11 @@ fun ProfileScreen(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .clickable { onLogoutClick() }
+                .clickable {
+                    onLogoutClick()
+                    authViewModel.logout(context)
+
+                }
                 .padding(vertical = dimensionResource(id = R.dimen.dimen_12_dp)),
             verticalAlignment = Alignment.CenterVertically
         ) {
