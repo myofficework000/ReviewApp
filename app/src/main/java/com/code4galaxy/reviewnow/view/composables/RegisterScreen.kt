@@ -194,7 +194,7 @@ fun RegisterScreen(
                             selectedUserType!!
                         )
 
-                        navigationViewModel.saveUserType(selectedUserType)
+
                         if (selectedUserType=="user")
                             navController.navigate(Screen.USER.route)
                         else

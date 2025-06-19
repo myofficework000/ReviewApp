@@ -34,6 +34,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -56,9 +57,11 @@ import com.code4galaxy.reviewnow.view.feature.admin.users.AdminUsersScreen
 import com.code4galaxy.reviewnow.view.feature.user.home.HomeScreen
 import com.code4galaxy.reviewnow.view.feature.user.profile.ProfileScreen
 import com.code4galaxy.reviewnow.view.feature.user.reviews.MyReviewsScreen
+import com.code4galaxy.reviewnow.view.feature.user.settings.SettingsScreen
 import com.code4galaxy.reviewnow.view.navigation.Graph
 import com.code4galaxy.reviewnow.view.navigation.Screen
 import com.code4galaxy.reviewnow.viewmodel.NavigationViewModel
+import com.code4galaxy.reviewnow.viewmodel.ThemeViewModel
 import kotlin.math.roundToInt
 
 @Composable
@@ -128,7 +131,9 @@ fun AdminContent(
     drawerState: CustomDrawerState,
     onDrawerClick: (CustomDrawerState) -> Unit,
     navController: NavHostController,
-    navigationViewModel: NavigationViewModel
+    navigationViewModel: NavigationViewModel,
+
+
 ) {
 
     Scaffold(
@@ -156,7 +161,7 @@ fun AdminContent(
         ) {
             NavHost(
                 navController = navController,
-                startDestination = Screen.ADMIN.route,
+                startDestination = Screen.ManageUsers.route,
                 route = Graph.USER
             ) {
 
@@ -165,7 +170,10 @@ fun AdminContent(
                 composable(Screen.FlaggedReviews.route) { FlaggedReviewScreen() }
                 composable(Screen.UserReviews.route) { UserReviewsScreen() }
                 composable(Screen.ManageUsers.route) { ManageUsersScreen() }
-
+                composable(Screen.Settings.route) {
+                    //TODO (banu or sai) fix this theme for admin.
+//                    SettingsScreen(themeViewModel = themeViewModel)
+                }
 
             }
         }
