@@ -54,10 +54,12 @@ fun SubmitReviewScreen(
     var rating by remember { mutableStateOf(0) }
     var comment by remember { mutableStateOf("") }
 
+
     val userState by userViewModel.userDataState.collectAsState()
-    val submitState by viewModel.submitReviewState.collectAsState()
 
     var userName by remember { mutableStateOf("") }
+
+
 
     LaunchedEffect(userId) {
         userViewModel.getUserData(userId)
