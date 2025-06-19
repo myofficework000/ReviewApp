@@ -30,6 +30,8 @@ fun ProfileScreen(
     onMyReviewsClick: () -> Unit = {},
     onLogoutClick: () -> Unit = {}
 ) {
+    val context = LocalContext.current
+
     Column(
         modifier = modifier
             .padding(dimensionResource(id = R.dimen.dimen_16_dp)),
@@ -71,7 +73,10 @@ fun ProfileScreen(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .clickable { onLogoutClick() }
+                .clickable {
+                    onLogoutClick()
+
+                }
                 .padding(vertical = dimensionResource(id = R.dimen.dimen_12_dp)),
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -94,14 +99,14 @@ fun ProfileRoute(navController: NavController) {
         onLogoutClick = {
             Toast.makeText(context, "Logging out...", Toast.LENGTH_SHORT).show()
             authViewModel.logout(context) {
-                navController.navigate(route=Screen.Login.route) {
-                    popUpTo("profile") { inclusive = true }
+                navController.navigate(Screen.Login.route) {
+                    popUpTo(Screen.Profile.route) { inclusive = true }
+                    launchSingleTop = true
                 }
             }
         }
 
-            )
-
+    )
 
 }
 
