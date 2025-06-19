@@ -19,6 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(
+    private val userPreferenceManager: UserPreferenceManager,
     private val firebaseAuth: FirebaseAuth,
     private val firestore: FirebaseFirestore
 ) : ViewModel() {
@@ -26,7 +27,7 @@ class AuthViewModel @Inject constructor(
     private val _registerState = MutableStateFlow<RegisterState>(RegisterState.Idle)
     val registerState: StateFlow<RegisterState> = _registerState
 
-    var userPreferenceManager: UserPreferenceManager? = null
+
 
     private val _adminName = mutableStateOf("Admin")
     val adminName: State<String> = _adminName
@@ -34,9 +35,7 @@ class AuthViewModel @Inject constructor(
     private val _adminEmail = mutableStateOf("admin@example.com")
     val adminEmail: State<String> = _adminEmail
 
-    fun init(context: Context) {
-        userPreferenceManager = UserPreferenceManager(context)
-    }
+
 
     fun registerUser(
         email: String,
@@ -44,7 +43,7 @@ class AuthViewModel @Inject constructor(
         confirmPassword: String,
         selectedUserType: String
     ) {
-        val prefs = userPreferenceManager
+
 
         if (email.isBlank() || password.isBlank() || confirmPassword.isBlank()) {
             _registerState.value = RegisterState.Error("Please fill all fields")
@@ -69,7 +68,8 @@ class AuthViewModel @Inject constructor(
                             .document(uid)
                             .set(mapOf("name" to email.substringBefore('@')))
                             .addOnSuccessListener {
-                                prefs?.saveUserType(selectedUserType)
+
+
                                 _registerState.value = RegisterState.Success
                             }
                             .addOnFailureListener {
@@ -80,13 +80,18 @@ class AuthViewModel @Inject constructor(
                             .document(uid)
                             .set(user)
                             .addOnSuccessListener {
-                                prefs?.saveUserType(selectedUserType)
+
+
                                 _registerState.value = RegisterState.Success
                             }
                             .addOnFailureListener {
                                 _registerState.value = RegisterState.Error("Failed to save user: ${it.message}")
                             }
                     }
+                    userPreferenceManager.saveUserType(selectedUserType)
+                    userPreferenceManager.saveId(uid)
+                    println("id:${userPreferenceManager.getId()}")
+
                 } else {
                     _registerState.value = RegisterState.Error(task.exception?.message ?: "Registration failed")
                 }

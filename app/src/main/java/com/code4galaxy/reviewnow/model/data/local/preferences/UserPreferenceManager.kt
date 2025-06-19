@@ -29,10 +29,21 @@ class UserPreferenceManager (
     // TODO use sealed or enum class
     fun saveUserType(userType: String) {
         prefs.edit().putString("user_type", userType).apply()
+
     }
+
+    fun saveId(id: String) {
+        prefs.edit().putString("id", id).apply()
+
+    }
+
 
     fun getUserType(): String {
         return prefs.getString("user_type", "no user") ?: "no user"
+    }
+
+    fun getId(): String {
+        return prefs.getString("id", "no id") ?: "no id"
     }
 
 

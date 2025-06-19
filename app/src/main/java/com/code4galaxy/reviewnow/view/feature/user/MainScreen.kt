@@ -36,6 +36,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -64,7 +65,7 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlin.math.roundToInt
 
 @Composable
-fun MainScreen(navController: NavHostController, navigationViewModel: NavigationViewModel,themeViewModel: ThemeViewModel) {
+fun MainScreen(navController: NavHostController, navigationViewModel: NavigationViewModel,themeViewModel: ThemeViewModel= hiltViewModel()) {
     var drawerState by remember { mutableStateOf(CustomDrawerState.Closed) }
     var selectedNavigationItem by remember { mutableStateOf(NavigationItem.Home) }
     val innerNavController = rememberNavController()
