@@ -142,16 +142,30 @@ fun AdminHomeScreen(
                     end.linkTo(parent.end)
                 }
             ) {
+                var logoutTriggered by remember { mutableStateOf(false) }
+                val context = LocalContext.current
+
+                if (logoutTriggered) {
+                    LaunchedEffect(Unit) {
+                        kotlinx.coroutines.delay(1000) // fallback in case logout callback is not called
+                        onLogoutNavigate()
+                    }
+                }
+
                 AdminActionItem(
                     text = stringResource(id = R.string.log_out),
                     icon = Icons.Default.Logout,
                     onClick = {
-                        authViewModel.logout(context) {
-                            onLogoutNavigate()
+                        if (!logoutTriggered) {
+                            logoutTriggered = true
+                            authViewModel.logout(context) {
+                                onLogoutNavigate()
+                            }
                         }
                     },
                     isLogout = true
                 )
+
             }
         }
     }
