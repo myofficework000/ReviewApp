@@ -17,6 +17,8 @@ interface IUserRepository {
 
     suspend fun updateProfile(user: User): UiState<String>
 
+    fun getAverageRatingForBrand(brandId: String): Flow<UiState<Double>>
+
     fun getAllBrands(): Flow<UiState<List<Brand>>>
 
     fun getBrandDetails(brandId: String): Flow<UiState<Brand>>
