@@ -3,6 +3,7 @@ package com.code4galaxy.reviewnow.view.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -29,6 +30,7 @@ fun SetUpAppLaunch(navigationViewModel: NavigationViewModel,themeViewModel: Them
 
 @Composable
 fun RootNavGraph(navController: NavHostController, navigationViewModel: NavigationViewModel,themeViewModel: ThemeViewModel) {
+    val context = LocalContext.current
 
     NavHost(
         navController = navController,
@@ -71,7 +73,7 @@ fun RootNavGraph(navController: NavHostController, navigationViewModel: Navigati
             AdminScreen(navController, navigationViewModel,themeViewModel)
         }
 
-        authNavGraph(navController)
+        authNavGraph(navController, context)
 
 
     }

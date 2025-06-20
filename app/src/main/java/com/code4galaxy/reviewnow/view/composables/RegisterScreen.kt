@@ -37,6 +37,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.code4galaxy.reviewnow.R
@@ -64,8 +65,14 @@ fun RegisterScreen(
     var expanded by remember { mutableStateOf(false) }
     var selectedUserType by remember { mutableStateOf(userTypes[0]) }
 
+    val dimen20sp = with(LocalDensity.current) { dimensionResource(R.dimen.dimen_20_sp).toSp() }
+    val dimen24sp = with(LocalDensity.current) { dimensionResource(R.dimen.dimen_24_sp).toSp() }
+    val dimen48sp = with(LocalDensity.current) { dimensionResource(R.dimen.dimen_48_sp).toSp() }
+    val spacing16dp = dimensionResource(R.dimen.dimen_16_dp)
+    val spacing32dp = dimensionResource(R.dimen.dimen_32_dp)
+    val spacing56dp = dimensionResource(R.dimen.dimen_56_dp)
+    val spacing100dp = dimensionResource(R.dimen.dimen_100_dp)
 
-    // Handle side effects (toasts & navigation)
     LaunchedEffect(registerState) {
         when (registerState) {
             is RegisterState.Success -> {
@@ -75,11 +82,7 @@ fun RegisterScreen(
             }
 
             is RegisterState.Error -> {
-                Toast.makeText(
-                    context,
-                    (registerState as RegisterState.Error).message,
-                    Toast.LENGTH_LONG
-                ).show()
+                Toast.makeText(context, (registerState as RegisterState.Error).message, Toast.LENGTH_LONG).show()
                 authViewModel.resetRegisterState()
             }
 
@@ -87,71 +90,79 @@ fun RegisterScreen(
         }
     }
 
-
-
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
+            .padding(spacing32dp)
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(dimensionResource(R.dimen.dimen_32_dp)),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            val dimen20sp = with(LocalDensity.current) {
-                dimensionResource(id = R.dimen.dimen_20_sp).toSp()
-            }
-            val dimen48sp = with(LocalDensity.current) {
-                dimensionResource(id = R.dimen.dimen_48_sp).toSp()
-            }
-            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.dimen_56_dp)))
+        ConstraintLayout(modifier = Modifier.fillMaxSize()) {
+            val (
+                title, emailField, passwordField, confirmField,
+                dropdownField, button, bottomText
+            ) = createRefs()
 
             Text(
-                stringResource(R.string.sign_up),
+                text = stringResource(R.string.sign_up),
                 fontSize = dimen48sp,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.constrainAs(title) {
+                    top.linkTo(parent.top, margin = spacing56dp)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                }
             )
-
-            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.dimen_32_dp)))
 
             OutlinedTextField(
                 value = email,
-
                 onValueChange = { email = it },
                 label = { Text(stringResource(R.string.email)) },
                 placeholder = { Text(stringResource(R.string.example_email)) },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .constrainAs(emailField) {
+                        top.linkTo(title.bottom, margin = spacing32dp)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                    }
             )
-
-            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.dimen_16_dp)))
 
             OutlinedTextField(
                 value = password,
                 onValueChange = { password = it },
                 label = { Text(stringResource(R.string.password)) },
                 placeholder = { Text(stringResource(R.string.example_password)) },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .constrainAs(passwordField) {
+                        top.linkTo(emailField.bottom, margin = spacing16dp)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                    }
             )
-
-            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.dimen_24_dp)))
 
             OutlinedTextField(
                 value = confirmPassword,
                 onValueChange = { confirmPassword = it },
                 label = { Text(stringResource(R.string.confirm_password)) },
                 placeholder = { Text(stringResource(R.string.example_password)) },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .constrainAs(confirmField) {
+                        top.linkTo(passwordField.bottom, margin = spacing16dp)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                    }
             )
-
-            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.dimen_32_dp)))
-
-
 
             ExposedDropdownMenuBox(
                 expanded = expanded,
-                onExpandedChange = { expanded = !expanded }
+                onExpandedChange = { expanded = !expanded },
+                modifier = Modifier.constrainAs(dropdownField) {
+                    top.linkTo(confirmField.bottom, margin = spacing16dp)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                }
             ) {
                 OutlinedTextField(
                     readOnly = true,
@@ -161,10 +172,9 @@ fun RegisterScreen(
                     trailingIcon = {
                         ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
                     },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .menuAnchor()
+                    modifier = Modifier.fillMaxWidth().menuAnchor()
                 )
+
                 ExposedDropdownMenu(
                     expanded = expanded,
                     onDismissRequest = { expanded = false }
@@ -180,12 +190,14 @@ fun RegisterScreen(
                     }
                 }
             }
-            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.dimen_100_dp)))
-
-
 
             Button(
                 onClick = {
+ 
+                    authViewModel.registerUser(email, password, confirmPassword, selectedUserType)
+                    navigationViewModel.saveUserType(selectedUserType)
+
+ 
                     if (selectedUserType != null) {
                         authViewModel.registerUser(
                             email,
@@ -205,54 +217,46 @@ fun RegisterScreen(
                         Toast.makeText(context, "Please select user type", Toast.LENGTH_SHORT)
                             .show()
                     }
+ 
                 },
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .constrainAs(button) {
+                        top.linkTo(dropdownField.bottom, margin = spacing100dp)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                    },
                 colors = ButtonDefaults.buttonColors(containerColor = Color.Blue)
             ) {
                 Text(stringResource(R.string.register), fontSize = dimen20sp, color = Color.White)
             }
 
-            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.dimen_16_dp)))
-
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(bottom = dimensionResource(R.dimen.dimen_32_dp))
-                    .padding(16.dp)
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .align(Alignment.BottomCenter)
-                        .align(Alignment.Center), horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    val dimen24sp = with(LocalDensity.current) {
-                        dimensionResource(id = R.dimen.dimen_24_sp).toSp()
-                    }
-                    val dimen20sp = with(LocalDensity.current) {
-                        dimensionResource(id = R.dimen.dimen_20_sp).toSp()
-                    }
-                    Text(
-                        text = stringResource(R.string.already_have_account),
-                        fontSize = dimen24sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                    Spacer(modifier = Modifier.height(dimensionResource(R.dimen.dimen_4_dp)))
-                    Text(
-                        text = stringResource(R.string.sign_in),
-                        color = Color.Blue,
-                        fontSize = dimen20sp,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.clickable {
-                            onSignInClick()
-                        }
-                    )
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.constrainAs(bottomText) {
+                    bottom.linkTo(parent.bottom, margin = spacing32dp)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
                 }
+            ) {
+                Text(
+                    text = stringResource(R.string.already_have_account),
+                    fontSize = dimen20sp,
+                    fontWeight = FontWeight.Bold
+                )
+                Spacer(modifier = Modifier.height(dimensionResource(R.dimen.dimen_4_dp)))
+                Text(
+                    text = stringResource(R.string.sign_in),
+                    color = Color.Blue,
+                    fontSize = dimen20sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.clickable { onSignInClick() }
+                )
             }
-
         }
     }
 }
+
 
 //@Preview(showBackground = true)
 //@Composable
