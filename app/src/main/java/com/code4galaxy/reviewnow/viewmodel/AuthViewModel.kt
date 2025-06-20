@@ -27,24 +27,44 @@ class AuthViewModel @Inject constructor(
     private val _registerState = MutableStateFlow<RegisterState>(RegisterState.Idle)
     val registerState: StateFlow<RegisterState> = _registerState
 
-
-
     private val _adminName = mutableStateOf("Admin")
     val adminName: State<String> = _adminName
 
     private val _adminEmail = mutableStateOf("admin@example.com")
     val adminEmail: State<String> = _adminEmail
 
+    fun loadAdminDetails() {
+        val user = firebaseAuth.currentUser
+        if (user != null) {
+            firestore.collection("admins").document(user.uid)
+                .get()
+                .addOnSuccessListener { document ->
+                    if (document.exists()) {
+                        _adminName.value = document.getString("name") ?: "Admin"
+                        _adminEmail.value = document.getString("email") ?: user.email ?: "admin@example.com"
+                    }
+                }
+                .addOnFailureListener {
+                    _adminName.value = "Admin"
+                    _adminEmail.value = user.email ?: "admin@example.com"
+                }
+        }
+    }
 
+    fun logout(context: Context, onLoggedOut: () -> Unit = {}) {
+        firebaseAuth.signOut()
+        userPreferenceManager.removeKey("user_type")
 
-    fun registerUser(
-        email: String,
-        password: String,
-        confirmPassword: String,
-        selectedUserType: String
-    ) {
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(context.getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+        val googleClient = GoogleSignIn.getClient(context, gso)
+        googleClient.signOut().addOnCompleteListener { onLoggedOut() }
+            .addOnFailureListener { onLoggedOut() }
+    }
 
-
+    fun registerUser(email: String, password: String, confirmPassword: String, selectedUserType: String) {
         if (email.isBlank() || password.isBlank() || confirmPassword.isBlank()) {
             _registerState.value = RegisterState.Error("Please fill all fields")
             return
@@ -61,37 +81,28 @@ class AuthViewModel @Inject constructor(
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     val uid = firebaseAuth.currentUser?.uid ?: return@addOnCompleteListener
-                    val user = User(id = uid, name = "", isSuspended = false, email = email)
+                    val user = User(
+                        id = uid,
+                        name = email.substringBefore('@'),
+                        email = email,
+                        isSuspended = false,
+                        userType = selectedUserType
+                    )
 
-                    if (selectedUserType == "admin") {
-                        firestore.collection("admins")
-                            .document(uid)
-                            .set(mapOf("name" to email.substringBefore('@')))
-                            .addOnSuccessListener {
+                    val collection = if (selectedUserType == "admin") "admins" else "users"
 
+                    firestore.collection(collection)
+                        .document(uid)
+                        .set(user)
+                        .addOnSuccessListener {
+                            _registerState.value = RegisterState.Success
+                        }
+                        .addOnFailureListener {
+                            _registerState.value = RegisterState.Error("Failed to save user: ${it.message}")
+                        }
 
-                                _registerState.value = RegisterState.Success
-                            }
-                            .addOnFailureListener {
-                                _registerState.value = RegisterState.Error("Failed to save admin: ${it.message}")
-                            }
-                    } else {
-                        firestore.collection("users")
-                            .document(uid)
-                            .set(user)
-                            .addOnSuccessListener {
-
-
-                                _registerState.value = RegisterState.Success
-                            }
-                            .addOnFailureListener {
-                                _registerState.value = RegisterState.Error("Failed to save user: ${it.message}")
-                            }
-                    }
                     userPreferenceManager.saveUserType(selectedUserType)
                     userPreferenceManager.saveId(uid)
-                    println("id:${userPreferenceManager.getId()}")
-
                 } else {
                     _registerState.value = RegisterState.Error(task.exception?.message ?: "Registration failed")
                 }
@@ -100,42 +111,5 @@ class AuthViewModel @Inject constructor(
 
     fun resetRegisterState() {
         _registerState.value = RegisterState.Idle
-    }
-
-    fun logout(context: Context, onLoggedOut: () -> Unit={}) {
-        firebaseAuth.signOut()
-
-        userPreferenceManager.removeKey("user_type")
-
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(context.getString(R.string.default_web_client_id))
-            .requestEmail()
-            .build()
-        val googleClient = GoogleSignIn.getClient(context, gso)
-        googleClient.signOut()
-            .addOnCompleteListener {
-                onLoggedOut()
-            }
-            .addOnFailureListener {
-                onLoggedOut()
-            }
-    }
-
-    fun loadAdminDetails() {
-        val user = firebaseAuth.currentUser
-        if (user != null) {
-            _adminEmail.value = user.email ?: "admin@example.com"
-
-            firestore.collection("admins").document(user.uid)
-                .get()
-                .addOnSuccessListener { document ->
-                    if (document.exists()) {
-                        _adminName.value = document.getString("name") ?: "Admin"
-                    }
-                }
-                .addOnFailureListener {
-                    _adminName.value = "Admin"
-                }
-        }
     }
 }

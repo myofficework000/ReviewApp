@@ -59,5 +59,8 @@
     <string name="language">Language</string>
     <string name="terms_and_privacy_policy">Terms and Privacy Policy</string>
     <string name="welcome_to">Welcome to</string>
+    <string name="person_name">Pearson name</string>
+    <string name="person_email">Pearson Email</string>
+    <string name="app_theme">App Theme</string>
 
 </resources>

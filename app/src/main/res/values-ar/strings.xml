@@ -1,19 +1,18 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">مراجعة الآن</string>
+    <string name="app_name">ReviewNow</string>
     <string name="sign_in">تسجيل الدخول</string>
     <string name="email">البريد الإلكتروني</string>
     <string name="password">كلمة المرور</string>
     <string name="forget_password">نسيت كلمة المرور</string>
-    <string name="register">إنشاء حساب</string>
+    <string name="register">تسجيل</string>
     <string name="create_account">إنشاء حساب</string>
     <string name="name">الاسم</string>
     <string name="your_name">اسمك</string>
     <string name="example_email">example@gmail.com</string>
     <string name="example_password">*****</string>
-    <string name="already_have_account">هل لديك حساب؟ تسجيل الدخول</string>
-    <string name="review_connect">مراجعة كونكت</string>
-    <string name="welcome_to_reviewconnect">مرحبًا بك في \n مراجعة كونكت</string>
+    <string name="already_have_account">هل لديك حساب بالفعل؟</string>
+    <string name="review_connect">ReviewConnect</string>
+    <string name="welcome_to_reviewconnect">"ReviewConnect"</string>
     <string name="sign_in_with_Google">تسجيل الدخول باستخدام Google</string>
     <string name="log_out">تسجيل الخروج</string>
     <string name="manage_users">إدارة المستخدمين</string>
@@ -22,11 +21,42 @@
     <string name="profile">الملف الشخصي</string>
     <string name="back">رجوع</string>
     <string name="avatar">الصورة الرمزية</string>
-    <string name="flagged_reviews">التقييمات التي تم الإبلاغ عنها</string>
+    <string name="flagged_reviews">التقييمات المبلغ عنها</string>
     <string name="dont_have_account">ليس لديك حساب؟</string>
     <string name="sign_up">إنشاء حساب</string>
     <string name="confirm_password">تأكيد كلمة المرور</string>
-    <string name="select_language">اختر اللغة</string>
     <string name="home">الرئيسية</string>
     <string name="my_reviews">تقييماتي</string>
+    <string name="add_brand_org">إضافة علامة تجارية / منظمة</string>
+    <string name="logo">الشعار</string>
+    <string name="brand_org">علامة/منظمة</string>
+    <string name="brand_org_name">اسم العلامة/المنظمة</string>
+    <string name="select_language">اختر اللغة</string>
+
+    <!-- Language Names -->
+    <string name="language_english">الإنجليزية</string>
+    <string name="language_french">الفرنسية</string>
+    <string name="language_german">الألمانية</string>
+    <string name="language_spanish">الإسبانية</string>
+    <string name="language_russian">الروسية</string>
+    <string name="language_ukrainian">الأوكرانية</string>
+    <string name="language_hindi">الهندية</string>
+
+    <string name="current_language">اللغة الحالية: %1$s</string>
+    <string name="settings">الإعدادات</string>
+    <string name="profile_name">الشخص</string>
+    <string name="profile_email">الشخص@email.com</string>
+    <string name="dark_mode">الوضع الداكن</string>
+    <string name="notifications_and_sounds">الإشعارات والأصوات</string>
+    <string name="security_checkup">فحص الأمان</string>
+    <string name="two_factor_authentication">التحقق بخطوتين</string>
+    <string name="change_number">تغيير الرقم</string>
+    <string name="help_center">مركز المساعدة</string>
+    <string name="report_a_problem">الإبلاغ عن مشكلة</string>
+    <string name="language">اللغة</string>
+    <string name="terms_and_privacy_policy">الشروط وسياسة الخصوصية</string>
+    <string name="welcome_to">مرحبًا بك في</string>
+    <string name="person_name">اسم الشخص</string>
+    <string name="person_email">البريد الإلكتروني للشخص</string>
+    <string name="app_theme">سمة التطبيق</string>
 </resources>

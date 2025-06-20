@@ -1,21 +1,19 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">ReviewNow</string>
     <string name="sign_in">Iniciar sesión</string>
-    <string name="welcome_message">Bienvenido de nuevo\n a ReviewConnect</string>
     <string name="email">Correo electrónico</string>
     <string name="password">Contraseña</string>
-    <string name="forget_password">¿Olvidaste la contraseña?</string>
+    <string name="forget_password">Olvidó la contraseña</string>
     <string name="register">Registrarse</string>
-    <string name="create_account">Crear una cuenta</string>
+    <string name="create_account">Crear cuenta</string>
     <string name="name">Nombre</string>
     <string name="your_name">Tu nombre</string>
     <string name="example_email">ejemplo@gmail.com</string>
     <string name="example_password">*****</string>
-    <string name="already_have_account">¿Ya tienes una cuenta? Inicia sesión</string>
+    <string name="already_have_account">¿Ya tienes una cuenta?</string>
     <string name="review_connect">ReviewConnect</string>
-    <string name="welcome_to_reviewconnect">Bienvenido a\n ReviewConnect</string>
-    <string name="sign_in_with_Google">Iniciar sesión con Google</string>
+    <string name="welcome_to_reviewconnect">"ReviewConnect"</string>
+    <string name="sign_in_with_Google">Ingresar con Google</string>
     <string name="log_out">Cerrar sesión</string>
     <string name="manage_users">Gestionar usuarios</string>
     <string name="moderate_reviews">Moderar reseñas</string>
@@ -24,42 +22,38 @@
     <string name="back">Atrás</string>
     <string name="avatar">Avatar</string>
     <string name="flagged_reviews">Reseñas marcadas</string>
-    <string name="dont_have_account">¿No tienes una cuenta?</string>
-    <string name="sign_up">Regístrate</string>
+    <string name="dont_have_account">¿No tienes cuenta?</string>
+    <string name="sign_up">Registrarse</string>
     <string name="confirm_password">Confirmar contraseña</string>
-    <string name="select_language">Seleccionar idioma</string>
-    <string name="home">Home</string>
+    <string name="home">Inicio</string>
     <string name="my_reviews">Mis reseñas</string>
-    <string name="add_brand_org">Agregar marca / organización</string>
+    <string name="add_brand_org">Agregar marca/organización</string>
     <string name="logo">Logo</string>
-    <string name="brand_org">Marca / Organización</string>
-    <string name="brand_org_name">Nombre de la marca / organización</string>
-
-        <!-- Language Names -->
-        <string name="language_english">Inglés</string>
-        <string name="language_french">Francés</string>
-        <string name="language_german">Alemán</string>
-        <string name="language_spanish">Español</string>
-        <string name="language_russian">Ruso</string>
-        <string name="language_ukrainian">Ucraniano</string>
-        <string name="language_hindi">Hindi</string>
-        <string name="current_language">Idioma actual: %1$s</string>
-
-        <!-- Settings -->
-        <string name="settings">Configuración</string>
-        <string name="profile_name">Persona</string>
-        <string name="profile_email">Persona@email.com</string>
-
-        <string name="dark_mode">Modo oscuro</string>
-        <string name="notifications_and_sounds">Notificaciones y sonidos</string>
-        <string name="security_checkup">Revisión de seguridad</string>
-        <string name="two_factor_authentication">Autenticación de dos factores</string>
-        <string name="change_number">Cambiar número</string>
-
-        <string name="help_center">Centro de ayuda</string>
-        <string name="report_a_problem">Reportar un problema</string>
-        <string name="language">Idioma</string>
-        <string name="terms_and_privacy_policy">Términos y política de privacidad</string>
-
-
+    <string name="brand_org">Marca/Org</string>
+    <string name="brand_org_name">Nombre de marca/organización</string>
+    <string name="select_language">Seleccionar idioma</string>
+    <string name="language_english">Inglés</string>
+    <string name="language_french">Francés</string>
+    <string name="language_german">Alemán</string>
+    <string name="language_spanish">Español</string>
+    <string name="language_russian">Ruso</string>
+    <string name="language_ukrainian">Ucraniano</string>
+    <string name="language_hindi">Hindi</string>
+    <string name="current_language">Idioma actual: %1$s</string>
+    <string name="settings">Configuración</string>
+    <string name="profile_name">Persona</string>
+    <string name="profile_email">Persona@mail.com</string>
+    <string name="dark_mode">Modo oscuro</string>
+    <string name="notifications_and_sounds">Notificaciones y sonidos</string>
+    <string name="security_checkup">Verificación de seguridad</string>
+    <string name="two_factor_authentication">Autenticación de dos factores</string>
+    <string name="change_number">Cambiar número</string>
+    <string name="help_center">Centro de ayuda</string>
+    <string name="report_a_problem">Reportar un problema</string>
+    <string name="language">Idioma</string>
+    <string name="terms_and_privacy_policy">Términos y política de privacidad</string>
+    <string name="welcome_to">Bienvenido a</string>
+    <string name="person_name">Nombre de la persona</string>
+    <string name="person_email">Correo de la persona</string>
+    <string name="app_theme">Tema de la aplicación</string>
 </resources>

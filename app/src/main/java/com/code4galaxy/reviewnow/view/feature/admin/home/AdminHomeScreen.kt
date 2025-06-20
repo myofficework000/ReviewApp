@@ -39,7 +39,6 @@ fun AdminHomeScreen(
     val adminName by authViewModel.adminName
     val adminEmail by authViewModel.adminEmail
 
-    // Ensure admin details are loaded from Firebase
     LaunchedEffect(Unit) {
         authViewModel.loadAdminDetails()
     }
