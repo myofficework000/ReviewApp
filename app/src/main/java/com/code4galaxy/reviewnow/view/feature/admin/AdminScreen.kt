@@ -1,32 +1,16 @@
 package com.code4galaxy.reviewnow.view.feature.admin
 
-
 import android.annotation.SuppressLint
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
@@ -40,32 +24,28 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.code4galaxy.reviewnow.model.AdminNavigationItem
 import com.code4galaxy.reviewnow.model.CustomDrawerState
-import com.code4galaxy.reviewnow.model.NavigationItem
 import com.code4galaxy.reviewnow.model.isOpened
 import com.code4galaxy.reviewnow.model.opposite
 import com.code4galaxy.reviewnow.view.component.AdminCustomDrawer
 import com.code4galaxy.reviewnow.view.util.coloredShadow
-import com.code4galaxy.reviewnow.view.component.CustomDrawer
-import com.code4galaxy.reviewnow.view.feature.admin.brands.BrandsScreen
-import com.code4galaxy.reviewnow.view.feature.admin.home.AddBrandScreen
-import com.code4galaxy.reviewnow.view.feature.admin.home.AdminHomeScreen
-import com.code4galaxy.reviewnow.view.feature.admin.home.FlaggedReviewScreen
-import com.code4galaxy.reviewnow.view.feature.admin.home.ManageUsersScreen
-import com.code4galaxy.reviewnow.view.feature.admin.home.UserReviewsScreen
-import com.code4galaxy.reviewnow.view.feature.admin.users.AdminUsersScreen
-import com.code4galaxy.reviewnow.view.feature.user.home.HomeScreen
-import com.code4galaxy.reviewnow.view.feature.user.profile.ProfileScreen
-import com.code4galaxy.reviewnow.view.feature.user.reviews.MyReviewsScreen
+import com.code4galaxy.reviewnow.view.feature.admin.home.*
+import com.code4galaxy.reviewnow.view.feature.user.settings.SettingsScreen
 import com.code4galaxy.reviewnow.view.navigation.Graph
 import com.code4galaxy.reviewnow.view.navigation.Screen
 import com.code4galaxy.reviewnow.viewmodel.NavigationViewModel
+import com.code4galaxy.reviewnow.viewmodel.ThemeViewModel
 import kotlin.math.roundToInt
 
 @Composable
-fun AdminScreen(navController: NavHostController, navigationViewModel: NavigationViewModel) {
+fun AdminScreen(
+    rootNavController: NavHostController,
+    navigationViewModel: NavigationViewModel,
+    themeViewModel: ThemeViewModel
+) {
     var drawerState by remember { mutableStateOf(CustomDrawerState.Closed) }
     var selectedNavigationItem by remember { mutableStateOf(AdminNavigationItem.AdminHome) }
     val innerNavController = rememberNavController()
+
     val configuration = LocalConfiguration.current
     val density = LocalDensity.current.density
 
@@ -98,7 +78,7 @@ fun AdminScreen(navController: NavHostController, navigationViewModel: Navigatio
             selectedNavigationItem = selectedNavigationItem,
             onNavigationItemClick = {
                 selectedNavigationItem = it
-                innerNavController.navigate( it.route)
+                innerNavController.navigate(it.route)
                 drawerState = CustomDrawerState.Closed
             },
             onCloseClick = { drawerState = CustomDrawerState.Closed }
@@ -114,8 +94,10 @@ fun AdminScreen(navController: NavHostController, navigationViewModel: Navigatio
                 ),
             drawerState = drawerState,
             onDrawerClick = { drawerState = it },
-            innerNavController,
-            navigationViewModel
+            navController = innerNavController,
+            rootNavController = rootNavController,
+            navigationViewModel = navigationViewModel,
+            themeViewModel = themeViewModel
         )
     }
 }
@@ -128,17 +110,21 @@ fun AdminContent(
     drawerState: CustomDrawerState,
     onDrawerClick: (CustomDrawerState) -> Unit,
     navController: NavHostController,
-    navigationViewModel: NavigationViewModel
+    rootNavController: NavHostController,
+    navigationViewModel: NavigationViewModel,
+    themeViewModel: ThemeViewModel
 ) {
-
     Scaffold(
-        modifier = modifier
-            .clickable(enabled = drawerState == CustomDrawerState.Opened) {
-                onDrawerClick(CustomDrawerState.Closed)
-            },
+        modifier = modifier.clickable(enabled = drawerState.isOpened()) {
+            onDrawerClick(CustomDrawerState.Closed)
+        },
         topBar = {
             TopAppBar(
-                title = { Text(text = "") },
+                title = {
+                    Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+                        Text(text = "")
+                    }
+                },
                 navigationIcon = {
                     IconButton(onClick = { onDrawerClick(drawerState.opposite()) }) {
                         Icon(
@@ -159,14 +145,34 @@ fun AdminContent(
                 startDestination = Screen.ADMIN.route,
                 route = Graph.USER
             ) {
-
-                composable(Screen.ManageBrands.route) { AddBrandScreen() }
-                composable(Screen.ADMIN.route) { AdminHomeScreen() }
-                composable(Screen.FlaggedReviews.route) { FlaggedReviewScreen() }
-                composable(Screen.UserReviews.route) { UserReviewsScreen() }
+                composable(Screen.ADMIN.route) {
+                    AdminHomeScreen(
+                        onManageUsersClick = {
+                            navController.navigate(Screen.ManageUsers.route)
+                        },
+                        onModerateReviewsClick = {
+                            navController.navigate(Screen.UserReviews.route)
+                        },
+                        onAddBrandClick = {
+                            navController.navigate(Screen.ManageBrands.route)
+                        },
+                        onFlaggedReviewsClick = {
+                            navController.navigate(Screen.FlaggedReviews.route)
+                        },
+                        onLogoutNavigate = {
+                            rootNavController.navigate(Graph.AUTH) {
+                                popUpTo(0)
+                            }
+                        }
+                    )
+                }
                 composable(Screen.ManageUsers.route) { ManageUsersScreen() }
-
-
+                composable(Screen.UserReviews.route) { UserReviewsScreen() }
+                composable(Screen.FlaggedReviews.route) { FlaggedReviewScreen() }
+                composable(Screen.ManageBrands.route) { AddBrandScreen() }
+                composable(Screen.Settings.route) {
+                     SettingsScreen(themeViewModel = themeViewModel)
+                }
             }
         }
     }

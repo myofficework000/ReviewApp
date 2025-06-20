@@ -20,6 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(
+    private val userPreferenceManager: UserPreferenceManager,
     private val firebaseAuth: FirebaseAuth,
     private val firestore: FirebaseFirestore
 ) : ViewModel() {
@@ -27,7 +28,7 @@ class AuthViewModel @Inject constructor(
     private val _registerState = MutableStateFlow<RegisterState>(RegisterState.Idle)
     val registerState: StateFlow<RegisterState> = _registerState
 
-    var userPreferenceManager: UserPreferenceManager? = null
+
 
     private val _adminName = mutableStateOf("Admin")
     val adminName: State<String> = _adminName
@@ -35,9 +36,7 @@ class AuthViewModel @Inject constructor(
     private val _adminEmail = mutableStateOf("admin@example.com")
     val adminEmail: State<String> = _adminEmail
 
-    fun init(context: Context) {
-        userPreferenceManager = UserPreferenceManager(context)
-    }
+
 
     fun registerUser(
         email: String,
@@ -45,7 +44,7 @@ class AuthViewModel @Inject constructor(
         confirmPassword: String,
         selectedUserType: String
     ) {
-        val prefs = userPreferenceManager
+
 
         if (email.isBlank() || password.isBlank() || confirmPassword.isBlank()) {
             _registerState.value = RegisterState.Error("Please fill all fields")
@@ -70,7 +69,8 @@ class AuthViewModel @Inject constructor(
                             .document(uid)
                             .set(mapOf("name" to email.substringBefore('@')))
                             .addOnSuccessListener {
-                                prefs?.saveUserType(selectedUserType)
+
+
                                 _registerState.value = RegisterState.Success
                             }
                             .addOnFailureListener {
@@ -81,13 +81,18 @@ class AuthViewModel @Inject constructor(
                             .document(uid)
                             .set(user)
                             .addOnSuccessListener {
-                                prefs?.saveUserType(selectedUserType)
+
+
                                 _registerState.value = RegisterState.Success
                             }
                             .addOnFailureListener {
                                 _registerState.value = RegisterState.Error("Failed to save user: ${it.message}")
                             }
                     }
+                    userPreferenceManager.saveUserType(selectedUserType)
+                    userPreferenceManager.saveId(uid)
+                    println("id:${userPreferenceManager.getId()}")
+
                 } else {
                     _registerState.value = RegisterState.Error(task.exception?.message ?: "Registration failed")
                 }
@@ -98,46 +103,62 @@ class AuthViewModel @Inject constructor(
         _registerState.value = RegisterState.Idle
     }
 
-    fun logout(context: Context, onLoggedOut: () -> Unit) {
-        // Sign out from Firebase
+ 
+//     fun logout(context: Context, onLoggedOut: () -> Unit) {
+//         // Sign out from Firebase
+//         firebaseAuth.signOut()
+
+//         // Flag to track if Google sign-out is handled, to prevent double calling onLoggedOut
+//         var googleSignOutHandled = false
+
+//         // Try Google sign out if user is signed in with Google
+//         try {
+//             val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+//                 .requestIdToken(context.getString(R.string.default_web_client_id))
+//                 .requestEmail()
+//                 .build()
+
+//             val googleClient = GoogleSignIn.getClient(context, gso)
+
+//             // Check if there's a currently signed-in Google account
+//             // This prevents trying to sign out from Google if the user isn't logged in with Google
+//             if (GoogleSignIn.getLastSignedInAccount(context) != null) {
+//                 googleClient.signOut()
+//                     .addOnCompleteListener {
+//                         if (!googleSignOutHandled) {
+//                             googleSignOutHandled = true
+//                             onLoggedOut()
+//                         }
+//                     }
+//                     .addOnFailureListener {
+//                         // Log error if needed
+//                         Log.e("AuthViewModel", "Google sign-out failed: ${it.message}")
+//                         if (!googleSignOutHandled) {
+//                             googleSignOutHandled = true
+//                             onLoggedOut() // Still call onLoggedOut even on failure
+//                         }
+//                     }
+//             } else {
+//                 // No Google account signed in, so we can directly call onLoggedOut
+//                 if (!googleSignOutHandled) {
+//                     googleSignOutHandled = true
+//                     onLoggedOut()
+//                 }
+ 
+    fun logout(context: Context, onLoggedOut: () -> Unit={}) {
         firebaseAuth.signOut()
 
-        // Flag to track if Google sign-out is handled, to prevent double calling onLoggedOut
-        var googleSignOutHandled = false
+        userPreferenceManager.removeKey("user_type")
 
-        // Try Google sign out if user is signed in with Google
-        try {
-            val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(context.getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build()
-
-            val googleClient = GoogleSignIn.getClient(context, gso)
-
-            // Check if there's a currently signed-in Google account
-            // This prevents trying to sign out from Google if the user isn't logged in with Google
-            if (GoogleSignIn.getLastSignedInAccount(context) != null) {
-                googleClient.signOut()
-                    .addOnCompleteListener {
-                        if (!googleSignOutHandled) {
-                            googleSignOutHandled = true
-                            onLoggedOut()
-                        }
-                    }
-                    .addOnFailureListener {
-                        // Log error if needed
-                        Log.e("AuthViewModel", "Google sign-out failed: ${it.message}")
-                        if (!googleSignOutHandled) {
-                            googleSignOutHandled = true
-                            onLoggedOut() // Still call onLoggedOut even on failure
-                        }
-                    }
-            } else {
-                // No Google account signed in, so we can directly call onLoggedOut
-                if (!googleSignOutHandled) {
-                    googleSignOutHandled = true
-                    onLoggedOut()
-                }
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(context.getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+        val googleClient = GoogleSignIn.getClient(context, gso)
+        googleClient.signOut()
+            .addOnCompleteListener {
+                onLoggedOut()
+ 
             }
         } catch (e: Exception) {
             // Fallback: in case GoogleSignIn client creation or other Google-related issues occur

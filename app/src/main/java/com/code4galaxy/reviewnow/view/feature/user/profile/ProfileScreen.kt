@@ -25,6 +25,7 @@ import com.code4galaxy.reviewnow.viewmodel.AuthViewModel
 @Composable
 fun ProfileScreen(
     modifier: Modifier = Modifier,
+    authViewModel: AuthViewModel= hiltViewModel(),
     name: String = "John Doe",
     email: String = "johndoe@example.com",
     onMyReviewsClick: () -> Unit = {},
@@ -75,6 +76,9 @@ fun ProfileScreen(
                 .fillMaxWidth()
                 .clickable {
                     onLogoutClick()
+ 
+                    authViewModel.logout(context)
+ 
 
                 }
                 .padding(vertical = dimensionResource(id = R.dimen.dimen_12_dp)),

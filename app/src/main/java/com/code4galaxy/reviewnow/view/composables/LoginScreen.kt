@@ -52,6 +52,7 @@ import com.code4galaxy.reviewnow.viewmodel.AuthViewModel
 import com.code4galaxy.reviewnow.viewmodel.ForgotPasswordState
 import com.code4galaxy.reviewnow.viewmodel.LoginState
 
+// TODO(abeer) after logging it does not go to right screen.user type should be detected and accordingly should be navigated.
 @Composable
 fun LoginScreen(
     navController: NavController,

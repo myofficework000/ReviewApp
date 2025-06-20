@@ -70,10 +70,11 @@ fun RootNavGraph(navController: NavHostController, navigationViewModel: Navigati
             MainScreen(navController, navigationViewModel, themeViewModel  )
         }
         composable(Screen.ADMIN.route) {
-            AdminScreen(navController, navigationViewModel)
+            AdminScreen(navController, navigationViewModel,themeViewModel)
         }
 
         authNavGraph(navController, context)
+
 
     }
 }

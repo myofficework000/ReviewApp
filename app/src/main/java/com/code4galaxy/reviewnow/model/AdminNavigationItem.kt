@@ -32,7 +32,7 @@ enum class AdminNavigationItem(
     AdminHome(
         icon = R.drawable.settings,
         title = "Settings",
-        route=Screen.ADMIN.route
+        route=Screen.Settings.route
     ),
 
 }

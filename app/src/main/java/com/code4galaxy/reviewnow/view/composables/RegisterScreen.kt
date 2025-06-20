@@ -193,10 +193,31 @@ fun RegisterScreen(
 
             Button(
                 onClick = {
+ 
                     authViewModel.registerUser(email, password, confirmPassword, selectedUserType)
                     navigationViewModel.saveUserType(selectedUserType)
-//                    if (selectedUserType == "user") navController.navigate(Screen.USER.route)
-//                    else if (selectedUserType == "admin") navController.navigate(Screen.ADMIN.route)
+
+ 
+                    if (selectedUserType != null) {
+                        authViewModel.registerUser(
+                            email,
+                            password,
+                            confirmPassword,
+                            selectedUserType!!
+                        )
+
+
+                        if (selectedUserType=="user")
+                            navController.navigate(Screen.USER.route)
+                        else
+                            navController.navigate(Screen.ADMIN.route)
+
+
+                    } else {
+                        Toast.makeText(context, "Please select user type", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+ 
                 },
                 modifier = Modifier
                     .fillMaxWidth()

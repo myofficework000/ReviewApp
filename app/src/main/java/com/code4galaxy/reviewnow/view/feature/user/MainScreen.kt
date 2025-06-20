@@ -36,6 +36,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -64,7 +65,7 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlin.math.roundToInt
 
 @Composable
-fun MainScreen(navController: NavHostController, navigationViewModel: NavigationViewModel,themeViewModel: ThemeViewModel) {
+fun MainScreen(navController: NavHostController, navigationViewModel: NavigationViewModel,themeViewModel: ThemeViewModel= hiltViewModel()) {
     var drawerState by remember { mutableStateOf(CustomDrawerState.Closed) }
     var selectedNavigationItem by remember { mutableStateOf(NavigationItem.Home) }
     val innerNavController = rememberNavController()
@@ -100,7 +101,7 @@ fun MainScreen(navController: NavHostController, navigationViewModel: Navigation
             selectedNavigationItem = selectedNavigationItem,
             onNavigationItemClick = {
                 selectedNavigationItem = it
-               innerNavController.navigate( it.route)
+                innerNavController.navigate( it.route)
                 drawerState = CustomDrawerState.Closed
             },
             onCloseClick = { drawerState = CustomDrawerState.Closed }
@@ -116,9 +117,10 @@ fun MainScreen(navController: NavHostController, navigationViewModel: Navigation
                 ),
             drawerState = drawerState,
             onDrawerClick = { drawerState = it },
-            navController=innerNavController,
+            innerNavController=innerNavController,
             themeViewModel=themeViewModel,
-            navigationViewModel=navigationViewModel
+            navigationViewModel=navigationViewModel,
+            navController = navController
         )
     }
 }
@@ -130,12 +132,13 @@ fun MainContent(
     modifier: Modifier = Modifier,
     drawerState: CustomDrawerState,
     onDrawerClick: (CustomDrawerState) -> Unit,
-    navController: NavHostController,
+    innerNavController: NavHostController,
     navigationViewModel: NavigationViewModel,
-    themeViewModel: ThemeViewModel
+    themeViewModel: ThemeViewModel,
+    navController: NavHostController
 ) {
 
-    val currentBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentBackStackEntry by innerNavController.currentBackStackEntryAsState()
     val currentRoute = currentBackStackEntry?.destination?.route
 
     Scaffold(
@@ -167,13 +170,13 @@ fun MainContent(
             // TODO unnecessary
 //            AppNavGraph(navController,navigationViewModel,themeViewModel)
             NavHost(
-                navController = navController,
+                navController = innerNavController,
                 startDestination = Screen.Home.route,
                 route = Graph.USER
             ) {
                 composable(Screen.Home.route) {
                     HomeScreen(){brandId: String ->
-                        navController.navigate(Screen.BrandDetail.pass(brandId))
+                        innerNavController.navigate(Screen.BrandDetail.pass(brandId))
 
                     }
                 }
@@ -184,7 +187,7 @@ fun MainContent(
                 ) {
                     val brandId = it.arguments?.getString("brandId") ?: ""
                     BrandDetailScreen(brandId = brandId, onSubmit = {
-                        navController.navigate(Screen.SubmitReview.pass(brandId))
+                        innerNavController.navigate(Screen.SubmitReview.pass(brandId))
                     })
                 }
                 composable(
@@ -198,7 +201,7 @@ fun MainContent(
                     SubmitReviewScreen(
                         brandId = brandId,
                         userId = userId,
-                        navController = navController
+                        navController = innerNavController
                     )
 
 
@@ -210,7 +213,13 @@ fun MainContent(
                 }
 
                 composable(Screen.Profile.route) {
-                    ProfileScreen()
+                    ProfileScreen(onLogoutClick = {
+                        navController.navigate(Graph.AUTH){
+
+                            popUpTo(0) { inclusive = true }
+                        }
+                    }
+                    )
                 }
 
                 composable(Screen.Settings.route) {
