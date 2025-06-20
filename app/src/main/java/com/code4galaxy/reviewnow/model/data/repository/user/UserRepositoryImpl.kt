@@ -167,6 +167,30 @@ class UserRepositoryImpl(
         awaitClose { listener.remove() }
     }
 
+    override fun getAverageRatingForBrand(brandId: String): Flow<UiState<Double>> = callbackFlow {
+        val listener = firestore.collection("reviews")
+            .whereEqualTo("brandId", brandId)
+            .addSnapshotListener { snapshot, e ->
+                if (e != null) {
+                    trySend(UiState.Error(e.localizedMessage ?: "Error fetching reviews"))
+                    return@addSnapshotListener
+                }
+
+                if (snapshot != null) {
+                    val ratings = snapshot.documents.mapNotNull {
+                        it.toObject(Review::class.java)?.rating?.toDouble()
+                    }
+
+                    val average = if (ratings.isNotEmpty()) ratings.average() else 0.0
+                    trySend(UiState.Success(average))
+                } else {
+                    trySend(UiState.Error("No reviews found"))
+                }
+            }
+
+        awaitClose { listener.remove() }
+    }
+
     override fun getReviewsForBrand(brandId: String): Flow<UiState<List<Review>>> = callbackFlow {
         val listener = firestore.collection("reviews").whereEqualTo("brandId", brandId)
             .addSnapshotListener { snapshot, e ->

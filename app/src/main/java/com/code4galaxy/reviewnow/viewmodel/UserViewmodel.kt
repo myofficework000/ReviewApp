@@ -49,6 +49,9 @@ class UserViewModel @Inject constructor(
     private val _updateProfileState = MutableStateFlow<UiState<String>>(UiState.Loading)
     val updateProfileState: StateFlow<UiState<String>> = _updateProfileState
 
+    private val _averageRatingState = MutableStateFlow<UiState<Double>>(UiState.Loading)
+    val averageRatingState: StateFlow<UiState<Double>> = _averageRatingState
+
 
     fun register(user: User, password: String) = viewModelScope.launch {
         _registerState.value = UiState.Loading
@@ -103,6 +106,12 @@ class UserViewModel @Inject constructor(
     fun updateProfile(user: User) = viewModelScope.launch {
         _updateProfileState.value = UiState.Loading
         _updateProfileState.value = repository.updateProfile(user)
+    }
+
+    fun getAverageRatingForBrand(brandId: String) = viewModelScope.launch {
+        repository.getAverageRatingForBrand(brandId).collectLatest {
+            _averageRatingState.value = it
+        }
     }
 
 }
