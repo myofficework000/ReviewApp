@@ -1,23 +1,22 @@
 <resources>
     <string name="app_name">ReviewNow</string>
-    <string name="sign_in">साइन इन करें</string>
-    <string name="welcome_message">वापसी पर स्वागत है\nReviewConnect में</string>
+    <string name="sign_in">साइन इन</string>
     <string name="email">ईमेल</string>
     <string name="password">पासवर्ड</string>
     <string name="forget_password">पासवर्ड भूल गए</string>
-    <string name="register">पंजीकरण करें</string>
-    <string name="create_account">खाता बनाएँ</string>
+    <string name="register">रजिस्टर करें</string>
+    <string name="create_account">खाता बनाएं</string>
     <string name="name">नाम</string>
     <string name="your_name">आपका नाम</string>
-    <string name="example_email">example@gmail.com</string>
+    <string name="example_email">उदाहरण@gmail.com</string>
     <string name="example_password">*****</string>
-    <string name="already_have_account">पहले से खाता है? साइन इन करें</string>
+    <string name="already_have_account">पहले से एक खाता?</string>
     <string name="review_connect">ReviewConnect</string>
-    <string name="welcome_to_reviewconnect">ReviewConnect में\nस्वागत है</string>
+    <string name="welcome_to_reviewconnect">"ReviewConnect"</string>
     <string name="sign_in_with_Google">Google से साइन इन करें</string>
     <string name="log_out">लॉग आउट</string>
     <string name="manage_users">उपयोगकर्ताओं का प्रबंधन करें</string>
-    <string name="moderate_reviews">समीक्षाओं का निरीक्षण करें</string>
+    <string name="moderate_reviews">समीक्षाओं को नियंत्रित करें</string>
     <string name="add_brand">ब्रांड जोड़ें</string>
     <string name="profile">प्रोफ़ाइल</string>
     <string name="back">वापस</string>
@@ -28,13 +27,11 @@
     <string name="confirm_password">पासवर्ड की पुष्टि करें</string>
     <string name="home">होम</string>
     <string name="my_reviews">मेरी समीक्षाएँ</string>
-    <string name="add_brand_org">ब्रांड / संस्था जोड़ें</string>
+    <string name="add_brand_org">ब्रांड/संगठन जोड़ें</string>
     <string name="logo">लोगो</string>
     <string name="brand_org">ब्रांड/संस्था</string>
     <string name="brand_org_name">ब्रांड/संस्था का नाम</string>
     <string name="select_language">भाषा चुनें</string>
-    <string name="language_hint">चयनित भाषा तुरंत लागू होगी</string>
-
     <string name="language_english">अंग्रेज़ी</string>
     <string name="language_french">फ़्रेंच</string>
     <string name="language_german">जर्मन</string>
@@ -42,18 +39,21 @@
     <string name="language_russian">रूसी</string>
     <string name="language_ukrainian">यूक्रेनी</string>
     <string name="language_hindi">हिंदी</string>
-    <string name="current_language">वर्तमान भाषा: %1$s</string>
-
+    <string name="current_language">वर्तमान भाषा: %1$s</string>
     <string name="settings">सेटिंग्स</string>
     <string name="profile_name">व्यक्ति</string>
-    <string name="profile_email">Person@email.com</string>
+    <string name="profile_email">व्यक्ति@mail.com</string>
     <string name="dark_mode">डार्क मोड</string>
-    <string name="notifications_and_sounds">सूचनाएँ और ध्वनियाँ</string>
+    <string name="notifications_and_sounds">सूचनाएं और ध्वनियाँ</string>
     <string name="security_checkup">सुरक्षा जांच</string>
-    <string name="two_factor_authentication">दो-चरणीय प्रमाणीकरण</string>
+    <string name="two_factor_authentication">दो-कारक प्रमाणीकरण</string>
     <string name="change_number">नंबर बदलें</string>
-    <string name="help_center">सहायता केंद्र</string>
-    <string name="report_a_problem">समस्या की रिपोर्ट करें</string>
+    <string name="help_center">मदद केंद्र</string>
+    <string name="report_a_problem">समस्या रिपोर्ट करें</string>
     <string name="language">भाषा</string>
     <string name="terms_and_privacy_policy">नियम और गोपनीयता नीति</string>
+    <string name="welcome_to">में आपका स्वागत है</string>
+    <string name="person_name">व्यक्ति का नाम</string>
+    <string name="person_email">व्यक्ति का ईमेल</string>
+    <string name="app_theme">ऐप थीम</string>
 </resources>

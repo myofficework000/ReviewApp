@@ -13,9 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.code4galaxy.reviewnow.viewmodel.LanguageViewModel
-import com.code4galaxy.reviewnow.view.feature.user.util.updateLocale
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -33,7 +32,8 @@ fun LanguageBottomSheet(
         "es" to "Spanish",
         "ru" to "Russian",
         "uk" to "Ukrainian",
-        "hi" to "Hindi"
+        "hi" to "Hindi",
+        "ar" to "Arabic"
     )
 
     val currentLang by languageViewModel.language.collectAsState()
@@ -48,12 +48,6 @@ fun LanguageBottomSheet(
                 text = "Select language",
                 style = MaterialTheme.typography.titleLarge
             )
-            Text(
-                text = "Selected language will be applied immediately",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-
             Spacer(modifier = Modifier.height(16.dp))
 
             languages.forEachIndexed { index, (code, label) ->
@@ -64,12 +58,14 @@ fun LanguageBottomSheet(
                         .clickable {
                             selectedLang = code
                             scope.launch {
-                                languageViewModel.changeLanguage(code)
-                                updateLocale(context, code)
-                                onDismiss() // close sheet first
-                                delay(300)  // give time before recreate
-                                (context as? Activity)?.recreate()
+                                if (selectedLang != code) {
+                                    languageViewModel.changeLanguage(context, code)
+                                    delay(250)
+                                    (context as? Activity)?.recreate()
+                                }
+                                onDismiss()
                             }
+
                         }
                         .padding(vertical = 12.dp)
                 ) {

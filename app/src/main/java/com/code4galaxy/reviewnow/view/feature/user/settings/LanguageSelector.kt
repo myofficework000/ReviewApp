@@ -12,32 +12,13 @@ import com.code4galaxy.reviewnow.view.feature.user.util.updateLocale
 import com.code4galaxy.reviewnow.viewmodel.LanguageViewModel
 
 @Composable
-fun LanguageSelector(modifier: Modifier = Modifier) {
-    val languageViewModel: LanguageViewModel = hiltViewModel()
-    // Observe the selected language from the ViewModel
-    val selectedLanguage = languageViewModel.language.collectAsStateWithLifecycle()
-
-    val context = LocalContext.current
-
-    SideEffect {
-        updateLocale(context, selectedLanguage.value)
-    }
-
-    LanguageDropdown(languageViewModel,selectedLanguage.value, onLanguageSelected = languageViewModel::changeLanguage)
-}
-
-@Composable
 fun LanguageDropdown(
-    languageViewModel:LanguageViewModel,
-    selectedLanguage: String,
+    languageViewModel: LanguageViewModel,
+    selectedLanguageCode: String,
     modifier: Modifier = Modifier,
     onLanguageSelected: (String) -> Unit
 ) {
-//    val languageViewModel: LanguageViewModel = hiltViewModel()
-
     var expanded by remember { mutableStateOf(false) }
-    val languages = listOf("en" to "English", "es" to "Spanish", "fr" to "French","ar" to "Arabic")
-    val selectedLanguage = languageViewModel.language.collectAsState()
     var showSheet by remember { mutableStateOf(false) }
 
     val languageMap = mapOf(
@@ -47,7 +28,8 @@ fun LanguageDropdown(
         "es" to "Spanish",
         "ru" to "Russian",
         "uk" to "Ukrainian",
-        "hi" to "Hindi"
+        "hi" to "Hindi",
+        "ar" to "Arabic"
     )
 
     Column(modifier = modifier) {
@@ -56,10 +38,9 @@ fun LanguageDropdown(
         }
 
         Text(
-            text = "Current Language: ${languageMap[selectedLanguage.value] ?: selectedLanguage.value}",
+            text = "Current Language: ${languageMap[selectedLanguageCode] ?: selectedLanguageCode}",
             style = MaterialTheme.typography.bodyMedium
         )
-
 
         if (showSheet) {
             LanguageBottomSheet(

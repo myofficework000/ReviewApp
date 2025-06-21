@@ -3,35 +3,18 @@
 package com.code4galaxy.reviewnow.view.feature.user.settings
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material3.Divider
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.code4galaxy.reviewnow.R
 import com.code4galaxy.reviewnow.viewmodel.LanguageViewModel
 import com.code4galaxy.reviewnow.viewmodel.ThemeViewModel
 
@@ -49,7 +32,6 @@ fun SettingsScreen(
 
     val themeSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
-    // TODO: Support more language translations here if needed
     val languageMap = mapOf(
         "en" to "English",
         "fr" to "French",
@@ -65,10 +47,9 @@ fun SettingsScreen(
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        Text("Settings", style = MaterialTheme.typography.headlineSmall)
+        Text(stringResource(id = R.string.settings), style = MaterialTheme.typography.headlineSmall)
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Profile section (can be replaced with real data)
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -81,59 +62,42 @@ fun SettingsScreen(
             )
             Spacer(modifier = Modifier.width(12.dp))
             Column {
-                Text("Person", style = MaterialTheme.typography.titleMedium)
-                Text("Person@email.com", style = MaterialTheme.typography.bodySmall)
+                Text(stringResource(id = R.string.person_name), style = MaterialTheme.typography.titleMedium)
+                Text(stringResource(id = R.string.person_email), style = MaterialTheme.typography.bodySmall)
             }
         }
 
         Divider()
 
-        // Theme selection setting
         SettingItem(
-            title = "App Theme",
+            title = stringResource(id = R.string.app_theme),
             value = selectedTheme.name.replace("_", " ").lowercase().replaceFirstChar { it.uppercaseChar() },
             onClick = { showThemeSheet = true }
         )
 
-        // TODO: Connect with real notification toggle
-        SettingItem("Notifications and sounds")
+        SettingItem(title = stringResource(id = R.string.notifications_and_sounds))
 
-        // TODO: Secure password change functionality
-        SettingItem("Password")
+        SettingItem(title = stringResource(id = R.string.password))
 
-        // TODO: Implement security checkup UI
-        SettingItem("Security Checkup")
+        SettingItem(title = stringResource(id = R.string.security_checkup))
 
-        // TODO: Add two factor toggle functionality
-        SettingItem("Two Factor Authentication")
+        SettingItem(title = stringResource(id = R.string.two_factor_authentication))
 
-        // TODO: Navigate to change number screen
-        SettingItem("Change Number")
+        SettingItem(title = stringResource(id = R.string.change_number))
 
-        // TODO: Navigate to Help Center screen
-        SettingItem("Help Center", onClick = {
-            // TODO
-        })
+        SettingItem(title = stringResource(id = R.string.help_center))
 
-        // TODO: Navigate to report screen or open a problem dialog
-        SettingItem("Report a Problem", onClick = {
-            // TODO
-        })
+        SettingItem(title = stringResource(id = R.string.report_a_problem))
 
-        // Language selector
         SettingItem(
-            title = "Language",
+            title = stringResource(id = R.string.language),
             value = languageMap[selectedLanguage] ?: selectedLanguage,
             onClick = { showLanguageSheet = true }
         )
 
-        // TODO: Open Terms and Privacy page
-        SettingItem("Terms and Privacy Policy", onClick = {
-            // TODO
-        })
+        SettingItem(title = stringResource(id = R.string.terms_and_privacy_policy))
     }
 
-    // Language bottom sheet
     if (showLanguageSheet) {
         LanguageBottomSheet(
             languageViewModel = languageViewModel,
@@ -141,7 +105,6 @@ fun SettingsScreen(
         )
     }
 
-    // Theme bottom sheet
     if (showThemeSheet) {
         ModalBottomSheet(
             onDismissRequest = { showThemeSheet = false },
