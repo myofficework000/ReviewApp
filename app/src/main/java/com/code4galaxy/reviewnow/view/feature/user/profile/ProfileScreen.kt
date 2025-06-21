@@ -76,9 +76,6 @@ fun ProfileScreen(
                 .fillMaxWidth()
                 .clickable {
                     onLogoutClick()
- 
-                    authViewModel.logout(context)
- 
 
                 }
                 .padding(vertical = dimensionResource(id = R.dimen.dimen_12_dp)),

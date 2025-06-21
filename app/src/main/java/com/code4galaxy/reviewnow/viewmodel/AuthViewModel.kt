@@ -27,6 +27,7 @@ class AuthViewModel @Inject constructor(
 
     private val _registerState = MutableStateFlow<RegisterState>(RegisterState.Idle)
     val registerState: StateFlow<RegisterState> = _registerState
+    private var googleSignOutHandled = false
 
     private val _adminName = mutableStateOf("Admin")
     val adminName: State<String> = _adminName
@@ -52,18 +53,18 @@ class AuthViewModel @Inject constructor(
         }
     }
 
-    fun logout(context: Context, onLoggedOut: () -> Unit = {}) {
-        firebaseAuth.signOut()
-        userPreferenceManager.removeKey("user_type")
-
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(context.getString(R.string.default_web_client_id))
-            .requestEmail()
-            .build()
-        val googleClient = GoogleSignIn.getClient(context, gso)
-        googleClient.signOut().addOnCompleteListener { onLoggedOut() }
-            .addOnFailureListener { onLoggedOut() }
-    }
+//    fun logout(context: Context, onLoggedOut: () -> Unit = {}) {
+//        firebaseAuth.signOut()
+//        userPreferenceManager.removeKey("user_type")
+//
+//        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+//            .requestIdToken(context.getString(R.string.default_web_client_id))
+//            .requestEmail()
+//            .build()
+//        val googleClient = GoogleSignIn.getClient(context, gso)
+//        googleClient.signOut().addOnCompleteListener { onLoggedOut() }
+//            .addOnFailureListener { onLoggedOut() }
+//    }
 
     fun registerUser(email: String, password: String, confirmPassword: String, selectedUserType: String) {
         if (email.isBlank() || password.isBlank() || confirmPassword.isBlank()) {
@@ -115,91 +116,80 @@ class AuthViewModel @Inject constructor(
     }
 
  
-//     fun logout(context: Context, onLoggedOut: () -> Unit) {
-//         // Sign out from Firebase
-//         firebaseAuth.signOut()
+     fun logout(context: Context, onLoggedOut: () -> Unit) {
+         // Sign out from Firebase
+         firebaseAuth.signOut()
 
-//         // Flag to track if Google sign-out is handled, to prevent double calling onLoggedOut
-//         var googleSignOutHandled = false
+         // Flag to track if Google sign-out is handled, to prevent double calling onLoggedOut
+         var googleSignOutHandled = false
 
-//         // Try Google sign out if user is signed in with Google
-//         try {
-//             val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-//                 .requestIdToken(context.getString(R.string.default_web_client_id))
-//                 .requestEmail()
-//                 .build()
+         // Try Google sign out if user is signed in with Google
+         try {
+             val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                 .requestIdToken(context.getString(R.string.default_web_client_id))
+                 .requestEmail()
+                 .build()
 
-//             val googleClient = GoogleSignIn.getClient(context, gso)
+             val googleClient = GoogleSignIn.getClient(context, gso)
 
-//             // Check if there's a currently signed-in Google account
-//             // This prevents trying to sign out from Google if the user isn't logged in with Google
-//             if (GoogleSignIn.getLastSignedInAccount(context) != null) {
-//                 googleClient.signOut()
-//                     .addOnCompleteListener {
-//                         if (!googleSignOutHandled) {
-//                             googleSignOutHandled = true
-//                             onLoggedOut()
-//                         }
-//                     }
-//                     .addOnFailureListener {
-//                         // Log error if needed
-//                         Log.e("AuthViewModel", "Google sign-out failed: ${it.message}")
-//                         if (!googleSignOutHandled) {
-//                             googleSignOutHandled = true
-//                             onLoggedOut() // Still call onLoggedOut even on failure
-//                         }
-//                     }
-//             } else {
-//                 // No Google account signed in, so we can directly call onLoggedOut
-//                 if (!googleSignOutHandled) {
-//                     googleSignOutHandled = true
-//                     onLoggedOut()
-//                 }
+             // Check if there's a currently signed-in Google account
+             // This prevents trying to sign out from Google if the user isn't logged in with Google
+             if (GoogleSignIn.getLastSignedInAccount(context) != null) {
+                 googleClient.signOut()
+                     .addOnCompleteListener {
+                         if (!googleSignOutHandled) {
+                             googleSignOutHandled = true
+                             onLoggedOut()
+                         }
+                     }
+                     .addOnFailureListener {
+                         // Log error if needed
+                         Log.e("AuthViewModel", "Google sign-out failed: ${it.message}")
+                         if (!googleSignOutHandled) {
+                             googleSignOutHandled = true
+                             onLoggedOut() // Still call onLoggedOut even on failure
+                         }
+                     }
+             } else {
+                 // No Google account signed in, so we can directly call onLoggedOut
+                 if (!googleSignOutHandled) {
+                     googleSignOutHandled = true
+                     onLoggedOut()
+                 }
+             }
+         } catch (e: Exception) {
+             Log.e("AuthViewModel", "Error during Google sign-out attempt: ${e.message}")
+             if (!googleSignOutHandled) {
+                 googleSignOutHandled = true
+                 onLoggedOut()
+             }
+         }
+     }
  
-    fun logout(context: Context, onLoggedOut: () -> Unit={}) {
-        firebaseAuth.signOut()
-
-        userPreferenceManager.removeKey("user_type")
-
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(context.getString(R.string.default_web_client_id))
-            .requestEmail()
-            .build()
-        val googleClient = GoogleSignIn.getClient(context, gso)
-        googleClient.signOut()
-            .addOnCompleteListener {
-                onLoggedOut()
- 
-            }
-        } catch (e: Exception) {
-            // Fallback: in case GoogleSignIn client creation or other Google-related issues occur
-            Log.e("AuthViewModel", "Error during Google sign-out attempt: ${e.message}")
-            if (!googleSignOutHandled) {
-                googleSignOutHandled = true
-                onLoggedOut()
-            }
-        }
-    }
-
-
-    fun loadAdminDetails() {
-        val user = firebaseAuth.currentUser
-        if (user != null) {
-            _adminEmail.value = user.email ?: "admin@example.com"
-
-            firestore.collection("admins").document(user.uid)
-                .get()
-                .addOnSuccessListener { document ->
-                    if (document.exists()) {
-                        _adminName.value = document.getString("name") ?: "Admin"
-                    }
-                }
-                .addOnFailureListener {
-                    _adminName.value = "Admin"
-                }
-        }
-    }
-
+//    fun logout(context: Context, onLoggedOut: () -> Unit={}) {
+//        firebaseAuth.signOut()
+//
+//        userPreferenceManager.removeKey("user_type")
+//
+//        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+//            .requestIdToken(context.getString(R.string.default_web_client_id))
+//            .requestEmail()
+//            .build()
+//        val googleClient = GoogleSignIn.getClient(context, gso)
+//        googleClient.signOut()
+//            .addOnCompleteListener {
+//                onLoggedOut()
+//
+//            }
+//        } catch (e: Exception) {
+//            // Fallback: in case GoogleSignIn client creation or other Google-related issues occur
+//            Log.e("AuthViewModel", "Error during Google sign-out attempt: ${e.message}")
+//            if (!googleSignOutHandled) {
+//                googleSignOutHandled = true
+//                onLoggedOut()
+//            }
+//        }
+//    }
 
     private val _loginState = MutableStateFlow<LoginState>(LoginState.Idle)
     val loginState: StateFlow<LoginState> = _loginState
