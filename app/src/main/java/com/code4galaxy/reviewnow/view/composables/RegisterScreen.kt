@@ -193,31 +193,35 @@ fun RegisterScreen(
 
             Button(
                 onClick = {
- 
-                    authViewModel.registerUser(email, password, confirmPassword, selectedUserType)
-                    navigationViewModel.saveUserType(selectedUserType)
 
- 
-                    if (selectedUserType != null) {
-                        authViewModel.registerUser(
-                            email,
-                            password,
-                            confirmPassword,
-                            selectedUserType!!
-                        )
+                    fun handleRegisterClick() {
+                        if (email.isBlank() || password.isBlank() || confirmPassword.isBlank()) {
+                            Toast.makeText(context, "Please fill in all fields", Toast.LENGTH_SHORT).show()
+                            return
+                        }
 
+                        if (password != confirmPassword) {
+                            Toast.makeText(context, "Passwords do not match", Toast.LENGTH_SHORT).show()
+                            return
+                        }
 
-                        if (selectedUserType=="user")
+                        if (selectedUserType == null) {
+                            Toast.makeText(context, "Please select user type", Toast.LENGTH_SHORT).show()
+                            return
+                        }
+
+                        authViewModel.registerUser(email, password, confirmPassword, selectedUserType)
+                        navigationViewModel.saveUserType(selectedUserType)
+
+                        if (selectedUserType == "user") {
                             navController.navigate(Screen.USER.route)
-                        else
+                        } else {
                             navController.navigate(Screen.ADMIN.route)
-
-
-                    } else {
-                        Toast.makeText(context, "Please select user type", Toast.LENGTH_SHORT)
-                            .show()
+                        }
                     }
- 
+
+
+
                 },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -255,7 +259,11 @@ fun RegisterScreen(
             }
         }
     }
+
+
 }
+
+
 
 
 //@Preview(showBackground = true)
