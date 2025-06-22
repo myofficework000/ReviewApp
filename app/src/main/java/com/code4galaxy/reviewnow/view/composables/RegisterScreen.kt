@@ -219,6 +219,7 @@ fun RegisterScreen(
                             navController.navigate(Screen.ADMIN.route)
                         }
                     }
+                    handleRegisterClick()
 
 
 
