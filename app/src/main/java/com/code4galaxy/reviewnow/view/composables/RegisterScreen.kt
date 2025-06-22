@@ -78,7 +78,12 @@ fun RegisterScreen(
             is RegisterState.Success -> {
                 Toast.makeText(context, "Registration successful!", Toast.LENGTH_SHORT).show()
                 authViewModel.resetRegisterState()
-                onSignInClick()
+
+                if (selectedUserType == "user") {
+                    navController.navigate(Screen.USER.route)
+                } else {
+                    navController.navigate(Screen.ADMIN.route)
+                }
             }
 
             is RegisterState.Error -> {
@@ -194,32 +199,18 @@ fun RegisterScreen(
             Button(
                 onClick = {
 
-                    fun handleRegisterClick() {
-                        if (email.isBlank() || password.isBlank() || confirmPassword.isBlank()) {
-                            Toast.makeText(context, "Please fill in all fields", Toast.LENGTH_SHORT).show()
-                            return
-                        }
-
-                        if (password != confirmPassword) {
-                            Toast.makeText(context, "Passwords do not match", Toast.LENGTH_SHORT).show()
-                            return
-                        }
-
-                        if (selectedUserType == null) {
-                            Toast.makeText(context, "Please select user type", Toast.LENGTH_SHORT).show()
-                            return
-                        }
-
-                        authViewModel.registerUser(email, password, confirmPassword, selectedUserType)
-                        navigationViewModel.saveUserType(selectedUserType)
-
-                        if (selectedUserType == "user") {
-                            navController.navigate(Screen.USER.route)
-                        } else {
-                            navController.navigate(Screen.ADMIN.route)
-                        }
+                    if (email.isBlank() || password.isBlank() || confirmPassword.isBlank()) {
+                        Toast.makeText(context, "Please fill in all fields", Toast.LENGTH_SHORT).show()
+                        return@Button
                     }
-                    handleRegisterClick()
+
+                    if (password != confirmPassword) {
+                        Toast.makeText(context, "Passwords do not match", Toast.LENGTH_SHORT).show()
+                        return@Button
+                    }
+
+                    authViewModel.registerUser(email, password, confirmPassword, selectedUserType)
+                    navigationViewModel.saveUserType(selectedUserType)
 
 
 
