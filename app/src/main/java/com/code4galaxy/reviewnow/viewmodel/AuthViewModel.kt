@@ -53,18 +53,6 @@ class AuthViewModel @Inject constructor(
         }
     }
 
-//    fun logout(context: Context, onLoggedOut: () -> Unit = {}) {
-//        firebaseAuth.signOut()
-//        userPreferenceManager.removeKey("user_type")
-//
-//        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-//            .requestIdToken(context.getString(R.string.default_web_client_id))
-//            .requestEmail()
-//            .build()
-//        val googleClient = GoogleSignIn.getClient(context, gso)
-//        googleClient.signOut().addOnCompleteListener { onLoggedOut() }
-//            .addOnFailureListener { onLoggedOut() }
-//    }
 
     fun registerUser(email: String, password: String, confirmPassword: String, selectedUserType: String) {
         if (email.isBlank() || password.isBlank() || confirmPassword.isBlank()) {
@@ -165,31 +153,6 @@ class AuthViewModel @Inject constructor(
              }
          }
      }
- 
-//    fun logout(context: Context, onLoggedOut: () -> Unit={}) {
-//        firebaseAuth.signOut()
-//
-//        userPreferenceManager.removeKey("user_type")
-//
-//        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-//            .requestIdToken(context.getString(R.string.default_web_client_id))
-//            .requestEmail()
-//            .build()
-//        val googleClient = GoogleSignIn.getClient(context, gso)
-//        googleClient.signOut()
-//            .addOnCompleteListener {
-//                onLoggedOut()
-//
-//            }
-//        } catch (e: Exception) {
-//            // Fallback: in case GoogleSignIn client creation or other Google-related issues occur
-//            Log.e("AuthViewModel", "Error during Google sign-out attempt: ${e.message}")
-//            if (!googleSignOutHandled) {
-//                googleSignOutHandled = true
-//                onLoggedOut()
-//            }
-//        }
-//    }
 
     private val _loginState = MutableStateFlow<LoginState>(LoginState.Idle)
     val loginState: StateFlow<LoginState> = _loginState
